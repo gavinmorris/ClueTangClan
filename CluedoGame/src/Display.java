@@ -13,12 +13,12 @@ public class Display extends JFrame {
 	JPanel panel = new JPanel();
 	
 	//Create JTextArea
-    JTextArea textarea = new JTextArea(16, 16);
+    	JTextArea textarea = new JTextArea(16, 16);
     
-    //Create JScrollPane and add the JTextArea
-    JScrollPane scrollpane = new JScrollPane(textarea);
+    	//Create JScrollPane and add the JTextArea
+    	JScrollPane scrollpane = new JScrollPane(textarea);
 	
-    //Constructor for the display panel
+    	//Constructor for the display panel
 	public Display() {
 		
 		//Cannot edit this area
