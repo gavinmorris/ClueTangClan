@@ -3,37 +3,21 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 
-/*
-	Display JPanel to show commentary of game.
- */
-
 public class Display extends JFrame {
 	
-	//Create a JPanel
 	JPanel panel = new JPanel();
-	
-	//Create JTextArea
-    	JTextArea textarea = new JTextArea(16, 16);
+    JTextArea textarea = new JTextArea(16, 16);
+    JScrollPane scrollpane = new JScrollPane(textarea);
     
-    	//Create JScrollPane and add the JTextArea
-    	JScrollPane scrollpane = new JScrollPane(textarea);
+    String username1 = "jem";
 	
-    	//Constructor for the display panel
 	public Display() {
-		
-		//Cannot edit this area
 		textarea.setEditable(false);
-		
-		//Print onto second line if longer then width
 		textarea.setLineWrap(true);
+		textarea.setText("<"  + username1 +  ">");
 		
-		//Layout of JPanel
 		panel.setLayout(new BorderLayout());
-		
-		//Set color
-		panel.setBackground(Color.BLACK);
-		
-		//add scrollPane to the JPanel
+		panel.setBackground(Color.DARK_GRAY);
 		panel.add(scrollpane, BorderLayout.EAST);	
 	}
 
