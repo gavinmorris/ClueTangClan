@@ -14,9 +14,9 @@ public class Board extends Main {
 	ImageIcon image = new ImageIcon("cluedoboard.jpg");
 	
 	//Put image into a JLabel
-    JLabel label = new JLabel(image);
+    	JLabel label = new JLabel(image);
     
-    //Create a JPanel
+    	//Create a JPanel
 	JPanel panel = new JPanel();
 
 	
@@ -27,7 +27,7 @@ public class Board extends Main {
 		panel.setLayout(new GridBagLayout());
 		
 		//add JLabel to the JPanel
-        panel.add(label);	
+       		panel.add(label);	
 	}
 		
 }
