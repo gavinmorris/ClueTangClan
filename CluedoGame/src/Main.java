@@ -18,13 +18,15 @@ public class Main {
 		
 		textualcommand.button.addActionListener(new SendMessageButtonListener());		
 
-		display.panel.add(textualcommand.panel, BorderLayout.SOUTH);
-		display.panel.add(board.panel, BorderLayout.WEST);
-		display.panel.setBorder(new EmptyBorder(10, 10, 10, 10));
-		frame.add(display.panel);
+		//display.panel.add(textualcommand.panel, BorderLayout.SOUTH);
+		//display.panel.add(board.panel, BorderLayout.WEST);
+		//display.panel.setBorder(new EmptyBorder(10, 10, 10, 10));
+		frame.add(display.panel, BorderLayout.EAST);
+		frame.add(board.panel, BorderLayout.WEST);
+		frame.add(textualcommand.panel, BorderLayout.SOUTH);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
-		frame.setSize(860, 720);
+		frame.setSize(870, 730);
 		
 		
 		

@@ -1,4 +1,6 @@
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -18,7 +20,8 @@ public class Display extends JFrame {
 		
 		panel.setLayout(new BorderLayout());
 		panel.setBackground(Color.DARK_GRAY);
-		panel.add(scrollpane, BorderLayout.EAST);	
+		panel.add(scrollpane);
+        panel.setBorder(new EmptyBorder(10, 10, 0, 10));	
 	}
 
 }

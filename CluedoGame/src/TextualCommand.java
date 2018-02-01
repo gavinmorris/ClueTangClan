@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 
 import java.awt.Color;
 import java.awt.GridBagConstraints;
@@ -31,6 +32,7 @@ public class TextualCommand extends JFrame {
 		
 		panel.add(textfield, left);
 		panel.add(button, right);
+        panel.setBorder(new EmptyBorder(10, 10, 10, 10));
         
 	}
 }
