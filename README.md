@@ -14,4 +14,4 @@
 - [x] 🅱️oard🅱️isplay
 - [ ] Token Display
 
-![alt text](https://imgur.com/p7piPoB)
+![alt text](https://i.imgur.com/p7piPoB.png)
