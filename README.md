@@ -1,5 +1,6 @@
-# ClueTangClan ![alt text]  (![alt text](https://cdn-img.easyicon.net/png/5488/548871.gif))
+# ClueTangClan
 
+![alt text](https://cdn-img.easyicon.net/png/5488/548871.gif)
 
 # Members
 * Euan Hayden (Supreme Leader)
