@@ -11,7 +11,7 @@
 - [ ] Token moves
 - [x] TextField (and works)
 - [x] DisplayPanel
-- [x] BoardDisplay
+- [x] 🅱️oard🅱️isplay
 - [ ] Token Display
 
-![alt text](http://shufflecardgames.com/assets/images/licenses/cluedo/header_logo.png)
+![alt text](https://imgur.com/p7piPoB)
