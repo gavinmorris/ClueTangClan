@@ -1,5 +1,5 @@
-# ClueTangClan
-The greatest thing to happen to COMP20050, since CB.
+# ClueTangClan ![alt text]  (![alt text](https://cdn-img.easyicon.net/png/5488/548871.gif))
+
 
 # Members
 * Euan Hayden (Supreme Leader)
