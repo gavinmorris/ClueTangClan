@@ -6,16 +6,15 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
-public class TextualCommand extends JFrame {
-
-	JPanel panel = new JPanel();
+public class TextualCommand extends JPanel {
+	
 	JTextField textfield = new JTextField(30);
 	JButton button = new JButton("COMPLETE MOVE");
 		
 	public TextualCommand() {
 		
-		panel.setLayout(new GridBagLayout());
-		panel.setBackground(Color.DARK_GRAY);
+		this.setLayout(new GridBagLayout());
+		this.setBackground(Color.DARK_GRAY);
 		
 		GridBagConstraints left = new GridBagConstraints();
 		left.anchor = GridBagConstraints.LINE_START;
@@ -30,9 +29,9 @@ public class TextualCommand extends JFrame {
 		right.weightx = 1.0D;
 		right.weighty = 1.0D;
 		
-		panel.add(textfield, left);
-		panel.add(button, right);
-        panel.setBorder(new EmptyBorder(10, 10, 10, 10));
+		this.add(textfield, left);
+		this.add(button, right);
+        this.setBorder(new EmptyBorder(10, 10, 10, 10));
         
 	}
 }

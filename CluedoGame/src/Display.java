@@ -5,9 +5,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 
-public class Display extends JFrame {
-	
-	JPanel panel = new JPanel();
+public class Display extends JPanel {
+
     JTextArea textarea = new JTextArea(16, 16);
     JScrollPane scrollpane = new JScrollPane(textarea);
     
@@ -18,10 +17,10 @@ public class Display extends JFrame {
 		textarea.setLineWrap(true);
 		textarea.setText("<"  + username1 +  ">");
 		
-		panel.setLayout(new BorderLayout());
-		panel.setBackground(Color.DARK_GRAY);
-		panel.add(scrollpane);
-        panel.setBorder(new EmptyBorder(10, 10, 0, 10));	
+		this.setLayout(new BorderLayout());
+		this.setBackground(Color.DARK_GRAY);
+		this.add(scrollpane);
+        this.setBorder(new EmptyBorder(10, 10, 0, 10));	
 	}
 
 }
