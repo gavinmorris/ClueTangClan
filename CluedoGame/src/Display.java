@@ -10,12 +10,12 @@ public class Display extends JPanel {
     JTextArea textarea = new JTextArea(16, 16);
     JScrollPane scrollpane = new JScrollPane(textarea);
     
-    String username1 = "jem";
+    String introText = "Display Panel";
 	
 	public Display() {
 		textarea.setEditable(false);
 		textarea.setLineWrap(true);
-		textarea.setText("<"  + username1 +  ">");
+		textarea.setText(" ----------- "  + introText + " -----------\n" + "<" + SendMessageButtonListener.username1 + ">");
 		
 		this.setLayout(new BorderLayout());
 		this.setBackground(Color.DARK_GRAY);

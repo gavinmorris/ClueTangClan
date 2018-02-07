@@ -25,8 +25,9 @@ public class PanelsInJFrame {
 		Main.frame.add(Main.display, BorderLayout.EAST);
 		Main.frame.add(Main.board, BorderLayout.WEST);
 		Main.frame.add(Main.textualcommand, BorderLayout.SOUTH);
-		Main.frame.setLocation(250, 0);
+		Main.frame.setLocation(0, 0);
 		Main.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		Main.frame.pack();
 		Main.frame.setVisible(true);
 		Main.frame.setSize(870, 730);
 	}
