@@ -3,10 +3,10 @@ import javax.swing.border.EmptyBorder;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.GridBagLayout;
 
 public class Board extends JPanel {
 
+	//declare image icons and jlabels
 	public ImageIcon image;
     public JLabel cluedoboard;
     
@@ -16,13 +16,15 @@ public class Board extends JPanel {
 	public static ImageIcon candlestickImage, knifeImage, leadpipeImage, revolverImage, ropeImage, wrenchImage;
     public static JLabel candlestickLabel, knifeLabel, leadpipeLabel, revolverLabel, ropeLabel, wrenchLabel;
 	
+    //declare starting positions for each character piece
 	static int greenx = 250; static int greeny = 25;
-	static int mustardx = 45; static int mustardy = 415;
+	static int mustardx = 44; static int mustardy = 415;
 	static int peacockx = 572; static int peacocky = 161;
 	static int plumx = 572; static int plumy = 461;
 	static int scarlettx = 204; static int scarletty = 576;
 	static int whitex = 365; static int whitey = 25;
 	
+	//declare location within rooms for weapons to go to
 	static int kitchenx = 65; static int kitcheny = 44;
 	static int ballroomx = 300; static int ballroomy = 44;
 	static int conservatoryx = 555; static int conservatoryy = 44;
@@ -37,15 +39,16 @@ public class Board extends JPanel {
 
 	public Board() {
 		
-		image = new ImageIcon("cluedoboard.jpg");
+		//assign each image icon its corresponding image and assign each jlabel its corresponding image icon
+		image = new ImageIcon("images/cluedoboard.jpg");
 		cluedoboard = new JLabel(image);
 
-		greenImage = new ImageIcon("green.jpg");
-		mustardImage = new ImageIcon("mustard.jpg");
-		peacockImage = new ImageIcon("peacock.jpg");
-		plumImage = new ImageIcon("plum.jpg");
-		scarlettImage = new ImageIcon("scarlett.jpg");
-		whiteImage = new ImageIcon("white.jpg");
+		greenImage = new ImageIcon("images/green.jpg");
+		mustardImage = new ImageIcon("images/mustard.jpg");
+		peacockImage = new ImageIcon("images/peacock.jpg");
+		plumImage = new ImageIcon("images/plum.jpg");
+		scarlettImage = new ImageIcon("images/scarlett.jpg");
+		whiteImage = new ImageIcon("images/white.jpg");
 		
 		greenLabel = new JLabel(greenImage);
 		mustardLabel = new JLabel(mustardImage);
@@ -54,12 +57,12 @@ public class Board extends JPanel {
 		scarlettLabel = new JLabel(scarlettImage);
 		whiteLabel = new JLabel(whiteImage);
 		
-		candlestickImage = new ImageIcon("candlestick.jpg");
-		knifeImage = new ImageIcon("knife.jpg");
-		leadpipeImage = new ImageIcon("leadpipe.jpg");
-		revolverImage = new ImageIcon("revolver.jpg");
-		ropeImage = new ImageIcon("rope.jpg");
-		wrenchImage = new ImageIcon("wrench.jpg");
+		candlestickImage = new ImageIcon("images/candlestick.jpg");
+		knifeImage = new ImageIcon("images/knife.jpg");
+		leadpipeImage = new ImageIcon("images/leadpipe.jpg");
+		revolverImage = new ImageIcon("images/revolver.jpg");
+		ropeImage = new ImageIcon("images/rope.jpg");
+		wrenchImage = new ImageIcon("images/wrench.jpg");
 		
 		candlestickLabel = new JLabel(candlestickImage);
 		knifeLabel = new JLabel(knifeImage);
@@ -68,9 +71,11 @@ public class Board extends JPanel {
 		ropeLabel = new JLabel(ropeImage);
 		wrenchLabel = new JLabel(wrenchImage);
 		
+		//declare new jlayeredpane
 		layeredPane = new JLayeredPane();
 		layeredPane.setPreferredSize(new Dimension(image.getIconWidth(), image.getIconHeight()));
 		
+		//set jlayeredpane background to cluedo board and set the pieces and weapons to sit on top of the board
 		layeredPane.add(cluedoboard, JLayeredPane.DEFAULT_LAYER);
 		cluedoboard.setBounds(0, 0, image.getIconWidth(), image.getIconHeight()); 
 		

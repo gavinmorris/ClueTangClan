@@ -3,17 +3,17 @@ import javax.swing.border.EmptyBorder;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 
 public class Display extends JPanel {
 
+	//declare textarea and scrollpane
     JTextArea textarea = new JTextArea(16, 16);
     JScrollPane scrollpane = new JScrollPane(textarea);
     
     String introText = "Display Panel";
 	
 	public Display() {
-		textarea.setEditable(false);
+		textarea.setEditable(false);	//so that the display panel cannot be changed without using the textual command
 		textarea.setLineWrap(true);
 		textarea.setText(" ----------- "  + introText + " -----------\n" + "<" + SendMessageButtonListener.username1 + ">");
 		

@@ -281,6 +281,7 @@ class SendMessageButtonListener implements ActionListener {
 	}
 	
 	public void whoseTurn(Display display, TextualCommand textualcommand) {
+		i++;
 		if(i%3 == 0) {
 			display.textarea.append(textualcommand.textfield.getText() + "\n" + "<"  + username1 +  ">");				
 		} else if(i%3 == 1) {
@@ -290,7 +291,6 @@ class SendMessageButtonListener implements ActionListener {
 		}
 		
 		textualcommand.textfield.setText("");
-		i++;
 	}
 	
 	

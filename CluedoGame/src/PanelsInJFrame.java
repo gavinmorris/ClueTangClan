@@ -1,13 +1,5 @@
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.LayoutManager;
 
 public class PanelsInJFrame {
 	
@@ -15,6 +7,7 @@ public class PanelsInJFrame {
 	
 	public PanelsInJFrame() {
 
+		//declare new jframe and panels, ie board, display and texualcommand
 		Main.frame = new JFrame("Cluedo");
 		Main.frame.setLayout(new BorderLayout());
 		
@@ -22,14 +15,15 @@ public class PanelsInJFrame {
 		Main.display = new Display();
 		Main.textualcommand = new TextualCommand();	
 		
+		//add the panels to the jframe
 		Main.frame.add(Main.display, BorderLayout.EAST);
 		Main.frame.add(Main.board, BorderLayout.WEST);
 		Main.frame.add(Main.textualcommand, BorderLayout.SOUTH);
 		Main.frame.setLocation(0, 0);
+		Main.frame.setResizable(false);
 		Main.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		Main.frame.pack();
 		Main.frame.setVisible(true);
-		Main.frame.setSize(870, 730);
+		Main.frame.setSize(862, 720);
 	}
 	
 }

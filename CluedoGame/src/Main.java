@@ -1,7 +1,4 @@
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import java.awt.BorderLayout;
-import java.awt.GridBagLayout;
 
 public class Main {
 	
@@ -13,29 +10,11 @@ public class Main {
 	
 	public static void main(String[] args) {
 		
+		//put all the panels into the jframe
 		new PanelsInJFrame();
-		
-//		ImageIcon image = new ImageIcon("Candlestick.jpg");
-//	    JLabel label = new JLabel(image);
-//		
-		textualcommand.button.addActionListener(new SendMessageButtonListener());		
-//
-//	    frame.add(label);
-		
-	    
-	    
-	    
-	    
-//		frame.setSize(870, 730);
-		
-//		JFrame jframe = new JFrame("Rectangles");
-//		jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//		jframe.setVisible(true);
-//		jframe.setSize(870, 730);
-		
-		
-		
-		//System.exit(0);
+
+		//activate action listener for transfering text from the textual command to the display panel
+		textualcommand.button.addActionListener(new SendMessageButtonListener());	
 	}
 	
 																				
