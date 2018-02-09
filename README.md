@@ -7,7 +7,6 @@
 * Jem Cairns (Chief Programmer)
 * Gavin Morris (Morale Booster)
 
-# Game Features for Sprint 1
 # Sprint 1
 
 We have displayed 3 Panels currently.
