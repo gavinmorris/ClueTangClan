@@ -13,22 +13,28 @@
 We have displayed 3 Panels currently.
 
 **1. Text input panel for commands.**
+
 This is  a JTextField which is added to a JPanel. This allows the user to input textual commands and make their move by clicking a JButton which passes the text in a sendMessageListener. 
 
 **2. Display panel to echo text.**
+
 	This is an uneditable JTextArea which echos the text in the input field onto this display		 panel. Username tags are displayed beside the message to  indicate who made their		 turn.
  
 **3. Board panel which display the board and text panels.**
+
 This JPanel uses JLayeredPane to display the board image as a default layer and then adding JLabels (tokens) over that default layer and display them as Pallet Layers. The 6 player tokens and weapon layers are displayed as JLabels and each have unique coordinate in relation to the board.
 
 **Functionality.**
+
 When the “Complete Move” JButton is clicked the input from the input text field is passed into an ActionListener method where it is compared to numerous if else statements.
 
 **Weapon commands work like this.**
+
 move <weapon name> to <roomname>
 move candlestick to library
 
 **Player commands work like this:**
+
 move <player name> to <left/right/up/down>
 move plum left
 
