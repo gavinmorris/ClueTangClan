@@ -18,7 +18,7 @@ This is  a JTextField which is added to a JPanel. This allows the user to input 
 
 **2. Display panel to echo text.**
 
-	This is an uneditable JTextArea which echos the text in the input field onto this display		 panel. Username tags are displayed beside the message to  indicate who made their		 turn.
+This is an uneditable JTextArea which echos the text in the input field onto this display panel. Username tags are displayed beside the message to  indicate who made their turn.
  
 **3. Board panel which display the board and text panels.**
 
@@ -30,13 +30,13 @@ When the “Complete Move” JButton is clicked the input from the input text fi
 
 **Weapon commands work like this.**
 
-move <weapon name> to <roomname>
-move candlestick to library
+* move <weapon name> to <roomname>
+* move candlestick to library
 
 **Player commands work like this:**
 
-move <player name> to <left/right/up/down>
-move plum left
+* move <player name> to <left/right/up/down>
+* move plum left
 
 Each player label is moved either EAST, WEST, NORTH, SOUTH by 23 pixels, depending on what direction picked.
 
