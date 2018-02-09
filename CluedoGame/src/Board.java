@@ -40,29 +40,29 @@ public class Board extends JPanel {
 	public Board() {
 		
 		//assign each image icon its corresponding image and assign each jlabel its corresponding image icon
-		image = new ImageIcon("images/cluedoboard.jpg");
+		image = new ImageIcon("Images/Board/Board.jpg");
 		cluedoboard = new JLabel(image);
 
-		greenImage = new ImageIcon("images/green.jpg");
-		mustardImage = new ImageIcon("images/mustard.jpg");
-		peacockImage = new ImageIcon("images/peacock.jpg");
-		plumImage = new ImageIcon("images/plum.jpg");
-		scarlettImage = new ImageIcon("images/scarlett.jpg");
-		whiteImage = new ImageIcon("images/white.jpg");
-		
+		greenImage = new ImageIcon("Images/Characters/Green.png");
+		mustardImage = new ImageIcon("Images/Characters/Mustard.png");
+		peacockImage = new ImageIcon("Images/Characters/Peacock.png");
+		plumImage = new ImageIcon("Images/Characters/Plum.png");
+		scarlettImage = new ImageIcon("Images/Characters/Scarlett.png");
+		whiteImage = new ImageIcon("Images/Characters/White.png");
+
 		greenLabel = new JLabel(greenImage);
 		mustardLabel = new JLabel(mustardImage);
 		peacockLabel = new JLabel(peacockImage);
 		plumLabel = new JLabel(plumImage);
 		scarlettLabel = new JLabel(scarlettImage);
 		whiteLabel = new JLabel(whiteImage);
-		
-		candlestickImage = new ImageIcon("images/candlestick.jpg");
-		knifeImage = new ImageIcon("images/knife.jpg");
-		leadpipeImage = new ImageIcon("images/leadpipe.jpg");
-		revolverImage = new ImageIcon("images/revolver.jpg");
-		ropeImage = new ImageIcon("images/rope.jpg");
-		wrenchImage = new ImageIcon("images/wrench.jpg");
+
+		candlestickImage = new ImageIcon("Images/Weapons/Candlestick.jpg");
+		knifeImage = new ImageIcon("Images/Weapons/Knife.jpg");
+		leadpipeImage = new ImageIcon("Images/Weapons/Leadpipe.jpg");
+		revolverImage = new ImageIcon("Images/Weapons/Revolver.jpg");
+		ropeImage = new ImageIcon("Images/Weapons/Rope.jpg");
+		wrenchImage = new ImageIcon("Images/Weapons/Wrench.jpg");
 		
 		candlestickLabel = new JLabel(candlestickImage);
 		knifeLabel = new JLabel(knifeImage);
