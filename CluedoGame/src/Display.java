@@ -7,7 +7,7 @@ import java.awt.Color;
 public class Display extends JPanel {
 
 	//declare textarea and scrollpane
-    JTextArea textarea = new JTextArea(16, 16);
+    JTextArea textarea = new JTextArea(20, 20);
     JScrollPane scrollpane = new JScrollPane(textarea);
     
     String introText = "Display Panel";
@@ -15,7 +15,7 @@ public class Display extends JPanel {
 	public Display() {
 		textarea.setEditable(false);	//so that the display panel cannot be changed without using the textual command
 		textarea.setLineWrap(true);
-		textarea.setText(" ----------- "  + introText + " -----------\n" + "<" + SendMessageButtonListener.username1 + ">");
+		textarea.setText(" --------------- "  + introText + " ---------------\n" + "<" + SendMessageButtonListener.username1 + ">");
 		
 		this.setLayout(new BorderLayout());
 		this.setBackground(Color.DARK_GRAY);
