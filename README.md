@@ -40,6 +40,8 @@ When the “Complete Move” JButton is clicked the input from the input text fi
 
 Each player label is moved either EAST, WEST, NORTH, SOUTH by 23 pixels, depending on what direction picked.
 
+![alt text](https://i.imgur.com/6uqJcCX.png)
+
 
 # Game Features for Sprint 2
 - [ ]  input for names of players
