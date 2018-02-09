@@ -23,7 +23,7 @@ public class PanelsInJFrame {
 		Main.frame.setResizable(false);
 		Main.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Main.frame.setVisible(true);
-		Main.frame.setSize(862, 720);
+		Main.frame.setSize(900, 720);
 	}
 	
 }
