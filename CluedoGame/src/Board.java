@@ -59,12 +59,12 @@ public class Board extends JPanel {
 		image = new ImageIcon("Images/Board/Board.jpg");
 		cluedoboard = new JLabel(image);
 
-		greenImage = new ImageIcon("Images/Characters/Green.jpg");
-		mustardImage = new ImageIcon("Images/Characters/Mustard.jpg");
-		peacockImage = new ImageIcon("Images/Characters/Peacock.jpg");
-		plumImage = new ImageIcon("Images/Characters/Plum.jpg");
-		scarlettImage = new ImageIcon("Images/Characters/Scarlett.jpg");
-		whiteImage = new ImageIcon("Images/Characters/White.jpg");
+		greenImage = new ImageIcon("Images/Characters/Green.png");
+		mustardImage = new ImageIcon("Images/Characters/Mustard.png");
+		peacockImage = new ImageIcon("Images/Characters/Peacock.png");
+		plumImage = new ImageIcon("Images/Characters/Plum.png");
+		scarlettImage = new ImageIcon("Images/Characters/Scarlett.png");
+		whiteImage = new ImageIcon("Images/Characters/White.png");
 
 		greenLabel = new JLabel(greenImage);
 		mustardLabel = new JLabel(mustardImage);
