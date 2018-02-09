@@ -30,12 +30,12 @@ When the “Complete Move” JButton is clicked the input from the input text fi
 
 **Weapon commands work like this.**
 
-* move **weapon name** to **roomname**
+* move **"weapon name"** to **"room name"**
 * move **candlestick** to **library**
 
 **Player commands work like this:**
 
-* move **player name** to **left/right/up/down**
+* move **"player name"** to **"left/right/up/down"**
 * move **plum left**
 
 Each player label is moved either EAST, WEST, NORTH, SOUTH by 23 pixels, depending on what direction picked.
