@@ -3,9 +3,9 @@
 ![alt text](https://cdn-img.easyicon.net/png/5488/548871.gif)
 
 # Members
-* Euan Hayden (Supreme Leader)
-* Jem Cairns (Chief Programmer)
-* Gavin Morris (Morale Booster)
+* Euan Hayden (16495896)
+* Jem Cairns (16439124)
+* Gavin Morris (16360966)
 
 # Sprint 1
 
@@ -41,16 +41,3 @@ Each player label is moved either EAST, WEST, NORTH, SOUTH by 23 pixels, dependi
 
 ![alt text](https://i.imgur.com/6uqJcCX.png)
 
-
-# Game Features for Sprint 2
-- [ ]  input for names of players
-- [x]  take turns
-- [ ]  dice feature
-- [ ]  choose exit for each room
-- [ ]  move between rooms using decret passage
-- [x]  done command
-- [ ] quit command
-- [ ] not case sensitive white space thing 
-- [ ] invalid move messages
-
-![alt text](https://i.imgur.com/p7piPoB.png)
