@@ -4,27 +4,25 @@ import javax.swing.border.EmptyBorder;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.io.InputStream;
 
 public class Board extends JPanel {
 
-
+	private static final long serialVersionUID = 1L;
+	
 	//declare buffered images, image icons and jlabels
     public BufferedImage boardBufferedImage;
 	public ImageIcon boardImage;
     public JLabel cluedoboard;
 	
     //declare starting positions for each character piece
-	public static int greenx = 250; static int greeny = 25;
-	public static int mustardx = 44; static int mustardy = 415;
-	public static int peacockx = 572; static int peacocky = 161;
-	public static int plumx = 572; static int plumy = 461;
-	public static int scarlettx = 204; static int scarletty = 576;
-	public static int whitex = 365; static int whitey = 25;
+	public static int greenStartingx = 250; public static int greenStartingy = 24;
+	public static int mustardStartingx = 43; public static int mustardStartingy = 415;
+	public static int peacockStartingx = 572; public static int peacockStartingy = 162;
+	public static int plumStartingx = 572; public static int plumStartingy = 461;
+	public static int scarlettStartingx = 204; public static int scarlettStartingy = 576;
+	public static int whiteStartingx = 365; public static int whiteStartingy = 24;
 	
 	//declare location within rooms for weapons to go to
 	public static int kitchenx = 65; public static int kitcheny = 44;
@@ -37,21 +35,24 @@ public class Board extends JPanel {
 	public static int loungex = 155; public static int loungey = 500;
 	public static int diningroomx = 170; public static int diningroomy = 285;
     
+    public Token green;
+    public Token mustard;
+    public Token peacock;
+    public Token plum;
+    public Token scarlett;
+    public Token white;
+	
+    public Weapon candlestick;
+    public Weapon knife;
+    public Weapon leadpipe;
+    public Weapon revolver;
+    public Weapon rope;
+    public Weapon wrench;
+    
+    
+	
+    
     public JLayeredPane layeredPane;
-    
-    public Weapons candlestick;
-    public Weapons knife;
-    public Weapons leadpipe;
-    public Weapons revolver;
-    public Weapons rope;
-    public Weapons wrench;
-    
-    public Tokens green;
-    public Tokens mustard;
-    public Tokens peacock;
-    public Tokens plum;
-    public Tokens scarlett;
-    public Tokens white;
 
 	public Board() {
 		
@@ -62,21 +63,20 @@ public class Board extends JPanel {
 		}
 		boardImage = new ImageIcon(boardBufferedImage);
 		cluedoboard = new JLabel(boardImage);
-
-		candlestick = new Weapons("candlestick", "kitchen");
-		knife = new Weapons("knife", "ball room");
-		leadpipe = new Weapons("leadpipe", "dining room");
-		revolver = new Weapons("revolver", "lounge");
-		rope = new Weapons("rope", "hall");
-		wrench = new Weapons("wrench", "study");
 		
-		green = new Tokens("green");
-		mustard = new Tokens("mustard");
-		peacock = new Tokens("peacock");
-		plum = new Tokens("plum");
-		scarlett = new Tokens("scarlett");
-		white = new Tokens("white");
+		green = new Token("green");
+	    mustard = new Token("mustard");
+	    peacock = new Token("peacock");
+	    plum = new Token("plum");
+	    scarlett = new Token("scarlett");
+	    white = new Token("white");
 		
+	    candlestick = new Weapon("candlestick", "kitchen");
+	    knife = new Weapon("knife", "ball room");
+	    leadpipe = new Weapon("leadpipe", "dining room");
+	    revolver = new Weapon("revolver", "lounge");
+	    rope = new Weapon("rope", "hall");
+	    wrench = new Weapon("wrench", "study");
 		
 		
 		
@@ -95,12 +95,14 @@ public class Board extends JPanel {
 		layeredPane.add(scarlett, JLayeredPane.PALETTE_LAYER);
 		layeredPane.add(white, JLayeredPane.PALETTE_LAYER);
 		
-		green.setBounds(greenx, greeny, green.imageIcon.getIconWidth(), green.imageIcon.getIconHeight());
-		mustard.setBounds(mustardx, mustardy, mustard.imageIcon.getIconWidth(), mustard.imageIcon.getIconHeight());
-		peacock.setBounds(peacockx, peacocky, peacock.imageIcon.getIconWidth(), peacock.imageIcon.getIconHeight());
-		plum.setBounds(plumx, plumy, plum.imageIcon.getIconWidth(), plum.imageIcon.getIconHeight());
-		scarlett.setBounds(scarlettx, scarletty, scarlett.imageIcon.getIconWidth(), scarlett.imageIcon.getIconHeight());
-		white.setBounds(whitex, whitey, white.imageIcon.getIconWidth(), white.imageIcon.getIconHeight());
+		//movePiece("green", greenStartingx, greenStartingy);
+		
+		green.setBounds(greenStartingx, greenStartingy, green.imageIcon.getIconWidth(), green.imageIcon.getIconHeight());
+		mustard.setBounds(mustardStartingx, mustardStartingy, mustard.imageIcon.getIconWidth(), mustard.imageIcon.getIconHeight());
+		peacock.setBounds(peacockStartingx, peacockStartingy, peacock.imageIcon.getIconWidth(), peacock.imageIcon.getIconHeight());
+		plum.setBounds(plumStartingx, plumStartingy, plum.imageIcon.getIconWidth(), plum.imageIcon.getIconHeight());
+		scarlett.setBounds(scarlettStartingx, scarlettStartingy, scarlett.imageIcon.getIconWidth(), scarlett.imageIcon.getIconHeight());
+		white.setBounds(whiteStartingx, whiteStartingy, white.imageIcon.getIconWidth(), white.imageIcon.getIconHeight());
 		
 		layeredPane.add(candlestick, JLayeredPane.PALETTE_LAYER);
 		layeredPane.add(knife, JLayeredPane.PALETTE_LAYER);
@@ -120,6 +122,45 @@ public class Board extends JPanel {
 		
 		this.setBorder(new EmptyBorder(4, 4, 0, 4));
 		this.setBackground(Color.DARK_GRAY);
+	}
+	
+	public void movePiece(String name, int x, int y) {
+		if(name.equals("green")) {
+			green.setPosition(x, y);
+		}
+		else if(name.equals("mustard")) {
+			mustard.setPosition(x, y);
+		}
+		else if(name.equals("peacock")) {
+			peacock.setPosition(x, y);
+		}
+		else if(name.equals("plum")) {
+			plum.setPosition(x, y);
+		}
+		else if(name.equals("scarlett")) {
+			scarlett.setPosition(x, y);
+		}
+		else if(name.equals("white")) {
+			white.setPosition(x, y);
+		}
+		else if(name.equals("candlestick")) {
+			candlestick.setPosition(x, y);
+		}
+		else if(name.equals("knife")) {
+			knife.setPosition(x, y);
+		}
+		else if(name.equals("leadpipe")) {
+			leadpipe.setPosition(x, y);
+		}
+		else if(name.equals("revolver")) {
+			revolver.setPosition(x, y);
+		}
+		else if(name.equals("rope")) {
+			rope.setPosition(x, y);
+		}
+		else if(name.equals("wrench")) {
+			wrench.setPosition(x, y);
+		}
 	}
 
 		

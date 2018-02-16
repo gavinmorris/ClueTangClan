@@ -1,19 +1,30 @@
-import javax.swing.*;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import javax.swing.JFrame;
 
 public class SendMessageButtonListener implements ActionListener {
 	
 	//usernames
-	static String  username1 = "jem";
-	static String  username2 = "gav";
-	static String  username3 = "euan";
-	int i=0;
+	public static String  username1 = "jem";
+	public static String  username2 = "gav";
+	public static String  username3 = "euan";
+	public int i=0;
 	
+	public Board board;
+	public Display display;
+	public TextualCommand textualcommand;
+	
+	public SendMessageButtonListener(Board board, Display display, TextualCommand textualcommand) {
+		this.board = board;
+		this.display = display;
+		this.textualcommand = textualcommand;
+	}
 	
 	public void actionPerformed(ActionEvent event) {
-		buttonfunction(Main.board, Main.display, Main.textualcommand);
+		
+		buttonfunction(board, display, textualcommand);
+		
 	}
 	
 	
@@ -422,7 +433,7 @@ public class SendMessageButtonListener implements ActionListener {
 		textualcommand.textfield.setText("");
 	}
 	
-	public void moveRoom(Board board, Weapons weapon, String room) {
+	public void moveRoom(Board board, Weapon weapon, String room) {
 		if (room.equals("kitchen")){
 			whichRoom(board, weapon, Board.kitchenx, Board.kitcheny);
 		} 
@@ -453,7 +464,7 @@ public class SendMessageButtonListener implements ActionListener {
 	}
 	
 	
-	public void whichRoom(Board board, Weapons weapon, int x, int y) {
+	public void whichRoom(Board board, Weapon weapon, int x, int y) {
 		if(board.candlestick.getX() == x && board.candlestick.getY() == y) {
 			board.candlestick.setPosition(weapon.getX(), weapon.getY());
 		} 

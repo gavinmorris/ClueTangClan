@@ -6,6 +6,8 @@ import java.awt.Color;
 
 public class Display extends JPanel {
 
+	private static final long serialVersionUID = 1L;
+	
 	//declare textarea and scrollpane
     public JTextArea textarea = new JTextArea(20, 20);
     public JScrollPane scrollpane = new JScrollPane(textarea);

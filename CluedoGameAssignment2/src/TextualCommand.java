@@ -7,9 +7,12 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 
 public class TextualCommand extends JPanel {
+
+	private static final long serialVersionUID = 1L;
+	
 	
 	public JTextField textfield = new JTextField(30);
-	public JButton button = new JButton("COMPLETE MOVE");
+	public final JButton button = new JButton("COMPLETE MOVE");
 		
 	public TextualCommand() {
 		
