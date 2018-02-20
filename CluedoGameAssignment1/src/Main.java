@@ -5,27 +5,31 @@ import javax.swing.*;
 
 public class Main {
 	
-	static Board board;
-	static Display display;
-	static TextualCommand textualcommand;
-	
-	static JFrame frame;
+	static int  numPlayers;
+	static String[] playerNames;
 	
 	public static void main(String[] args) {
+		
+		String numPlayersSTR;
+		do {
+			numPlayersSTR = JOptionPane.showInputDialog("Please enter the number of players you wish to use. (Between 2 - 6)");
+		}while(Integer.parseInt(numPlayersSTR) <2 || Integer.parseInt(numPlayersSTR) > 6);
+		
+		numPlayers = Integer.parseInt(numPlayersSTR);
+		
+		playerNames = new String[numPlayers];
+		
+		for(int i=0;i<numPlayers;i++) {
+			playerNames[i] = JOptionPane.showInputDialog("Please enter name of player "+(i+1));
+		}
+		
 		
 		//put all the panels into the jframe
 		new PanelsInJFrame();
 		
-		//activate action listener for transfering text from the textual command to the display panel
-		textualcommand.button.addActionListener(new SendMessageButtonListener());
-
-		textualcommand.textfield.addKeyListener(new KeyAdapter() {
-			public void keyPressed(KeyEvent e) {
-				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
-					Main.textualcommand.button.doClick();
-				}
-			}
-		});	}
+		new BoardStructure();
+	
+	}
 	
 																				
 }

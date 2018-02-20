@@ -4,155 +4,81 @@ import javax.swing.border.EmptyBorder;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.io.InputStream;
 
 public class Board extends JPanel {
 
-
+	private static final long serialVersionUID = 1L;
+	
 	//declare buffered images, image icons and jlabels
-    public static BufferedImage boardBufferedImage;
-	public static ImageIcon boardImage;
-    public static JLabel cluedoboard;
-    
-    public static BufferedImage greenBufferedImage, mustardBufferedImage, peacockBufferedImage, plumBufferedImage, scarlettBufferedImage, whiteBufferedImage;
-	public static ImageIcon greenImage, mustardImage, peacockImage, plumImage, scarlettImage, whiteImage;
-    public static JLabel greenLabel, mustardLabel, peacockLabel, plumLabel, scarlettLabel, whiteLabel;
-    
-	public static BufferedImage candlestickBufferedImage, knifeBufferedImage, leadpipeBufferedImage, revolverBufferedImage, ropeBufferedImage, wrenchBufferedImage;
-	public static ImageIcon candlestickImage, knifeImage, leadpipeImage, revolverImage, ropeImage, wrenchImage;
-    public static JLabel candlestickLabel, knifeLabel, leadpipeLabel, revolverLabel, ropeLabel, wrenchLabel;
+    public BufferedImage boardBufferedImage;
+	public ImageIcon boardImage;
+    public JLabel cluedoboard;
 	
     //declare starting positions for each character piece
-	static int greenx = 250; static int greeny = 25;
-	static int mustardx = 44; static int mustardy = 415;
-	static int peacockx = 572; static int peacocky = 161;
-	static int plumx = 572; static int plumy = 461;
-	static int scarlettx = 204; static int scarletty = 576;
-	static int whitex = 365; static int whitey = 25;
+	public static int greenStartingx = 250; public static int greenStartingy = 24;
+	public static int mustardStartingx = 43; public static int mustardStartingy = 415;
+	public static int peacockStartingx = 572; public static int peacockStartingy = 162;
+	public static int plumStartingx = 572; public static int plumStartingy = 461;
+	public static int scarlettStartingx = 204; public static int scarlettStartingy = 576;
+	public static int whiteStartingx = 365; public static int whiteStartingy = 24;
 	
 	//declare location within rooms for weapons to go to
-	static int kitchenx = 65; static int kitcheny = 44;
-	static int ballroomx = 300; static int ballroomy = 44;
-	static int conservatoryx = 555; static int conservatoryy = 44;
-	static int billiardroomx = 555; static int billiardroomy = 260;
-	static int libraryx = 555; static int libraryy = 374;
-	static int studyx = 445; static int studyy = 511;
-	static int hallx = 300; static int hally = 540;
-	static int loungex = 155; static int loungey = 500;
-	static int diningroomx = 170; static int diningroomy = 285;
+	public static int kitchenx = 65; public static int kitcheny = 44;
+	public static int ballroomx = 300; public static int ballroomy = 44;
+	public static int conservatoryx = 555; public static int conservatoryy = 44;
+	public static int billiardroomx = 555; public static int billiardroomy = 260;
+	public static int libraryx = 555; public static int libraryy = 374;
+	public static int studyx = 445; public static int studyy = 511;
+	public static int hallx = 300; public static int hally = 540;
+	public static int loungex = 155; public static int loungey = 500;
+	public static int diningroomx = 170; public static int diningroomy = 285;
+    
+    public Token green;
+    public Token mustard;
+    public Token peacock;
+    public Token plum;
+    public Token scarlett;
+    public Token white;
+	
+    public Weapon candlestick;
+    public Weapon knife;
+    public Weapon leadpipe;
+    public Weapon revolver;
+    public Weapon rope;
+    public Weapon wrench;
+    
+    
+	
     
     public JLayeredPane layeredPane;
 
 	public Board() {
-
-		
-		
-		//assign each image icon its corresponding buffered image and assign each jlabel its corresponding image icon
 		
 		try {
 			boardBufferedImage = ImageIO.read(this.getClass().getResource("Board.jpg"));
 		} catch (IOException ex) {
 			System.out.println("Could not find the image file " + ex.toString());
 		}
-		
 		boardImage = new ImageIcon(boardBufferedImage);
 		cluedoboard = new JLabel(boardImage);
 		
-
-		try {
-			greenBufferedImage = ImageIO.read(this.getClass().getResource("Green.png"));
-		} catch (IOException ex) {
-			System.out.println("Could not find the image file " + ex.toString());
-		}
-		try {
-			mustardBufferedImage = ImageIO.read(this.getClass().getResource("Mustard.png"));
-		} catch (IOException ex) {
-			System.out.println("Could not find the image file " + ex.toString());
-		}
-		try {
-			peacockBufferedImage = ImageIO.read(this.getClass().getResource("Peacock.png"));
-		} catch (IOException ex) {
-			System.out.println("Could not find the image file " + ex.toString());
-		}
-		try {
-			plumBufferedImage = ImageIO.read(this.getClass().getResource("Plum.png"));
-		} catch (IOException ex) {
-			System.out.println("Could not find the image file " + ex.toString());
-		}
-		try {
-			scarlettBufferedImage = ImageIO.read(this.getClass().getResource("Scarlett.png"));
-		} catch (IOException ex) {
-			System.out.println("Could not find the image file " + ex.toString());
-		}
-		try {
-			whiteBufferedImage = ImageIO.read(this.getClass().getResource("White.png"));
-		} catch (IOException ex) {
-			System.out.println("Could not find the image file " + ex.toString());
-		}
-
-		greenImage = new ImageIcon(greenBufferedImage);
-		mustardImage = new ImageIcon(mustardBufferedImage);
-		peacockImage = new ImageIcon(peacockBufferedImage);
-		plumImage = new ImageIcon(plumBufferedImage);
-		scarlettImage = new ImageIcon(scarlettBufferedImage);
-		whiteImage = new ImageIcon(whiteBufferedImage);
-
-		greenLabel = new JLabel(greenImage);
-		mustardLabel = new JLabel(mustardImage);
-		peacockLabel = new JLabel(peacockImage);
-		plumLabel = new JLabel(plumImage);
-		scarlettLabel = new JLabel(scarlettImage);
-		whiteLabel = new JLabel(whiteImage);
+		green = new Token("green");
+	    mustard = new Token("mustard");
+	    peacock = new Token("peacock");
+	    plum = new Token("plum");
+	    scarlett = new Token("scarlett");
+	    white = new Token("white");
+		
+	    candlestick = new Weapon("candlestick", "kitchen");
+	    knife = new Weapon("knife", "ball room");
+	    leadpipe = new Weapon("leadpipe", "dining room");
+	    revolver = new Weapon("revolver", "lounge");
+	    rope = new Weapon("rope", "hall");
+	    wrench = new Weapon("wrench", "study");
 		
 		
-		try {
-			candlestickBufferedImage = ImageIO.read(this.getClass().getResource("Candlestick.jpg"));
-		} catch (IOException ex) {
-			System.out.println("Could not find the image file " + ex.toString());
-		}
-		try {
-			knifeBufferedImage = ImageIO.read(this.getClass().getResource("Knife.jpg"));
-		} catch (IOException ex) {
-			System.out.println("Could not find the image file " + ex.toString());
-		}
-		try {
-			leadpipeBufferedImage = ImageIO.read(this.getClass().getResource("LeadPipe.jpg"));
-		} catch (IOException ex) {
-			System.out.println("Could not find the image file " + ex.toString());
-		}
-		try {
-			revolverBufferedImage = ImageIO.read(this.getClass().getResource("Revolver.jpg"));
-		} catch (IOException ex) {
-			System.out.println("Could not find the image file " + ex.toString());
-		}
-		try {
-			ropeBufferedImage = ImageIO.read(this.getClass().getResource("Rope.jpg"));
-		} catch (IOException ex) {
-			System.out.println("Could not find the image file " + ex.toString());
-		}
-		try {
-			wrenchBufferedImage = ImageIO.read(this.getClass().getResource("Wrench.jpg"));
-		} catch (IOException ex) {
-			System.out.println("Could not find the image file " + ex.toString());
-		}
-
-		candlestickImage = new ImageIcon(candlestickBufferedImage);
-		knifeImage = new ImageIcon(knifeBufferedImage);
-		leadpipeImage = new ImageIcon(leadpipeBufferedImage);
-		revolverImage = new ImageIcon(revolverBufferedImage);
-		ropeImage = new ImageIcon(ropeBufferedImage);
-		wrenchImage = new ImageIcon(wrenchBufferedImage);
-		
-		candlestickLabel = new JLabel(candlestickImage);
-		knifeLabel = new JLabel(knifeImage);
-		leadpipeLabel = new JLabel(leadpipeImage);
-		revolverLabel = new JLabel(revolverImage);
-		ropeLabel = new JLabel(ropeImage);
-		wrenchLabel = new JLabel(wrenchImage);
 		
 		//declare new jlayeredpane
 		layeredPane = new JLayeredPane();
@@ -162,33 +88,35 @@ public class Board extends JPanel {
 		layeredPane.add(cluedoboard, JLayeredPane.DEFAULT_LAYER);
 		cluedoboard.setBounds(0, 0, boardImage.getIconWidth(), boardImage.getIconHeight()); 
 		
-		layeredPane.add(greenLabel, JLayeredPane.PALETTE_LAYER);
-		layeredPane.add(mustardLabel, JLayeredPane.PALETTE_LAYER);
-		layeredPane.add(peacockLabel, JLayeredPane.PALETTE_LAYER);
-		layeredPane.add(plumLabel, JLayeredPane.PALETTE_LAYER);
-		layeredPane.add(scarlettLabel, JLayeredPane.PALETTE_LAYER);
-		layeredPane.add(whiteLabel, JLayeredPane.PALETTE_LAYER);
+		layeredPane.add(green, JLayeredPane.PALETTE_LAYER);
+		layeredPane.add(mustard, JLayeredPane.PALETTE_LAYER);
+		layeredPane.add(peacock, JLayeredPane.PALETTE_LAYER);
+		layeredPane.add(plum, JLayeredPane.PALETTE_LAYER);
+		layeredPane.add(scarlett, JLayeredPane.PALETTE_LAYER);
+		layeredPane.add(white, JLayeredPane.PALETTE_LAYER);
 		
-		greenLabel.setBounds(greenx, greeny, greenImage.getIconWidth(), greenImage.getIconHeight());
-		mustardLabel.setBounds(mustardx, mustardy, mustardImage.getIconWidth(), mustardImage.getIconHeight());
-		peacockLabel.setBounds(peacockx, peacocky, peacockImage.getIconWidth(), peacockImage.getIconHeight());
-		plumLabel.setBounds(plumx, plumy, plumImage.getIconWidth(), plumImage.getIconHeight());
-		scarlettLabel.setBounds(scarlettx, scarletty, scarlettImage.getIconWidth(), scarlettImage.getIconHeight());
-		whiteLabel.setBounds(whitex, whitey, whiteImage.getIconWidth(), whiteImage.getIconHeight());
+		//movePiece("green", greenStartingx, greenStartingy);
 		
-		layeredPane.add(candlestickLabel, JLayeredPane.PALETTE_LAYER);
-		layeredPane.add(knifeLabel, JLayeredPane.PALETTE_LAYER);
-		layeredPane.add(leadpipeLabel, JLayeredPane.PALETTE_LAYER);
-		layeredPane.add(revolverLabel, JLayeredPane.PALETTE_LAYER);
-		layeredPane.add(ropeLabel, JLayeredPane.PALETTE_LAYER);
-		layeredPane.add(wrenchLabel, JLayeredPane.PALETTE_LAYER);
+		green.setBounds(greenStartingx, greenStartingy, green.imageIcon.getIconWidth(), green.imageIcon.getIconHeight());
+		mustard.setBounds(mustardStartingx, mustardStartingy, mustard.imageIcon.getIconWidth(), mustard.imageIcon.getIconHeight());
+		peacock.setBounds(peacockStartingx, peacockStartingy, peacock.imageIcon.getIconWidth(), peacock.imageIcon.getIconHeight());
+		plum.setBounds(plumStartingx, plumStartingy, plum.imageIcon.getIconWidth(), plum.imageIcon.getIconHeight());
+		scarlett.setBounds(scarlettStartingx, scarlettStartingy, scarlett.imageIcon.getIconWidth(), scarlett.imageIcon.getIconHeight());
+		white.setBounds(whiteStartingx, whiteStartingy, white.imageIcon.getIconWidth(), white.imageIcon.getIconHeight());
+		
+		layeredPane.add(candlestick, JLayeredPane.PALETTE_LAYER);
+		layeredPane.add(knife, JLayeredPane.PALETTE_LAYER);
+		layeredPane.add(leadpipe, JLayeredPane.PALETTE_LAYER);
+		layeredPane.add(revolver, JLayeredPane.PALETTE_LAYER);
+		layeredPane.add(rope, JLayeredPane.PALETTE_LAYER);
+		layeredPane.add(wrench, JLayeredPane.PALETTE_LAYER);
 
-		candlestickLabel.setBounds(kitchenx, kitcheny, candlestickImage.getIconWidth(), candlestickImage.getIconHeight());
-		knifeLabel.setBounds(ballroomx, ballroomy, knifeImage.getIconWidth(), knifeImage.getIconHeight());
-		leadpipeLabel.setBounds(diningroomx, diningroomy, leadpipeImage.getIconWidth(), leadpipeImage.getIconHeight());
-		revolverLabel.setBounds(hallx, hally, revolverImage.getIconWidth(), revolverImage.getIconHeight());
-		ropeLabel.setBounds(loungex, loungey, ropeImage.getIconWidth(), ropeImage.getIconHeight());
-		wrenchLabel.setBounds(studyx, studyy, wrenchImage.getIconWidth(), wrenchImage.getIconHeight());
+		candlestick.setBounds(candlestick.getX(), candlestick.getY(), candlestick.imageIcon.getIconWidth(), candlestick.imageIcon.getIconHeight());
+		knife.setBounds(knife.getX(), knife.getY(), knife.imageIcon.getIconWidth(), knife.imageIcon.getIconHeight());
+		leadpipe.setBounds(leadpipe.getX(), leadpipe.getY(), leadpipe.imageIcon.getIconWidth(), leadpipe.imageIcon.getIconHeight());
+		revolver.setBounds(revolver.getX(), revolver.getY(), revolver.imageIcon.getIconWidth(), revolver.imageIcon.getIconHeight());
+		rope.setBounds(rope.getX(), rope.getY(), rope.imageIcon.getIconWidth(), rope.imageIcon.getIconHeight());
+		wrench.setBounds(wrench.getX(), wrench.getY(), wrench.imageIcon.getIconWidth(), wrench.imageIcon.getIconHeight());
 		
 		this.add(layeredPane);
 		
@@ -196,13 +124,45 @@ public class Board extends JPanel {
 		this.setBackground(Color.DARK_GRAY);
 	}
 	
-//	public void paintComponent(Graphics g) {
-//		 super.paintComponent(g);
-//		 Graphics2D g2 = (Graphics2D) g;
-//
-//		 g2.drawImage(boardImage, 0, 0, boardImage.getWidth(), boardImage.getHeight(), this);
-//		 
-//	}
+	public void movePiece(String name, int x, int y) {
+		if(name.equals("green")) {
+			green.setPosition(x, y);
+		}
+		else if(name.equals("mustard")) {
+			mustard.setPosition(x, y);
+		}
+		else if(name.equals("peacock")) {
+			peacock.setPosition(x, y);
+		}
+		else if(name.equals("plum")) {
+			plum.setPosition(x, y);
+		}
+		else if(name.equals("scarlett")) {
+			scarlett.setPosition(x, y);
+		}
+		else if(name.equals("white")) {
+			white.setPosition(x, y);
+		}
+		else if(name.equals("candlestick")) {
+			candlestick.setPosition(x, y);
+		}
+		else if(name.equals("knife")) {
+			knife.setPosition(x, y);
+		}
+		else if(name.equals("leadpipe")) {
+			leadpipe.setPosition(x, y);
+		}
+		else if(name.equals("revolver")) {
+			revolver.setPosition(x, y);
+		}
+		else if(name.equals("rope")) {
+			rope.setPosition(x, y);
+		}
+		else if(name.equals("wrench")) {
+			wrench.setPosition(x, y);
+		}
+	}
+
 		
 }
 
