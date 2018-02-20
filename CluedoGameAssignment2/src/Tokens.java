@@ -37,28 +37,28 @@ public class Tokens extends JLabel{
 	
 	public void setStartingPosition(String name) {
 		if(name.equals("green")) {
-			this.xcoordinate = Board.greenx;
-			this.ycoordinate = Board.greeny;
+			this.xcoordinate = Board.greenStartingx;
+			this.ycoordinate = Board.greenStartingy;
 		}
 		else if(name.equals("mustard")) {
-			this.xcoordinate = Board.mustardx;
-			this.ycoordinate = Board.mustardy;			
+			this.xcoordinate = Board.mustardStartingx;
+			this.ycoordinate = Board.mustardStartingy;			
 		}
 		else if(name.equals("peacock")) {
-			this.xcoordinate = Board.peacockx;
-			this.ycoordinate = Board.peacocky;
+			this.xcoordinate = Board.peacockStartingx;
+			this.ycoordinate = Board.peacockStartingy;
 		}
 		else if(name.equals("plum")) {
-			this.xcoordinate = Board.plumx;
-			this.ycoordinate = Board.plumy;
+			this.xcoordinate = Board.plumStartingx;
+			this.ycoordinate = Board.plumStartingy;
 		}
 		else if(name.equals("scarlett")) {
-			this.xcoordinate = Board.scarlettx;
-			this.ycoordinate = Board.scarletty;
+			this.xcoordinate = Board.scarlettStartingx;
+			this.ycoordinate = Board.scarlettStartingy;
 		}
 		else if(name.equals("white")) {
-			this.xcoordinate = Board.whitex;
-			this.ycoordinate = Board.whitey;
+			this.xcoordinate = Board.whiteStartingx;
+			this.ycoordinate = Board.whiteStartingy;
 		}
 	}
 	
