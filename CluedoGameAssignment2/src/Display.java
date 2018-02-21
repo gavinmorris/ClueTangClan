@@ -26,7 +26,7 @@ public class Display extends JPanel {
 		this.setLayout(new BorderLayout());
 		this.setBackground(Color.DARK_GRAY);
 		this.add(scrollpane);
-        this.setBorder(new EmptyBorder(10, 10, 0, 10));	
+        this.setBorder(new EmptyBorder(10, 10, 0, 10));
 	}
 
 }

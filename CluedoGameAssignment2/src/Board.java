@@ -124,44 +124,7 @@ public class Board extends JPanel {
 		this.setBackground(Color.DARK_GRAY);
 	}
 	
-	public void movePiece(String name, int x, int y) {
-		if(name.equals("green")) {
-			green.setPosition(x, y);
-		}
-		else if(name.equals("mustard")) {
-			mustard.setPosition(x, y);
-		}
-		else if(name.equals("peacock")) {
-			peacock.setPosition(x, y);
-		}
-		else if(name.equals("plum")) {
-			plum.setPosition(x, y);
-		}
-		else if(name.equals("scarlett")) {
-			scarlett.setPosition(x, y);
-		}
-		else if(name.equals("white")) {
-			white.setPosition(x, y);
-		}
-		else if(name.equals("candlestick")) {
-			candlestick.setPosition(x, y);
-		}
-		else if(name.equals("knife")) {
-			knife.setPosition(x, y);
-		}
-		else if(name.equals("leadpipe")) {
-			leadpipe.setPosition(x, y);
-		}
-		else if(name.equals("revolver")) {
-			revolver.setPosition(x, y);
-		}
-		else if(name.equals("rope")) {
-			rope.setPosition(x, y);
-		}
-		else if(name.equals("wrench")) {
-			wrench.setPosition(x, y);
-		}
-	}
+	
 
 		
 }

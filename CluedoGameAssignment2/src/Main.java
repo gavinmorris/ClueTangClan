@@ -1,7 +1,4 @@
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-
-import javax.swing.*;
+import javax.swing.JOptionPane;
 
 public class Main {
 	
@@ -23,11 +20,8 @@ public class Main {
 			playerNames[i] = JOptionPane.showInputDialog("Please enter name of player "+(i+1));
 		}
 		
-		
 		//put all the panels into the jframe
 		new PanelsInJFrame();
-		
-		new BoardStructure();
 	
 	}
 	

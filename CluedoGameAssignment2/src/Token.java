@@ -6,6 +6,8 @@ import javax.swing.*;
 
 public class Token extends JLabel{
 
+	private static final long serialVersionUID = 1L;
+	
 	public String name;
 	public int xcoordinate, ycoordinate;
 	
@@ -29,10 +31,21 @@ public class Token extends JLabel{
 	}
 
 	
-	public void setPosition(int xcoordinate, int ycoordinate) {
-		this.xcoordinate = xcoordinate;
-		this.ycoordinate = ycoordinate;
-		this.setBounds(xcoordinate, ycoordinate, imageIcon.getIconWidth(), imageIcon.getIconHeight());
+	public boolean moveUp(BoardStructure boardstructure, Display display) {
+		boolean error = changeWithBoard(0, -23, 'u', boardstructure, display);
+		return error;
+	}
+	public boolean moveDown(BoardStructure boardstructure, Display display) {
+		boolean error = changeWithBoard(0, 23, 'd', boardstructure, display);
+		return error;
+	}
+	public boolean moveLeft(BoardStructure boardstructure, Display display) {
+		boolean error = changeWithBoard(-23, 0, 'l', boardstructure, display);
+		return error;
+	}
+	public boolean moveRight(BoardStructure boardstructure, Display display) {
+		boolean error = changeWithBoard(23, 0, 'r', boardstructure, display);
+		return error;
 	}
 
 	
@@ -94,6 +107,86 @@ public class Token extends JLabel{
 
 		icon = new ImageIcon(imageBuffered);
 		return icon;
+	}
+	
+	
+	public boolean changeWithBoard(int x, int y, char direction, BoardStructure boardstructure, Display display) {
+		boolean error = false;
+		char type = boardstructure.getCoordinatesType(this.xcoordinate+x, this.ycoordinate+y);
+		
+		if(type == 'x') {
+			//no leaving the board exception
+			display.textarea.append("\nError: Cannot leave the board.\n");
+			error = true;
+		}
+		else if(type == 'R') {
+			//no walking through walls
+			display.textarea.append("\nError: Cannot enter room this way.\n");
+			error = true;
+		}
+		else if(type == '0') {
+			boardstructure.setCoordinatesType('0', this.xcoordinate, this.ycoordinate);
+			this.xcoordinate += x;
+			this.ycoordinate += y;
+			this.setBounds(xcoordinate, ycoordinate, imageIcon.getIconWidth(), imageIcon.getIconHeight());
+			boardstructure.setCoordinatesType('T', this.xcoordinate, this.ycoordinate);
+		}
+		else if(y == -23) {//up
+			if(direction == 'u') {
+				boardstructure.setCoordinatesType('0', this.xcoordinate, this.ycoordinate);
+				//fill into slots in rooms
+				this.ycoordinate -= 46;
+				this.setBounds(xcoordinate, ycoordinate, imageIcon.getIconWidth(), imageIcon.getIconHeight());
+				boardstructure.setCoordinatesType('T', this.xcoordinate, this.ycoordinate);
+			} else {
+				//cannot enter room this way
+				display.textarea.append("\nError: Cannot enter room this way.\n");	
+				error = true;
+			}
+		}
+		else if(y == 23) {//down
+			if(direction == 'd') {
+				boardstructure.setCoordinatesType('0', this.xcoordinate, this.ycoordinate);
+				//fill into slots in rooms
+				this.ycoordinate += 46;
+				this.setBounds(xcoordinate, ycoordinate, imageIcon.getIconWidth(), imageIcon.getIconHeight());
+				boardstructure.setCoordinatesType('T', this.xcoordinate, this.ycoordinate);
+			} else {
+				//cannot enter room this way
+				display.textarea.append("\nError: Cannot enter room this way.\n");	
+				error = true;
+			}
+		}
+		else if(x == -23) {//left
+			if(direction == 'l') {
+				boardstructure.setCoordinatesType('0', this.xcoordinate, this.ycoordinate);
+				//fill into slots in rooms
+				this.xcoordinate -= 46;
+				this.setBounds(xcoordinate, ycoordinate, imageIcon.getIconWidth(), imageIcon.getIconHeight());
+				boardstructure.setCoordinatesType('T', this.xcoordinate, this.ycoordinate);
+			} else {
+				//cannot enter room this way
+				display.textarea.append("\nError: Cannot enter room this way.\n");	
+				error = true;
+			}
+		}
+		else if(x == 23) {
+			if(direction == 'r') {
+				boardstructure.setCoordinatesType('0', this.xcoordinate, this.ycoordinate);
+				//fill into slots in rooms
+				this.xcoordinate += 46;
+				this.setBounds(xcoordinate, ycoordinate, imageIcon.getIconWidth(), imageIcon.getIconHeight());
+				boardstructure.setCoordinatesType('T', this.xcoordinate, this.ycoordinate);
+			} else {
+				//cannot enter room this way
+				display.textarea.append("\nError: Cannot enter room this way.\n");	
+				error = true;
+			}
+		}
+
+		boardstructure.printTileTypeBoard();
+		
+		return error;
 	}
 	
 	

@@ -9,6 +9,8 @@ public class PanelsInJFrame {
 	public Display display;
 	public TextualCommand textualcommand;
 	
+	public BoardStructure boardstructure;
+	
 	public JFrame frame;
 	
 	public JLayeredPane layeredPane;
@@ -33,10 +35,10 @@ public class PanelsInJFrame {
 		frame.setVisible(true);
 		frame.setSize(900, 720);
 		
-
+		boardstructure = new BoardStructure();
 		
 		//activate action listener for transfering text from the textual command to the display panel
-		textualcommand.button.addActionListener(new SendMessageButtonListener(board, display, textualcommand));
+		textualcommand.button.addActionListener(new SendMessageButtonListener(board, display, textualcommand, boardstructure));
 
 		textualcommand.textfield.addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
