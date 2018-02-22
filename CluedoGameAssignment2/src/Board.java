@@ -6,6 +6,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Board extends JPanel {
 
@@ -35,12 +36,8 @@ public class Board extends JPanel {
 	public static int loungex = 155; public static int loungey = 500;
 	public static int diningroomx = 170; public static int diningroomy = 285;
     
-    public Token green;
-    public Token mustard;
-    public Token peacock;
-    public Token plum;
-    public Token scarlett;
-    public Token white;
+	//allows us to iterate through an ArrayList to access players instead of using discrete names in the code
+    ArrayList<Token> tokenAL = new ArrayList<Token>();
 	
     public Weapon candlestick;
     public Weapon knife;
@@ -64,12 +61,15 @@ public class Board extends JPanel {
 		boardImage = new ImageIcon(boardBufferedImage);
 		cluedoboard = new JLabel(boardImage);
 		
-		green = new Token("green");
-	    mustard = new Token("mustard");
-	    peacock = new Token("peacock");
-	    plum = new Token("plum");
-	    scarlett = new Token("scarlett");
-	    white = new Token("white");
+		//creating new token objects
+		tokenAL.add(new Token("green"));
+		tokenAL.add(new Token("mustard"));
+		tokenAL.add(new Token("peacock"));
+	    tokenAL.add(new Token("plum"));
+	    tokenAL.add(new Token("scarlett"));
+	    tokenAL.add(new Token("white"));
+		
+		
 		
 	    candlestick = new Weapon("candlestick", "kitchen");
 	    knife = new Weapon("knife", "ball room");
@@ -88,21 +88,21 @@ public class Board extends JPanel {
 		layeredPane.add(cluedoboard, JLayeredPane.DEFAULT_LAYER);
 		cluedoboard.setBounds(0, 0, boardImage.getIconWidth(), boardImage.getIconHeight()); 
 		
-		layeredPane.add(green, JLayeredPane.PALETTE_LAYER);
-		layeredPane.add(mustard, JLayeredPane.PALETTE_LAYER);
-		layeredPane.add(peacock, JLayeredPane.PALETTE_LAYER);
-		layeredPane.add(plum, JLayeredPane.PALETTE_LAYER);
-		layeredPane.add(scarlett, JLayeredPane.PALETTE_LAYER);
-		layeredPane.add(white, JLayeredPane.PALETTE_LAYER);
+		layeredPane.add(tokenAL.get(0), JLayeredPane.PALETTE_LAYER);
+		layeredPane.add(tokenAL.get(1), JLayeredPane.PALETTE_LAYER);
+		layeredPane.add(tokenAL.get(2), JLayeredPane.PALETTE_LAYER);
+		layeredPane.add(tokenAL.get(3), JLayeredPane.PALETTE_LAYER);
+		layeredPane.add(tokenAL.get(4), JLayeredPane.PALETTE_LAYER);
+		layeredPane.add(tokenAL.get(5), JLayeredPane.PALETTE_LAYER);
 		
 		//movePiece("green", greenStartingx, greenStartingy);
 		
-		green.setBounds(greenStartingx, greenStartingy, green.imageIcon.getIconWidth(), green.imageIcon.getIconHeight());
-		mustard.setBounds(mustardStartingx, mustardStartingy, mustard.imageIcon.getIconWidth(), mustard.imageIcon.getIconHeight());
-		peacock.setBounds(peacockStartingx, peacockStartingy, peacock.imageIcon.getIconWidth(), peacock.imageIcon.getIconHeight());
-		plum.setBounds(plumStartingx, plumStartingy, plum.imageIcon.getIconWidth(), plum.imageIcon.getIconHeight());
-		scarlett.setBounds(scarlettStartingx, scarlettStartingy, scarlett.imageIcon.getIconWidth(), scarlett.imageIcon.getIconHeight());
-		white.setBounds(whiteStartingx, whiteStartingy, white.imageIcon.getIconWidth(), white.imageIcon.getIconHeight());
+		tokenAL.get(0).setBounds(greenStartingx, greenStartingy, tokenAL.get(0).imageIcon.getIconWidth(), tokenAL.get(0).imageIcon.getIconHeight());
+		tokenAL.get(1).setBounds(mustardStartingx, mustardStartingy, tokenAL.get(1).imageIcon.getIconWidth(), tokenAL.get(1).imageIcon.getIconHeight());
+		tokenAL.get(2).setBounds(peacockStartingx, peacockStartingy, tokenAL.get(2).imageIcon.getIconWidth(), tokenAL.get(2).imageIcon.getIconHeight());
+		tokenAL.get(3).setBounds(plumStartingx, plumStartingy, tokenAL.get(3).imageIcon.getIconWidth(), tokenAL.get(3).imageIcon.getIconHeight());
+		tokenAL.get(4).setBounds(scarlettStartingx, scarlettStartingy, tokenAL.get(4).imageIcon.getIconWidth(), tokenAL.get(4).imageIcon.getIconHeight());
+		tokenAL.get(5).setBounds(whiteStartingx, whiteStartingy, tokenAL.get(5).imageIcon.getIconWidth(), tokenAL.get(5).imageIcon.getIconHeight());
 		
 		layeredPane.add(candlestick, JLayeredPane.PALETTE_LAYER);
 		layeredPane.add(knife, JLayeredPane.PALETTE_LAYER);

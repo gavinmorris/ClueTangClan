@@ -2,6 +2,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Random;
 
+import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
+
 public class SendMessageButtonListener implements ActionListener {
 	
 	public int i=0;
@@ -30,133 +33,59 @@ public class SendMessageButtonListener implements ActionListener {
 	public void buttonfunction(Board board, Display display, TextualCommand textualcommand, BoardStructure boardstructure) {
 
 		//according to the text entered in the textual command, move each character one box up, down, left or right
-		
 		String text = textualcommand.textfield.getText().trim();
-		
-//		if(text == "u") {
-//			
-//		}
-//		else if(text == "d") {
-//			
-//		}
-//		else if(text == "l") {
-//			
-//		}
-//		else if(text == "r") {
-//			
-//		}
-		
+				
 		
 		//according to the text entered in the textual command, move each character one box up, down, left or right
 		if(text.equals("start")) {
 			moveCounter = diceResult();	
 			diceRoll(display, textualcommand);
-			textualcommand.textfield.setText("");
+			textualcommand.textfield.setText("");	
 		}
 		
-		else if(text.equals("u") && (i%Main.numPlayers == 0)) {
-			error = board.green.moveUp(boardstructure, display);
-			appendTextAndTurnInfo();
+		else if(text.equalsIgnoreCase("u")) {
+			if(moveCounter > 0) {
+				error = board.tokenAL.get(i%Main.numPlayers).moveUp(boardstructure, display);
+				textualcommand.textfield.setText("");	
+				appendTextAndTurnInfo();
+			}
+			else{
+				appendTextAndTurnInfo(); 
+			}
 		} 
-		else if(text.equals("d") && (i%Main.numPlayers == 0)) {
-			error = board.green.moveDown(boardstructure, display);
-			appendTextAndTurnInfo();
+		else if(text.equalsIgnoreCase("d")) {
+			if(moveCounter > 0) {
+				error = board.tokenAL.get(i%Main.numPlayers).moveDown(boardstructure, display);
+				appendTextAndTurnInfo();
+			}
+			else {
+				appendTextAndTurnInfo();
+			}
 		} 
-		else if(text.equals("l") && (i%Main.numPlayers == 0)) {
-			error = board.green.moveLeft(boardstructure, display);
-			appendTextAndTurnInfo();
-		}
-		else if(text.equals("r") && (i%Main.numPlayers == 0)) {
-			error = board.green.moveRight(boardstructure, display);
-			appendTextAndTurnInfo();
-		}
-
-		else if(text.equals("u")&& (i%Main.numPlayers == 1)) {
-			error = board.mustard.moveUp(boardstructure, display);
-			appendTextAndTurnInfo();
-		}
-		else if(text.equals("d")&& (i%Main.numPlayers == 1)) {
-			error = board.mustard.moveDown(boardstructure, display);
-			appendTextAndTurnInfo();
-
-		}
-		else if(text.equals("l")&& (i%Main.numPlayers == 1)) {
-			error = board.mustard.moveLeft(boardstructure, display);
-			appendTextAndTurnInfo();
-		}
-		else if(text.equals("r")&& (i%Main.numPlayers == 1)) {
-			error = board.mustard.moveRight(boardstructure, display);
-			appendTextAndTurnInfo();
-		} 
-
-		else if(text.equals("u")&& (i%Main.numPlayers == 2)) {
-			error = board.peacock.moveUp(boardstructure, display);
-			appendTextAndTurnInfo();
-		}
-		else if(text.equals("d")&& (i%Main.numPlayers == 2)) {
-			error = board.peacock.moveDown(boardstructure, display);
-			appendTextAndTurnInfo();
-		}
-		else if(text.equals("l")&& (i%Main.numPlayers == 2)) {
-			error = board.peacock.moveLeft(boardstructure, display);
-			appendTextAndTurnInfo();
-		}
-		else if(text.equals("r")&& (i%Main.numPlayers == 2)) {
-			error = board.peacock.moveRight(boardstructure, display);
-			appendTextAndTurnInfo();
-		}
-
-		else if(text.equals("u") && (i%Main.numPlayers == 3)) {
-			error = board.plum.moveUp(boardstructure, display);
-			appendTextAndTurnInfo();
-		}
-		else if(text.equals("d")&& (i%Main.numPlayers == 3)) {
-			error = board.plum.moveDown(boardstructure, display);
-			appendTextAndTurnInfo();
-		}
-		else if(text.equals("l")&& (i%Main.numPlayers == 3)) {
-			error = board.plum.moveLeft(boardstructure, display);
-			appendTextAndTurnInfo();
-		}
-		else if(text.equals("r")&& (i%Main.numPlayers == 3)) {
-			error = board.plum.moveRight(boardstructure, display);
-			appendTextAndTurnInfo();
-		} 
-
-		else if(text.equals("u")&& (i%Main.numPlayers == 4)) {
-			error = board.scarlett.moveUp(boardstructure, display);
-			appendTextAndTurnInfo();
-		}
-		else if(text.equals("d")&& (i%Main.numPlayers == 4)) {
-			error = board.scarlett.moveDown(boardstructure, display);
-			appendTextAndTurnInfo();
-		}
-		else if(text.equals("l")&& (i%Main.numPlayers == 4)) {
-			error = board.scarlett.moveLeft(boardstructure, display);
-			appendTextAndTurnInfo();
-		}
-		else if(text.equals("r")&& (i%Main.numPlayers == 4)) {
-			error = board.scarlett.moveRight(boardstructure, display);
-			appendTextAndTurnInfo();
-		} 
-
-		else if(text.equals("u")&& (i%Main.numPlayers == 5)) {
-			error = board.white.moveUp(boardstructure, display);
-			appendTextAndTurnInfo();
-		}
-		else if(text.equals("d")&& (i%Main.numPlayers == 5)) {
-			error = board.white.moveDown(boardstructure, display);
-			appendTextAndTurnInfo();
-		}
-		else if(text.equals("l")&& (i%Main.numPlayers == 5)) {
-			error = board.white.moveLeft(boardstructure, display);
-			appendTextAndTurnInfo();
-		}
-		else if(text.equals("r")&& (i%Main.numPlayers == 5)) {
-			error = board.white.moveRight(boardstructure, display);
-			appendTextAndTurnInfo();
+		else if(text.equalsIgnoreCase("l")) {
+			if(moveCounter  >0) {
+				error = board.tokenAL.get(i%Main.numPlayers).moveLeft(boardstructure, display);
+				appendTextAndTurnInfo();
+			}
+			else{
+				appendTextAndTurnInfo(); 
+			}
 		}
 		
+		else if(text.equalsIgnoreCase("r")) {
+			if(moveCounter > 0) {
+				error = board.tokenAL.get(i%Main.numPlayers).moveRight(boardstructure, display);
+				appendTextAndTurnInfo();
+			}
+			else {
+				appendTextAndTurnInfo();
+			}
+		}
+		
+		else if(text.equalsIgnoreCase("done")) {
+			whoseTurn(display, textualcommand);
+		}
+
 		
 		
 		//according to the text entered in the textual command, move each weapon to a given room
@@ -400,28 +329,44 @@ public class SendMessageButtonListener implements ActionListener {
 			board.wrench.setPosition(Board.diningroomx, Board.diningroomy);
 		}
 		
+		else if(text.equalsIgnoreCase("quit")) {
+			display.textarea.append("\nGame Status: terminated" );
+			System.exit(0);
+		}
+		else if(text.equalsIgnoreCase("help")) {
+			JTextArea help = new JTextArea(
+					"-----------Command Instructions-----------\n\n"+
+					"Weapon commands work like this:\n\n"+
+					"move candlestick to library\n\n"+
+					"Player commands work like this:\n\n"+
+					"u = move up\nd = move down\nr = move right\nl = move left"+
+					"\n\nOther Commands:\nhelp --> opens this panel"+
+					"\nquit --> terminates the game"
+			);
+			JOptionPane.showMessageDialog(null, help);
+		}
 	}
 	
 	//alternates whose turn it is to make a move
 	public void whoseTurn(Display display, TextualCommand textualcommand) {
-		i++;
-		moveCounter = diceResult();	
-		diceRoll(display, textualcommand);		
-		textualcommand.textfield.setText("");
+			i++;
+			moveCounter = diceResult();	
+			diceRoll(display, textualcommand);		
+			textualcommand.textfield.setText("");
 	}
 	
 	//dice text
 	public void diceRoll(Display display, TextualCommand textualcommand) {
 		display.textarea.append(textualcommand.textfield.getText() + "\n" + "<-------" + Main.playerNames[i%Main.numPlayers]+" rolled the dice ------->\n");	
-		display.textarea.append(textualcommand.textfield.getText() + "<" + Main.playerNames[i%Main.numPlayers] + " has " + moveCounter +" moves.>" );
+		display.textarea.append("<" + Main.playerNames[i%Main.numPlayers] + " has " + moveCounter +" moves.>" );
 	}
 	
-	//outputs reminaing moves
+	//outputs remaining moves
 	public String moveCounterDisplay(int moveCounter) {
 		return (moveCounter) +" moves left";
 	}
 	
-	//generates random int between 1-6
+	//generates 2 random ints between 1-6
 	public int diceResult() {
 		Random rand = new Random();
 		Random rand1 = new Random();
@@ -482,24 +427,33 @@ public class SendMessageButtonListener implements ActionListener {
 		}
 	}
 	
-	
+	//display panel text when player is making moves
 	public void appendAndRemove() {
 		display.textarea.append(textualcommand.textfield.getText() + "\n" + "<"  + Main.playerNames[i%Main.numPlayers] +" ("+ moveCounterDisplay(moveCounter) +") "+">");
 		textualcommand.textfield.setText("");
 	}
 	
+	//Display text depending on number of moves left,
 	public void appendTextAndTurnInfo() {
+		
+		//prompts user to type done
 		if(moveCounter == 1) {
-			whoseTurn(display, textualcommand);
+			display.textarea.append(textualcommand.textfield.getText()+"\n" + "No moves left, type done.");
+			display.textarea.append("\n" + "<"  + Main.playerNames[i%Main.numPlayers] +">");
+			textualcommand.textfield.setText("");
 		}
+		
+		//if user inputs commands before pressing start
+		else if(moveCounter<1) {
+			display.textarea.append("\n" + "You must type start to begin!");
+			textualcommand.textfield.setText("");	
+		}
+		//moves still left
 		else { 
 			if(error == false) {
 				moveCounter--;
+				appendAndRemove();
 			}
-			appendAndRemove();
 		}
-	}
-	
-	
-	
+	}	
 }

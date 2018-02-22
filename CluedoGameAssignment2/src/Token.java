@@ -10,7 +10,7 @@ public class Token extends JLabel{
 	
 	public String name;
 	public int xcoordinate, ycoordinate;
-	
+	TextualCommand textualcommand = new TextualCommand();
 	public ImageIcon imageIcon;
 	
 	public Token(String name) {
@@ -140,7 +140,7 @@ public class Token extends JLabel{
 				boardstructure.setCoordinatesType('T', this.xcoordinate, this.ycoordinate);
 			} else {
 				//cannot enter room this way
-				display.textarea.append("\nError: Cannot enter room this way.\n");	
+				display.textarea.append("\nError: Cannot enter room this way.\n");
 				error = true;
 			}
 		}
@@ -153,7 +153,7 @@ public class Token extends JLabel{
 				boardstructure.setCoordinatesType('T', this.xcoordinate, this.ycoordinate);
 			} else {
 				//cannot enter room this way
-				display.textarea.append("\nError: Cannot enter room this way.\n");	
+				display.textarea.append("\nError: Cannot enter room this way.\n");
 				error = true;
 			}
 		}
@@ -166,7 +166,7 @@ public class Token extends JLabel{
 				boardstructure.setCoordinatesType('T', this.xcoordinate, this.ycoordinate);
 			} else {
 				//cannot enter room this way
-				display.textarea.append("\nError: Cannot enter room this way.\n");	
+				display.textarea.append("\nError: Cannot enter room this way.\n");
 				error = true;
 			}
 		}
