@@ -7,6 +7,8 @@ import javax.swing.*;
 public class Token extends JLabel{
 
 	private static final long serialVersionUID = 1L;
+
+	public char type;
 	
 	public String name;
 	public int xcoordinate, ycoordinate;
@@ -111,7 +113,7 @@ public class Token extends JLabel{
 	
 	public boolean changeWithBoard(int i, int moveCounter, int x, int y, char direction, BoardStructure boardstructure, Display display, TextualCommand textualcommand) {
 		boolean error = false;
-		char type = boardstructure.getCoordinatesType(this.xcoordinate+x, this.ycoordinate+y);
+		type = boardstructure.getCoordinatesType(this.xcoordinate+x, this.ycoordinate+y);
 		
 		if(type == 'x') {
 			//no leaving the board exception

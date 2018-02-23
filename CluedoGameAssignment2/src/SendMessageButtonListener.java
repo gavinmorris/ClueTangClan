@@ -94,6 +94,37 @@ public class SendMessageButtonListener implements ActionListener {
 				display.textarea.append(textualcommand.textfield.getText()+"\n" + "You still have moves left");
 			}
 		}
+		
+		else if(text.equalsIgnoreCase("passage")) {
+			if(moveCounter == MovesinTurn) {
+					if(board.tokenAL.get(i%Main.numPlayers).getX() == Board.conservatoryx && board.tokenAL.get(i%Main.numPlayers).getY() == Board.conservatoryy) {
+						board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.loungex;
+						board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.loungey;
+						board.tokenAL.get(i%Main.numPlayers).setBounds(board.tokenAL.get(i%Main.numPlayers).xcoordinate, board.tokenAL.get(i%Main.numPlayers).ycoordinate, board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
+					}
+					else if(board.tokenAL.get(i%Main.numPlayers).getX() == Board.loungex && board.tokenAL.get(i%Main.numPlayers).getY() == Board.loungey) {
+						board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.conservatoryx;
+						board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.conservatoryy;
+						board.tokenAL.get(i%Main.numPlayers).setBounds(board.tokenAL.get(i%Main.numPlayers).xcoordinate, board.tokenAL.get(i%Main.numPlayers).ycoordinate, board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
+					}
+					else if(board.tokenAL.get(i%Main.numPlayers).getX() == Board.kitchenx && board.tokenAL.get(i%Main.numPlayers).getY() == Board.kitcheny) {
+						board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.loungex;
+						board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.loungey;
+						board.tokenAL.get(i%Main.numPlayers).setBounds(board.tokenAL.get(i%Main.numPlayers).xcoordinate, board.tokenAL.get(i%Main.numPlayers).ycoordinate, board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
+					}
+					else if(board.tokenAL.get(i%Main.numPlayers).getX() == Board.studyx && board.tokenAL.get(i%Main.numPlayers).getY() == Board.studyy) {
+						board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.kitchenx;
+						board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.kitcheny;
+						board.tokenAL.get(i%Main.numPlayers).setBounds(board.tokenAL.get(i%Main.numPlayers).xcoordinate, board.tokenAL.get(i%Main.numPlayers).ycoordinate, board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
+					}
+				else {
+					display.textarea.append("You must be in a room to use a passage");
+				}
+			}
+			else {
+				display.textarea.append("You can only use a passage at the start of your turn");
+			}
+		}
 
 		
 		
@@ -356,10 +387,13 @@ public class SendMessageButtonListener implements ActionListener {
 		}
 	}
 	
+	int MovesinTurn;
+	
 	//alternates whose turn it is to make a move
 	public void whoseTurn(Display display, TextualCommand textualcommand) {
 			i++;
-			moveCounter = diceResult();	
+			moveCounter = diceResult();
+			MovesinTurn = moveCounter;
 			diceRoll(display, textualcommand);		
 			textualcommand.textfield.setText("");
 	}
@@ -453,7 +487,6 @@ public class SendMessageButtonListener implements ActionListener {
 				display.textarea.append("\n" + "<"  + Main.playerNames[i%Main.numPlayers] +">");
 				done++;
 			}
-		}
 		
 		//if user inputs commands before pressing start
 		else if(moveCounter<0){
@@ -464,10 +497,11 @@ public class SendMessageButtonListener implements ActionListener {
 		else { 
 			if(error == false) {
 				appendAndRemove();
+				System.out.println(board.tokenAL.get(i%Main.numPlayers).getX() + ", " + board.tokenAL.get(i%Main.numPlayers).getY());
 			}
 		}
 		
 		textualcommand.textfield.setText("");
 	}	
-	
+}
 }
