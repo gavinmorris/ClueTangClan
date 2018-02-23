@@ -8,6 +8,7 @@ import javax.swing.JTextArea;
 public class SendMessageButtonListener implements ActionListener {
 	
 	public int i=0;
+	public int done=0;
 	public int moveCounter;
 	public boolean error=false;
 	
@@ -25,19 +26,19 @@ public class SendMessageButtonListener implements ActionListener {
 	
 	public void actionPerformed(ActionEvent event) {
 		
-		buttonfunction(board, display, textualcommand, boardstructure);
+		buttonfunction();
 		
 	}
 	
 	
-	public void buttonfunction(Board board, Display display, TextualCommand textualcommand, BoardStructure boardstructure) {
+	public void buttonfunction() {
 
 		//according to the text entered in the textual command, move each character one box up, down, left or right
 		String text = textualcommand.textfield.getText().trim();
 				
 		
 		//according to the text entered in the textual command, move each character one box up, down, left or right
-		if(text.equals("start")) {
+		if(text.equalsIgnoreCase("start")) {
 			moveCounter = diceResult();	
 			diceRoll(display, textualcommand);
 			textualcommand.textfield.setText("");	
@@ -45,45 +46,53 @@ public class SendMessageButtonListener implements ActionListener {
 		
 		else if(text.equalsIgnoreCase("u")) {
 			if(moveCounter > 0) {
-				error = board.tokenAL.get(i%Main.numPlayers).moveUp(boardstructure, display);
-				textualcommand.textfield.setText("");	
-				appendTextAndTurnInfo();
+				error = board.tokenAL.get(i%Main.numPlayers).moveUp(i, moveCounter, boardstructure, display, textualcommand);
+				textualcommand.textfield.setText("up");
+				if(error == false) {
+					moveCounter--;
+				}
 			}
-			else{
-				appendTextAndTurnInfo(); 
-			}
+			appendTextAndTurnInfo();
 		} 
 		else if(text.equalsIgnoreCase("d")) {
 			if(moveCounter > 0) {
-				error = board.tokenAL.get(i%Main.numPlayers).moveDown(boardstructure, display);
-				appendTextAndTurnInfo();
+				error = board.tokenAL.get(i%Main.numPlayers).moveDown(i, moveCounter, boardstructure, display, textualcommand);
+				textualcommand.textfield.setText("down");
+				if(error == false) {
+					moveCounter--;
+				}
 			}
-			else {
-				appendTextAndTurnInfo();
-			}
+			appendTextAndTurnInfo();
 		} 
 		else if(text.equalsIgnoreCase("l")) {
-			if(moveCounter  >0) {
-				error = board.tokenAL.get(i%Main.numPlayers).moveLeft(boardstructure, display);
-				appendTextAndTurnInfo();
+			if(moveCounter > 0) {
+				error = board.tokenAL.get(i%Main.numPlayers).moveLeft(i, moveCounter, boardstructure, display, textualcommand);
+				textualcommand.textfield.setText("left");
+				if(error == false) {
+					moveCounter--;
+				}
 			}
-			else{
-				appendTextAndTurnInfo(); 
-			}
+			appendTextAndTurnInfo();
 		}
 		
 		else if(text.equalsIgnoreCase("r")) {
 			if(moveCounter > 0) {
-				error = board.tokenAL.get(i%Main.numPlayers).moveRight(boardstructure, display);
-				appendTextAndTurnInfo();
+				error = board.tokenAL.get(i%Main.numPlayers).moveRight(i, moveCounter, boardstructure, display, textualcommand);
+				textualcommand.textfield.setText("right");
+				if(error == false) {
+					moveCounter--;
+				}
 			}
-			else {
-				appendTextAndTurnInfo();
-			}
+			appendTextAndTurnInfo();
 		}
 		
 		else if(text.equalsIgnoreCase("done")) {
-			whoseTurn(display, textualcommand);
+			if(moveCounter == 0) {
+				whoseTurn(display, textualcommand);
+				done--;
+			} else {
+				display.textarea.append(textualcommand.textfield.getText()+"\n" + "You still have moves left");
+			}
 		}
 
 		
@@ -362,8 +371,8 @@ public class SendMessageButtonListener implements ActionListener {
 	}
 	
 	//outputs remaining moves
-	public String moveCounterDisplay(int moveCounter) {
-		return (moveCounter) +" moves left";
+	public String moveCounterDisplay(int x) {
+		return " moves left : " + x + " ";
 	}
 	
 	//generates 2 random ints between 1-6
@@ -429,31 +438,36 @@ public class SendMessageButtonListener implements ActionListener {
 	
 	//display panel text when player is making moves
 	public void appendAndRemove() {
-		display.textarea.append(textualcommand.textfield.getText() + "\n" + "<"  + Main.playerNames[i%Main.numPlayers] +" ("+ moveCounterDisplay(moveCounter) +") "+">");
+		display.textarea.append(textualcommand.textfield.getText() + "\n" + "< "  + Main.playerNames[i%Main.numPlayers] 
+																		+ " ("+ moveCounterDisplay(moveCounter) +") "+"> ");
 		textualcommand.textfield.setText("");
 	}
 	
 	//Display text depending on number of moves left,
 	public void appendTextAndTurnInfo() {
-		
+
 		//prompts user to type done
-		if(moveCounter == 1) {
-			display.textarea.append(textualcommand.textfield.getText()+"\n" + "No moves left, type done.");
-			display.textarea.append("\n" + "<"  + Main.playerNames[i%Main.numPlayers] +">");
-			textualcommand.textfield.setText("");
+		if(moveCounter == 0) {
+			if(done == 0) {
+				display.textarea.append(textualcommand.textfield.getText()+"\n" + "No moves left, type done.");
+				display.textarea.append("\n" + "<"  + Main.playerNames[i%Main.numPlayers] +">");
+				done++;
+			}
 		}
 		
 		//if user inputs commands before pressing start
-		else if(moveCounter<1) {
+		else if(moveCounter<0){
 			display.textarea.append("\n" + "You must type start to begin!");
-			textualcommand.textfield.setText("");	
 		}
+		
 		//moves still left
 		else { 
 			if(error == false) {
-				moveCounter--;
 				appendAndRemove();
 			}
 		}
+		
+		textualcommand.textfield.setText("");
 	}	
+	
 }

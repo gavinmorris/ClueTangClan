@@ -10,7 +10,6 @@ public class Token extends JLabel{
 	
 	public String name;
 	public int xcoordinate, ycoordinate;
-	TextualCommand textualcommand = new TextualCommand();
 	public ImageIcon imageIcon;
 	
 	public Token(String name) {
@@ -31,20 +30,20 @@ public class Token extends JLabel{
 	}
 
 	
-	public boolean moveUp(BoardStructure boardstructure, Display display) {
-		boolean error = changeWithBoard(0, -23, 'u', boardstructure, display);
+	public boolean moveUp(int i, int moveCounter, BoardStructure boardstructure, Display display, TextualCommand textualcommand) {
+		boolean error = changeWithBoard(i, moveCounter, 0, -23, 'u', boardstructure, display, textualcommand);
 		return error;
 	}
-	public boolean moveDown(BoardStructure boardstructure, Display display) {
-		boolean error = changeWithBoard(0, 23, 'd', boardstructure, display);
+	public boolean moveDown(int i, int moveCounter, BoardStructure boardstructure, Display display, TextualCommand textualcommand) {
+		boolean error = changeWithBoard(i, moveCounter, 0, 23, 'd', boardstructure, display, textualcommand);
 		return error;
 	}
-	public boolean moveLeft(BoardStructure boardstructure, Display display) {
-		boolean error = changeWithBoard(-23, 0, 'l', boardstructure, display);
+	public boolean moveLeft(int i, int moveCounter, BoardStructure boardstructure, Display display, TextualCommand textualcommand) {
+		boolean error = changeWithBoard(i, moveCounter, -23, 0, 'l', boardstructure, display, textualcommand);
 		return error;
 	}
-	public boolean moveRight(BoardStructure boardstructure, Display display) {
-		boolean error = changeWithBoard(23, 0, 'r', boardstructure, display);
+	public boolean moveRight(int i, int moveCounter, BoardStructure boardstructure, Display display, TextualCommand textualcommand) {
+		boolean error = changeWithBoard(i, moveCounter, 23, 0, 'r', boardstructure, display, textualcommand);
 		return error;
 	}
 
@@ -110,18 +109,29 @@ public class Token extends JLabel{
 	}
 	
 	
-	public boolean changeWithBoard(int x, int y, char direction, BoardStructure boardstructure, Display display) {
+	public boolean changeWithBoard(int i, int moveCounter, int x, int y, char direction, BoardStructure boardstructure, Display display, TextualCommand textualcommand) {
 		boolean error = false;
 		char type = boardstructure.getCoordinatesType(this.xcoordinate+x, this.ycoordinate+y);
 		
 		if(type == 'x') {
 			//no leaving the board exception
-			display.textarea.append("\nError: Cannot leave the board.\n");
+			display.textarea.append(textualcommand.textfield.getText() + "\nError: Cannot leave the board.\n" + "< " + Main.playerNames[i%Main.numPlayers] 
+					+ " (" + " moves left : " + moveCounter + " " +") " + "> ");
+			textualcommand.textfield.setText("");
 			error = true;
 		}
 		else if(type == 'R') {
 			//no walking through walls
-			display.textarea.append("\nError: Cannot enter room this way.\n");
+			display.textarea.append(textualcommand.textfield.getText() + "\nError: Cannot enter room this way.\n" + "< " + Main.playerNames[i%Main.numPlayers] 
+					+ " (" + " moves left : " + moveCounter + " " +") " + "> ");
+			textualcommand.textfield.setText("");
+			error = true;
+		}
+		else if(type == 'T') {
+			//no walking through walls
+			display.textarea.append(textualcommand.textfield.getText() + "\nError: Square already occupied.\n" + "< " + Main.playerNames[i%Main.numPlayers] 
+					+ " (" + " moves left : " + moveCounter + " " +") " + "> ");
+			textualcommand.textfield.setText("");
 			error = true;
 		}
 		else if(type == '0') {
@@ -131,7 +141,7 @@ public class Token extends JLabel{
 			this.setBounds(xcoordinate, ycoordinate, imageIcon.getIconWidth(), imageIcon.getIconHeight());
 			boardstructure.setCoordinatesType('T', this.xcoordinate, this.ycoordinate);
 		}
-		else if(y == -23) {//up
+		else if(type == 'u') {
 			if(direction == 'u') {
 				boardstructure.setCoordinatesType('0', this.xcoordinate, this.ycoordinate);
 				//fill into slots in rooms
@@ -140,11 +150,13 @@ public class Token extends JLabel{
 				boardstructure.setCoordinatesType('T', this.xcoordinate, this.ycoordinate);
 			} else {
 				//cannot enter room this way
-				display.textarea.append("\nError: Cannot enter room this way.\n");
+				display.textarea.append("up" + "\nError: Cannot enter room this way.\n" + "< " + Main.playerNames[i%Main.numPlayers] 
+						+ " (" + " moves left : " + moveCounter + " " +") " + "> ");
+				textualcommand.textfield.setText("");
 				error = true;
 			}
 		}
-		else if(y == 23) {//down
+		else if(type == 'd') {//down
 			if(direction == 'd') {
 				boardstructure.setCoordinatesType('0', this.xcoordinate, this.ycoordinate);
 				//fill into slots in rooms
@@ -153,11 +165,13 @@ public class Token extends JLabel{
 				boardstructure.setCoordinatesType('T', this.xcoordinate, this.ycoordinate);
 			} else {
 				//cannot enter room this way
-				display.textarea.append("\nError: Cannot enter room this way.\n");
+				display.textarea.append("down" + "\nError: Cannot enter room this way.\n" + "< " + Main.playerNames[i%Main.numPlayers] 
+						+ " (" + " moves left : " + moveCounter + " " +") " + "> ");
+				textualcommand.textfield.setText("");
 				error = true;
 			}
 		}
-		else if(x == -23) {//left
+		else if(type == 'l') {//left
 			if(direction == 'l') {
 				boardstructure.setCoordinatesType('0', this.xcoordinate, this.ycoordinate);
 				//fill into slots in rooms
@@ -166,11 +180,13 @@ public class Token extends JLabel{
 				boardstructure.setCoordinatesType('T', this.xcoordinate, this.ycoordinate);
 			} else {
 				//cannot enter room this way
-				display.textarea.append("\nError: Cannot enter room this way.\n");
+				display.textarea.append("left" + "\nError: Cannot enter room this way.\n" + "< " + Main.playerNames[i%Main.numPlayers] 
+						+ " (" + " moves left : " + moveCounter + " " +") " + "> ");
+				textualcommand.textfield.setText("");
 				error = true;
 			}
 		}
-		else if(x == 23) {
+		else if(type == 'r') {
 			if(direction == 'r') {
 				boardstructure.setCoordinatesType('0', this.xcoordinate, this.ycoordinate);
 				//fill into slots in rooms
@@ -179,7 +195,9 @@ public class Token extends JLabel{
 				boardstructure.setCoordinatesType('T', this.xcoordinate, this.ycoordinate);
 			} else {
 				//cannot enter room this way
-				display.textarea.append("\nError: Cannot enter room this way.\n");	
+				display.textarea.append("right" + "\nError: Cannot enter room this way.\n" + "< " + Main.playerNames[i%Main.numPlayers] 
+						+ " (" + " moves left : " + moveCounter + " " +") " + "> ");
+				textualcommand.textfield.setText("");
 				error = true;
 			}
 		}

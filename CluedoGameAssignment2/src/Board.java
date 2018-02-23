@@ -62,12 +62,12 @@ public class Board extends JPanel {
 		cluedoboard = new JLabel(boardImage);
 		
 		//creating new token objects
-		tokenAL.add(new Token("green"));
+	    tokenAL.add(new Token("scarlett"));
 		tokenAL.add(new Token("mustard"));
+		tokenAL.add(new Token("green"));
+	    tokenAL.add(new Token("white"));
 		tokenAL.add(new Token("peacock"));
 	    tokenAL.add(new Token("plum"));
-	    tokenAL.add(new Token("scarlett"));
-	    tokenAL.add(new Token("white"));
 		
 		
 		
@@ -96,13 +96,12 @@ public class Board extends JPanel {
 		layeredPane.add(tokenAL.get(5), JLayeredPane.PALETTE_LAYER);
 		
 		//movePiece("green", greenStartingx, greenStartingy);
-		
-		tokenAL.get(0).setBounds(greenStartingx, greenStartingy, tokenAL.get(0).imageIcon.getIconWidth(), tokenAL.get(0).imageIcon.getIconHeight());
+		tokenAL.get(0).setBounds(scarlettStartingx, scarlettStartingy, tokenAL.get(4).imageIcon.getIconWidth(), tokenAL.get(4).imageIcon.getIconHeight());
 		tokenAL.get(1).setBounds(mustardStartingx, mustardStartingy, tokenAL.get(1).imageIcon.getIconWidth(), tokenAL.get(1).imageIcon.getIconHeight());
-		tokenAL.get(2).setBounds(peacockStartingx, peacockStartingy, tokenAL.get(2).imageIcon.getIconWidth(), tokenAL.get(2).imageIcon.getIconHeight());
-		tokenAL.get(3).setBounds(plumStartingx, plumStartingy, tokenAL.get(3).imageIcon.getIconWidth(), tokenAL.get(3).imageIcon.getIconHeight());
-		tokenAL.get(4).setBounds(scarlettStartingx, scarlettStartingy, tokenAL.get(4).imageIcon.getIconWidth(), tokenAL.get(4).imageIcon.getIconHeight());
-		tokenAL.get(5).setBounds(whiteStartingx, whiteStartingy, tokenAL.get(5).imageIcon.getIconWidth(), tokenAL.get(5).imageIcon.getIconHeight());
+		tokenAL.get(2).setBounds(whiteStartingx, whiteStartingy, tokenAL.get(5).imageIcon.getIconWidth(), tokenAL.get(5).imageIcon.getIconHeight());
+		tokenAL.get(3).setBounds(greenStartingx, greenStartingy, tokenAL.get(0).imageIcon.getIconWidth(), tokenAL.get(0).imageIcon.getIconHeight());
+		tokenAL.get(4).setBounds(peacockStartingx, peacockStartingy, tokenAL.get(2).imageIcon.getIconWidth(), tokenAL.get(2).imageIcon.getIconHeight());
+		tokenAL.get(5).setBounds(plumStartingx, plumStartingy, tokenAL.get(3).imageIcon.getIconWidth(), tokenAL.get(3).imageIcon.getIconHeight());
 		
 		layeredPane.add(candlestick, JLayeredPane.PALETTE_LAYER);
 		layeredPane.add(knife, JLayeredPane.PALETTE_LAYER);
