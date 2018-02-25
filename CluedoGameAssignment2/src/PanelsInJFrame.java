@@ -33,7 +33,7 @@ public class PanelsInJFrame {
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
-		frame.setSize(900, 720);
+		frame.setSize(1000, 720);
 		
 		boardstructure = new BoardStructure();
 		

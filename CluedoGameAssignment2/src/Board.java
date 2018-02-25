@@ -35,6 +35,35 @@ public class Board extends JPanel {
 	public static int hallx = 300; public static int hally = 540;
 	public static int loungex = 155; public static int loungey = 500;
 	public static int diningroomx = 170; public static int diningroomy = 285;
+	
+	//declare room entrances
+	public static int KitchenEntrancex = 135; public static int KitchenEntrancey = 208;
+	public static int BallRoomEntrance1x = 204; public static int BallRoomEntrance1y = 162;
+	public static int BallRoomEntrance2x = 250; public static int BallRoomEntrance2y = 231;
+	public static int BallRoomEntrance3x = 365; public static int BallRoomEntrance3y = 231;
+	public static int BallRoomEntrance4x = 411; public static int BallRoomEntrance4y = 162;
+	public static int ConservatoryEntrancex = 457; public static int ConservatoryEntrancey = 162;
+	public static int DiningRoomEntrance1x = 227; public static int DiningRoomEntrance1y = 323;
+	public static int DiningRoomEntrance2x = 181; public static int DiningRoomEntrance2y = 415;
+	public static int BilliardRoomEntrance1x = 434; public static int BilliardRoomEntrance1y = 254;
+	public static int BilliardRoomEntrance2x = 549; public static int BilliardRoomEntrance2y = 346;
+	public static int LibraryEntrance1x = 503; public static int LibraryEntrance1y = 346;
+	public static int LibraryEntrance2x = 434; public static int LibraryEntrance2y = 415;
+	public static int LoungeEntrancex = 181; public static int LoungeEntrancey = 461;
+	public static int HallEntrance1x = 296; public static int HallEntrance1y = 438;
+	public static int HallEntrance2x = 319; public static int HallEntrance2y = 438;
+	public static int HallEntrance3x = 388; public static int HallEntrance3y = 507;
+	public static int StudyEntrancex = 434; public static int StudyEntrancey = 507;
+
+	public static int[][] KitchenSlots =  new int[3][6];
+	public static int[][] BallRoomSlots =  new int[3][6];
+	public static int[][] ConservatorySlots =  new int[3][6];
+	public static int[][] DiningRoomSlots =  new int[3][6];
+	public static int[][] BilliardRoomSlots =  new int[3][6];
+	public static int[][] LibrarySlots =  new int[3][6];
+	public static int[][] LoungeSlots =  new int[3][6];
+	public static int[][] HallSlots =  new int[3][6];
+	public static int[][] StudySlots =  new int[3][6];
     
 	//allows us to iterate through an ArrayList to access players instead of using discrete names in the code
     ArrayList<Token> tokenAL = new ArrayList<Token>();
@@ -46,11 +75,8 @@ public class Board extends JPanel {
     public Weapon rope;
     public Weapon wrench;
     
-    
-	
-    
     public JLayeredPane layeredPane;
-
+    
 	public Board() {
 		
 		try {
@@ -69,15 +95,12 @@ public class Board extends JPanel {
 		tokenAL.add(new Token("peacock"));
 	    tokenAL.add(new Token("plum"));
 		
-		
-		
 	    candlestick = new Weapon("candlestick", "kitchen");
 	    knife = new Weapon("knife", "ball room");
 	    leadpipe = new Weapon("leadpipe", "dining room");
 	    revolver = new Weapon("revolver", "lounge");
 	    rope = new Weapon("rope", "hall");
 	    wrench = new Weapon("wrench", "study");
-		
 		
 		
 		//declare new jlayeredpane

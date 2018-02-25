@@ -11,83 +11,44 @@ public class BoardStructure {
 	public BoardStructure() {
 		
 		tileType = new char[][] {	
-			
 			{	'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'	},
 			{	'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'T', 'x', 'x', 'x', 'x', 'T', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'	},
-			{	'x', 'R', 'R', 'R', 'R', 'R', 'R', 'x', '0', '0', '0', 'R', 'R', 'R', 'R', '0', '0', '0', 'x', 'R', 'R', 'R', 'R', 'R', 'R', 'x'	},
-			{	'x', 'R', 'R', 'R', 'R', 'R', 'R', '0', '0', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', '0', '0', 'R', 'R', 'R', 'R', 'R', 'R', 'x'	},
-			{	'x', 'R', 'R', 'R', 'R', 'R', 'R', '0', '0', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', '0', '0', 'R', 'R', 'R', 'R', 'R', 'R', 'x'	},
+			{	'x', 'R', 'R', 'R', 'R', 'R', 'R', 'x', '0', '0', '0', 'R', 'R', 'R', 'R', '0', '0', '0', 'x', 'R', 'S', 'S', 'S', 'R', 'R', 'x'	},
+			{	'x', 'R', 'S', 'S', 'S', 'R', 'R', '0', '0', 'R', 'R', 'S', 'S', 'S', 'R', 'R', 'R', '0', '0', 'R', 'S', 'S', 'S', 'R', 'R', 'x'	},
+			{	'x', 'R', 'S', 'S', 'S', 'R', 'R', '0', '0', 'R', 'R', 'S', 'S', 'S', 'R', 'R', 'R', '0', '0', 'R', 'R', 'R', 'R', 'R', 'R', 'x'	},
 			{	'x', 'R', 'R', 'R', 'R', 'R', 'R', '0', '0', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', '0', '0', 'u', 'R', 'R', 'R', 'R', 'R', 'x'	},
 			{	'x', 'R', 'R', 'R', 'R', 'R', 'R', '0', '0', 'r', 'R', 'R', 'R', 'R', 'R', 'R', 'l', '0', '0', '0', 'R', 'R', 'R', 'R', 'x', 'x'	},
 			{	'x', 'x', 'R', 'R', 'R', 'u', 'R', '0', '0', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', '0', '0', '0', '0', '0', '0', '0', 'T', 'x'	},
 			{	'x', '0', '0', '0', '0', '0', '0', '0', '0', 'R', 'u', 'R', 'R', 'R', 'R', 'u', 'R', '0', '0', '0', '0', '0', '0', '0', 'x', 'x'	},
 			{	'x', 'x', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'R', 'R', 'R', 'R', 'R', 'R', 'x'	},
 			{	'x', 'R', 'R', 'R', 'R', 'R', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'r', 'R', 'R', 'R', 'R', 'R', 'x'	},
-			{	'x', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', '0', '0', 'R', 'R', 'R', 'R', 'R', '0', '0', '0', 'R', 'R', 'R', 'R', 'R', 'R', 'x'	},
-			{	'x', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', '0', '0', 'R', 'R', 'R', 'R', 'R', '0', '0', '0', 'R', 'R', 'R', 'R', 'R', 'R', 'x'	},
+			{	'x', 'R', 'S', 'S', 'S', 'R', 'R', 'R', 'R', '0', '0', 'R', 'R', 'R', 'R', 'R', '0', '0', '0', 'R', 'R', 'S', 'S', 'S', 'R', 'x'	},
+			{	'x', 'R', 'S', 'S', 'S', 'R', 'R', 'R', 'R', '0', '0', 'R', 'R', 'R', 'R', 'R', '0', '0', '0', 'R', 'R', 'S', 'S', 'S', 'R', 'x'	},
 			{	'x', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'l', '0', '0', 'R', 'R', 'R', 'R', 'R', '0', '0', '0', 'R', 'R', 'R', 'R', 'u', 'R', 'x'	},
 			{	'x', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', '0', '0', 'R', 'R', 'R', 'R', 'R', '0', '0', '0', '0', '0', '0', '0', '0', 'x', 'x'	},
 			{	'x', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', '0', '0', 'R', 'R', 'R', 'R', 'R', '0', '0', '0', 'R', 'R', 'd', 'R', 'R', 'x', 'x'	},
 			{	'x', 'R', 'R', 'R', 'R', 'R', 'R', 'u', 'R', '0', '0', 'R', 'R', 'R', 'R', 'R', '0', '0', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'x'	},
-			{	'x', 'x', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'R', 'R', 'R', 'R', 'R', '0', '0', 'r', 'R', 'R', 'R', 'R', 'R', 'R', 'x'	},
-			{	'x', 'T', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'x'	},
+			{	'x', 'x', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'R', 'R', 'R', 'R', 'R', '0', '0', 'r', 'R', 'R', 'S', 'S', 'S', 'R', 'x'	},
+			{	'x', 'T', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'R', 'R', 'R', 'S', 'S', 'S', 'R', 'x'	},
 			{	'x', 'x', '0', '0', '0', '0', '0', '0', '0', '0', 'R', 'R', 'd', 'd', 'R', 'R', '0', '0', '0', 'R', 'R', 'R', 'R', 'R', 'x', 'x'	},
 			{	'x', 'R', 'R', 'R', 'R', 'R', 'R', 'd', '0', '0', 'R', 'R', 'R', 'R', 'R', 'R', '0', '0', '0', '0', '0', '0', '0', '0', 'T', 'x'	},
 			{	'x', 'R', 'R', 'R', 'R', 'R', 'R', 'R', '0', '0', 'R', 'R', 'R', 'R', 'R', 'l', '0', '0', '0', '0', '0', '0', '0', '0', 'x', 'x'	},
 			{	'x', 'R', 'R', 'R', 'R', 'R', 'R', 'R', '0', '0', 'R', 'R', 'R', 'R', 'R', 'R', '0', '0', 'd', 'R', 'R', 'R', 'R', 'R', 'R', 'x'	},
-			{	'x', 'R', 'R', 'R', 'R', 'R', 'R', 'R', '0', '0', 'R', 'R', 'R', 'R', 'R', 'R', '0', '0', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'x'	},
-			{	'x', 'R', 'R', 'R', 'R', 'R', 'R', 'R', '0', '0', 'R', 'R', 'R', 'R', 'R', 'R', '0', '0', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'x'	},
+			{	'x', 'R', 'S', 'S', 'S', 'R', 'R', 'R', '0', '0', 'R', 'S', 'S', 'S', 'R', 'R', '0', '0', 'R', 'R', 'R', 'S', 'S', 'S', 'R', 'x'	},
+			{	'x', 'R', 'S', 'S', 'S', 'R', 'R', 'R', '0', '0', 'R', 'S', 'S', 'S', 'R', 'R', '0', '0', 'R', 'R', 'R', 'S', 'S', 'S', 'R', 'x'	},
 			{	'x', 'R', 'R', 'R', 'R', 'R', 'R', 'x', 'T', 'x', 'R', 'R', 'R', 'R', 'R', 'R', 'x', '0', 'x', 'R', 'R', 'R', 'R', 'R', 'R', 'x'	},
 			{	'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'	}
 		};
 		
-			/*
-			{	'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'	},
-			{	'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'T', 'x', 'x', 'x', 'x', 'T', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'	},
-			{	'x', 'R', 'R', 'R', 'R', 'R', 'R', 'x', '0', '0', '0', 'R', 'R', 'R', 'R', '0', '0', '0', 'x', 'R', 'C1', 'C2', 'C3', 'R', 'R', 'x'	},
-			{	'x', 'R', 'R', 'R', 'R', 'R', 'R', '0', '0', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', '0', '0', 'R', 'C4', 'C5', 'C6', 'R', 'R', 'x'	},
-			{	'x', 'K1', 'K2', 'K3', 'R', 'R', 'R', '0', '0', 'R', 'BA1', 'BA2', 'BA3', 'R', 'R', 'R', 'R', '0', '0', 'R', 'R', 'R', 'R', 'R', 'R', 'x'	},
-			{	'x', 'K4', 'K5', 'K6', 'R', 'R', 'R', '0', '0', 'R', 'BA4', 'BA5', 'BA6', 'R', 'R', 'R', 'R', '0', '0', 'u', 'R', 'R', 'R', 'R', 'R', 'x'	},
-			{	'x', 'R', 'R', 'R', 'R', 'R', 'R', '0', '0', 'r', 'R', 'R', 'R', 'R', 'R', 'R', 'l', '0', '0', '0', 'R', 'R', 'R', 'R', 'x', 'x'	},
-			{	'x', 'x', 'R', 'R', 'R', 'u', 'R', '0', '0', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', '0', '0', '0', '0', '0', '0', '0', 'T', 'x'	},
-			{	'x', '0', '0', '0', '0', '0', '0', '0', '0', 'R', 'u', 'R', 'R', 'R', 'R', 'u', 'R', '0', '0', '0', '0', '0', '0', '0', 'x', 'x'	},
-			{	'x', 'x', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'R', 'R', 'R', 'R', 'R', 'R', 'x'	},
-			{	'x', 'R', 'R', 'R', 'R', 'R', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'r', 'R', 'R', 'R', 'R', 'R', 'x'	},
-			{	'x', 'D1', 'D2', 'D3', 'R', 'R', 'R', 'R', 'R', '0', '0', 'R', 'R', 'R', 'R', 'R', '0', '0', '0', 'R', 'BI1', 'BI2', 'BI3', 'R', 'R', 'x'	},
-			{	'x', 'D4', 'D5', 'D6', 'R', 'R', 'R', 'R', 'R', '0', '0', 'R', 'R', 'R', 'R', 'R', '0', '0', '0', 'R', 'BI4', 'BI5', 'BI6', 'R', 'R', 'x'	},
-			{	'x', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'l', '0', '0', 'R', 'R', 'R', 'R', 'R', '0', '0', '0', 'R', 'R', 'R', 'R', 'u', 'R', 'x'	},
-			{	'x', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', '0', '0', 'R', 'R', 'R', 'R', 'R', '0', '0', '0', '0', '0', '0', '0', '0', 'x', 'x'	},
-			{	'x', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', '0', '0', 'R', 'R', 'R', 'R', 'R', '0', '0', '0', 'R', 'R', 'd', 'R', 'R', 'x', 'x'	},
-			{	'x', 'R', 'R', 'R', 'R', 'R', 'R', 'u', 'R', '0', '0', 'R', 'R', 'R', 'R', 'R', '0', '0', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'x'	},
-			{	'x', 'x', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'R', 'R', 'R', 'R', 'R', '0', '0', 'r', 'R', 'R', 'R', 'L1', 'L2', 'L3', 'x'	},
-			{	'x', 'T', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'R', 'R', 'R', 'R', 'L4', 'L5', 'L6', 'x'	},
-			{	'x', 'x', '0', '0', '0', '0', '0', '0', '0', '0', 'R', 'R', 'd', 'd', 'R', 'R', '0', '0', '0', 'R', 'R', 'R', 'R', 'R', 'x', 'x'	},
-			{	'x', 'R', 'R', 'R', 'R', 'R', 'R', 'd', '0', '0', 'R', 'R', 'R', 'R', 'R', 'R', '0', '0', '0', '0', '0', '0', '0', '0', 'T', 'x'	},
-			{	'x', 'R', 'R', 'R', 'R', 'R', 'R', 'R', '0', '0', 'R', 'R', 'R', 'R', 'R', 'l', '0', '0', '0', '0', '0', '0', '0', '0', 'x', 'x'	},
-			{	'x', 'R', 'R', 'R', 'R', 'R', 'R', 'R', '0', '0', 'R', 'R', 'R', 'R', 'R', 'R', '0', '0', 'd', 'R', 'R', 'R', 'R', 'R', 'R', 'x'	},
-			{	'x', 'L1', 'L2', 'L3', 'R', 'R', 'R', 'R', '0', '0', 'R', 'H1', 'H2', 'H3', 'R', 'R', '0', '0', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'x'	},
-			{	'x', 'L4', 'L4', 'L5', 'R', 'R', 'R', 'R', '0', '0', 'R', 'H4', 'H5', 'H6', 'R', 'R', '0', '0', 'R', 'R', 'R', 'R', 'S1', 'S2', 'S3', 'x'	},
-			{	'x', 'R', 'R', 'R', 'R', 'R', 'R', 'x', 'T', 'x', 'R', 'R', 'R', 'R', 'R', 'R', 'x', '0', 'x', 'R', 'R', 'R', 'S4', 'S5', 'S6', 'x'	},
-			{	'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'	}	
-		};
-		
-		Array Kitchen =  new Array[6];
-		Array BallRoom =  new Array[6];
-		Array Conservatory =  new Array[6];
-		Array DiningRoom =  new Array[6];
-		Array BilliardRoom =  new Array[6];
-		Array Library =  new Array[6];
-		Array Lounge =  new Array[6];
-		Array Hall =  new Array[6];
-		Array Study =  new Array[6];
-		*/
 		tilePositionX = new int[boardWidth][boardHeight];
 		tilePositionY = new int[boardWidth][boardHeight];
 		setTilePositions();
 		
 		printTileTypeBoard();
 		
-		//printTilePositionBoard();
+		printTilePositionBoard();
+		
+		SetSlots();
 	}
 	
 	
@@ -167,7 +128,118 @@ public class BoardStructure {
 		}
 	}
 	
-	
+	public void SetSlots() {
+		int iterate = 0;
+		
+		int KitchenSlotsStartingx = 66;
+		int KitchenSlotsStartingy = 93;
+		for(int j = 0;j<2;j++) {
+			for(int i = 0;i<3;i++) {
+				//Set the slot as empty
+				Board.KitchenSlots[0][iterate] = 0;
+				//Set the coords of each slots
+				Board.KitchenSlots[1][iterate] = KitchenSlotsStartingx + i*23;
+				Board.KitchenSlots[2][iterate] = KitchenSlotsStartingy + j*23;
+				iterate++;
+			}
+		}
+		
+		iterate=0;
+		int BallRoomSlotsStartingx = 273;
+		int BallRoomSlotsStartingy = 93;
+		for(int j = 0;j<2;j++) {
+			for(int i = 0;i<3;i++) {
+				Board.BallRoomSlots[0][iterate] = 0;
+				Board.BallRoomSlots[1][iterate] = BallRoomSlotsStartingx + i*23;
+				Board.BallRoomSlots[2][iterate] = BallRoomSlotsStartingy + j*23;
+				iterate++;
+			}
+		}
+		
+		iterate=0;
+		int ConservatorySlotsStartingx = 480;
+		int ConservatorySlotsStartingy = 70;
+		for(int j = 0;j<2;j++) {
+			for(int i = 0;i<3;i++) {
+				Board.ConservatorySlots[0][iterate] = 0;
+				Board.ConservatorySlots[1][iterate] = ConservatorySlotsStartingx + i*23;
+				Board.ConservatorySlots[2][iterate] = ConservatorySlotsStartingy + j*23;
+				iterate++;
+			}
+		}
+		
+		iterate=0;
+		int DiningRoomSlotsStartingx = 66;
+		int DiningRoomSlotsStartingy = 277;
+		for(int j = 0;j<2;j++) {
+			for(int i = 0;i<3;i++) {
+				Board.DiningRoomSlots[0][iterate] = 0;
+				Board.DiningRoomSlots[1][iterate] = DiningRoomSlotsStartingx + i*23;
+				Board.DiningRoomSlots[2][iterate] = DiningRoomSlotsStartingy + j*23;
+				iterate++;
+			}
+		}
+		
+		iterate=0;
+		int BilliardRoomSlotsStartingx = 503;
+		int BilliardRoomSlotsStartingy = 277;
+		for(int j = 0;j<2;j++) {
+			for(int i = 0;i<3;i++) {
+				Board.BilliardRoomSlots[0][iterate] = 0;
+				Board.BilliardRoomSlots[1][iterate] = BilliardRoomSlotsStartingx + i*23;
+				Board.BilliardRoomSlots[2][iterate] = BilliardRoomSlotsStartingy + j*23;
+				iterate++;
+			}
+		}
+		
+		iterate=0;
+		int LibrarySlotsStartingx = 503;
+		int LibrarySlotsStartingy = 415;
+		for(int j = 0;j<2;j++) {
+			for(int i = 0;i<3;i++) {
+				Board.LibrarySlots[0][iterate] = 0;
+				Board.LibrarySlots[1][iterate] = LibrarySlotsStartingx + i*23;
+				Board.LibrarySlots[2][iterate] = LibrarySlotsStartingy + j*23;
+				iterate++;
+			}
+		}
+		
+		iterate=0;
+		int LoungeSlotsStartingx = 66;
+		int LoungeSlotsStartingy = 553;
+		for(int j = 0;j<2;j++) {
+			for(int i = 0;i<3;i++) {
+				Board.LoungeSlots[0][iterate] = 0;
+				Board.LoungeSlots[1][iterate] = LoungeSlotsStartingx + i*23;
+				Board.LoungeSlots[2][iterate] = LoungeSlotsStartingy + j*23;
+				iterate++;
+			}
+		}
+		
+		iterate=0;
+		int HallSlotsStartingx = 273;
+		int HallSlotsStartingy = 553;
+		for(int j = 0;j<2;j++) {
+			for(int i = 0;i<3;i++) {
+				Board.HallSlots[0][iterate] = 0;
+				Board.HallSlots[1][iterate] = HallSlotsStartingx + i*23;
+				Board.HallSlots[2][iterate] = HallSlotsStartingy + j*23;
+				iterate++;
+			}
+		}
+		
+		iterate=0;
+		int StudySlotsStartingx = 503;
+		int StudySlotsStartingy = 553;
+		for(int j = 0;j<2;j++) {
+			for(int i = 0;i<3;i++) {
+				Board.StudySlots[0][iterate] = 0;
+				Board.StudySlots[1][iterate] = StudySlotsStartingx + i*23;
+				Board.StudySlots[2][iterate] = StudySlotsStartingy + j*23;
+				iterate++;
+			}
+		}
+	}
 }
 
 

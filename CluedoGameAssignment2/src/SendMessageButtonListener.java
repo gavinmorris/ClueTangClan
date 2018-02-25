@@ -97,24 +97,20 @@ public class SendMessageButtonListener implements ActionListener {
 		
 		else if(text.equalsIgnoreCase("passage")) {
 			if(moveCounter == MovesinTurn) {
-					if(board.tokenAL.get(i%Main.numPlayers).getX() == Board.conservatoryx && board.tokenAL.get(i%Main.numPlayers).getY() == Board.conservatoryy) {
-						board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.loungex;
-						board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.loungey;
+					if(board.tokenAL.get(i%Main.numPlayers).slot == 1) {
+						board.tokenAL.get(i%Main.numPlayers).AddtoStudy();
 						board.tokenAL.get(i%Main.numPlayers).setBounds(board.tokenAL.get(i%Main.numPlayers).xcoordinate, board.tokenAL.get(i%Main.numPlayers).ycoordinate, board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
 					}
-					else if(board.tokenAL.get(i%Main.numPlayers).getX() == Board.loungex && board.tokenAL.get(i%Main.numPlayers).getY() == Board.loungey) {
-						board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.conservatoryx;
-						board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.conservatoryy;
+					else if(board.tokenAL.get(i%Main.numPlayers).slot == 9) {
+						board.tokenAL.get(i%Main.numPlayers).AddtoKitchen();
 						board.tokenAL.get(i%Main.numPlayers).setBounds(board.tokenAL.get(i%Main.numPlayers).xcoordinate, board.tokenAL.get(i%Main.numPlayers).ycoordinate, board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
 					}
-					else if(board.tokenAL.get(i%Main.numPlayers).getX() == Board.kitchenx && board.tokenAL.get(i%Main.numPlayers).getY() == Board.kitcheny) {
-						board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.loungex;
-						board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.loungey;
+					else if(board.tokenAL.get(i%Main.numPlayers).slot == 3) {
+						board.tokenAL.get(i%Main.numPlayers).AddtoLounge();
 						board.tokenAL.get(i%Main.numPlayers).setBounds(board.tokenAL.get(i%Main.numPlayers).xcoordinate, board.tokenAL.get(i%Main.numPlayers).ycoordinate, board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
 					}
-					else if(board.tokenAL.get(i%Main.numPlayers).getX() == Board.studyx && board.tokenAL.get(i%Main.numPlayers).getY() == Board.studyy) {
-						board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.kitchenx;
-						board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.kitcheny;
+					else if(board.tokenAL.get(i%Main.numPlayers).slot == 7) {
+						board.tokenAL.get(i%Main.numPlayers).AddtoConservatory();
 						board.tokenAL.get(i%Main.numPlayers).setBounds(board.tokenAL.get(i%Main.numPlayers).xcoordinate, board.tokenAL.get(i%Main.numPlayers).ycoordinate, board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
 					}
 				else {
@@ -487,7 +483,7 @@ public class SendMessageButtonListener implements ActionListener {
 				display.textarea.append("\n" + "<"  + Main.playerNames[i%Main.numPlayers] +">");
 				done++;
 			}
-		
+		}
 		//if user inputs commands before pressing start
 		else if(moveCounter<0){
 			display.textarea.append("\n" + "You must type start to begin!");
@@ -497,11 +493,9 @@ public class SendMessageButtonListener implements ActionListener {
 		else { 
 			if(error == false) {
 				appendAndRemove();
-				System.out.println(board.tokenAL.get(i%Main.numPlayers).getX() + ", " + board.tokenAL.get(i%Main.numPlayers).getY());
 			}
 		}
-		
-		textualcommand.textfield.setText("");
-	}	
-}
+			
+		textualcommand.textfield.setText("");	
+	}
 }

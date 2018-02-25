@@ -9,7 +9,7 @@ public class Display extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
 	//declare textarea and scrollpane
-    public JTextArea textarea = new JTextArea(20, 20);
+    public JTextArea textarea = new JTextArea(20, 30);
     public JScrollPane scrollpane = new JScrollPane(textarea);
     
     public String introText = "Display Panel";
