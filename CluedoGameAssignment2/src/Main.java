@@ -1,4 +1,3 @@
-
 import javax.swing.JOptionPane;
 
 public class Main {
@@ -8,13 +7,12 @@ public class Main {
 	
 	public static void main(String[] args) {
 		 java.awt.EventQueue.invokeLater(new Runnable() {
-	          public void run() {
-	              //put all the panels into the jframe
-	        	  new PanelsInJFrame();
-	          }
-	    });
-		
-	}																			
+			 public void run() {
+				 //put all the panels into the jframe
+				 new PanelsInJFrame();
+			 }
+		});			  			 		
+	}
 }
 
 
