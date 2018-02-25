@@ -49,8 +49,8 @@ Hit enter or the JButton to complete a move.
 
 **Other Commands.**
 
-help - displays panel with command information.
-quit - termiantes game.
+* help - displays panel with command information.
+* quit - termiantes game.
 
 ![alt text](https://i.imgur.com/6uqJcCX.png)
 
