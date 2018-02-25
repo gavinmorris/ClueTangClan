@@ -11,12 +11,16 @@ public class Display extends JPanel {
 	//declare textarea and scrollpane
     public JTextArea textarea = new JTextArea(20, 30);
     public JScrollPane scrollpane = new JScrollPane(textarea);
+	TextualCommand textualcommand = new TextualCommand();
     
     public String introText = "Display Panel";
 	
 	public Display() {
+		String introText = "Display Panel";
 		textarea.setEditable(false);	//so that the display panel cannot be changed without using the textual command
 		textarea.setLineWrap(true);
+		textarea.setText("\n --------------- "  + introText + " ---------------\n"+"Type start to begin.\n");
+		
 		String result = "";
 		String tokenNames[] = {"Miss. Scarlett (red token)", "Col. Mustard (yellow token)", "Rev. Green (green token)", "Ms. White (white token)", "Mrs. Peacock (blue token)", "Prof. Plum (purple token)", "Ms. Scarlett (red token)"};
 		for(int i=0;i<Main.numPlayers;i++) {
