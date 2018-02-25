@@ -29,7 +29,7 @@ When a player has made all their moves, it does not automatically switch to the 
 
 **5. Entering Rooms.**
 
-A player may enter any room through the identified entry point, once the token reaches the threshold of the room it automatically switches into a slot in that room. When exiting the room //awaiting Euans commit.
+A player may enter any room through the identified entry point, once the token reaches the threshold of the room it automatically switches into a slot in that room. When exiting the room //awaiting Euans commit. Secret passages have also been implememted to fast travel across the board.
 
 **Functionality.**
 
