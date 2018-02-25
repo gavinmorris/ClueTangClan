@@ -1,3 +1,4 @@
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Random;
@@ -11,7 +12,6 @@ public class SendMessageButtonListener implements ActionListener {
 	public int done=0;
 	public int moveCounter;
 	public boolean error=false;
-	
 	public Board board;
 	public Display display;
 	public TextualCommand textualcommand;
@@ -39,11 +39,13 @@ public class SendMessageButtonListener implements ActionListener {
 		
 		//according to the text entered in the textual command, move each character one box up, down, left or right
 		if(text.equalsIgnoreCase("start")) {
+			playerInfo();
+			playerTokenMapping();
 			moveCounter = diceResult();	
 			diceRoll(display, textualcommand);
 			textualcommand.textfield.setText("");	
 		}
-		
+
 		else if(text.equalsIgnoreCase("u")) {
 			if(moveCounter > 0) {
 				error = board.tokenAL.get(i%Main.numPlayers).moveUp(i, moveCounter, boardstructure, display, textualcommand);
@@ -502,6 +504,32 @@ public class SendMessageButtonListener implements ActionListener {
 		}
 		
 		textualcommand.textfield.setText("");
-	}	
+	}		
 }
+	
+	public void playerInfo() {
+		String numPlayersSTR;
+		do {
+			numPlayersSTR = JOptionPane.showInputDialog("Please enter the number of players you wish to use. (Between 2 - 6)");
+		}while(Integer.parseInt(numPlayersSTR) <2 || Integer.parseInt(numPlayersSTR) > 6);
+		
+		Main.numPlayers = Integer.parseInt(numPlayersSTR);
+		
+		Main.playerNames = new String[Main.numPlayers];
+		
+		for(int i=0;i<Main.numPlayers;i++) {
+			Main.playerNames[i] = JOptionPane.showInputDialog("Please enter name of player "+(i+1));
+		}
+	}
+	
+	public void playerTokenMapping() {
+		String result = "";
+	    String introText = "Display Panel";
+		String tokenNames[] = {"Miss. Scarlett (red token)", "Col. Mustard (yellow token)", "Rev. Green (green token)", "Ms. White (white token)", "Mrs. Peacock (blue token)", "Prof. Plum (purple token)", "Ms. Scarlett (red token)"};
+		for(int i=0;i<Main.numPlayers;i++) {
+			result = result +Main.playerNames[i]+" -> "+tokenNames[i]+"\n";
+		}
+		String help = "\n Type help to see instructions.";
+		display.textarea.setText(result+help+"\n --------------- "  + introText + " ---------------\n");
+	}
 }
