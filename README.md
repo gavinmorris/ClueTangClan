@@ -21,7 +21,7 @@ To begin the game you must enter "start", this rolls the dice and allows Player 
  
 **3. Board Boundaries.**
 
-Using a multidimesional array, a player's moves over the board is tracked, if they try and move into a wall or out of the bounds of the board they will get an error message. No moves will be deducted for an invalid move.
+Using a multidimesional array, a player's moves over the board is tracked, if they try and move into a wall or out of the bounds of the board they will get an error message. No moves will be deducted for an invalid move. If you try to move onto a tile which is occupied by another player, you will also be greeted with an error message.
  
 **4. Player turns.**
 
@@ -52,5 +52,5 @@ Hit enter or the JButton to complete a move.
 * help - displays panel with command information.
 * quit - termiantes game.
 
-![alt text](https://i.imgur.com/6uqJcCX.png)
+![alt text](https://i.imgur.com/wkMv3tW.png)
 
