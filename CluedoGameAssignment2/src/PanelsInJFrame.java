@@ -20,7 +20,6 @@ public class PanelsInJFrame {
 		//declare new jframe and panels, ie board, display and texualcommand
 		frame = new JFrame("Cluedo");
 		frame.setLayout(new BorderLayout());
-		
 		board = new Board();
 		display = new Display();
 		textualcommand = new TextualCommand();	
@@ -33,7 +32,7 @@ public class PanelsInJFrame {
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
-		frame.setSize(1000, 720);
+		frame.setSize(1050, 720);
 		
 		boardstructure = new BoardStructure();
 		

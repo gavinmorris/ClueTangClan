@@ -82,22 +82,22 @@ public class Weapon extends JLabel{
 		String imageName = null;
 		ImageIcon icon = null;
 		if(name.equals("candlestick")) {
-			imageName = "candlestick.jpg";
+			imageName = "Candlestick.jpg";
 		}
 		else if(name.equals("knife")) {
-			imageName = "knife.jpg";
+			imageName = "Knife.jpg";
 		}
 		else if(name.equals("leadpipe")) {
-			imageName = "leadpipe.jpg";
+			imageName = "LeadPipe.jpg";
 		}
 		else if(name.equals("revolver")) {
-			imageName = "revolver.jpg";
+			imageName = "Revolver.jpg";
 		}
 		else if(name.equals("rope")) {
-			imageName = "rope.jpg";
+			imageName = "Rope.jpg";
 		}
 		else if(name.equals("wrench")) {
-			imageName = "wrench.jpg";
+			imageName = "Wrench.jpg";
 		}
 
 		BufferedImage imageBuffered = null;

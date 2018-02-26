@@ -46,7 +46,7 @@ public class BoardStructure {
 		
 		printTileTypeBoard();
 		
-		printTilePositionBoard();
+		//printTilePositionBoard();
 		
 		SetSlots();
 	}
@@ -132,7 +132,7 @@ public class BoardStructure {
 		int iterate = 0;
 		
 		int KitchenSlotsStartingx = 66;
-		int KitchenSlotsStartingy = 93;
+		int KitchenSlotsStartingy = 70;
 		for(int j = 0;j<2;j++) {
 			for(int i = 0;i<3;i++) {
 				//Set the slot as empty
@@ -146,7 +146,7 @@ public class BoardStructure {
 		
 		iterate=0;
 		int BallRoomSlotsStartingx = 273;
-		int BallRoomSlotsStartingy = 93;
+		int BallRoomSlotsStartingy = 70;
 		for(int j = 0;j<2;j++) {
 			for(int i = 0;i<3;i++) {
 				Board.BallRoomSlots[0][iterate] = 0;
@@ -158,7 +158,7 @@ public class BoardStructure {
 		
 		iterate=0;
 		int ConservatorySlotsStartingx = 480;
-		int ConservatorySlotsStartingy = 70;
+		int ConservatorySlotsStartingy = 47;
 		for(int j = 0;j<2;j++) {
 			for(int i = 0;i<3;i++) {
 				Board.ConservatorySlots[0][iterate] = 0;
@@ -170,7 +170,7 @@ public class BoardStructure {
 		
 		iterate=0;
 		int DiningRoomSlotsStartingx = 66;
-		int DiningRoomSlotsStartingy = 277;
+		int DiningRoomSlotsStartingy = 254;
 		for(int j = 0;j<2;j++) {
 			for(int i = 0;i<3;i++) {
 				Board.DiningRoomSlots[0][iterate] = 0;
@@ -182,7 +182,7 @@ public class BoardStructure {
 		
 		iterate=0;
 		int BilliardRoomSlotsStartingx = 503;
-		int BilliardRoomSlotsStartingy = 277;
+		int BilliardRoomSlotsStartingy = 254;
 		for(int j = 0;j<2;j++) {
 			for(int i = 0;i<3;i++) {
 				Board.BilliardRoomSlots[0][iterate] = 0;
@@ -194,7 +194,7 @@ public class BoardStructure {
 		
 		iterate=0;
 		int LibrarySlotsStartingx = 503;
-		int LibrarySlotsStartingy = 415;
+		int LibrarySlotsStartingy = 392;
 		for(int j = 0;j<2;j++) {
 			for(int i = 0;i<3;i++) {
 				Board.LibrarySlots[0][iterate] = 0;
@@ -206,7 +206,7 @@ public class BoardStructure {
 		
 		iterate=0;
 		int LoungeSlotsStartingx = 66;
-		int LoungeSlotsStartingy = 553;
+		int LoungeSlotsStartingy = 530;
 		for(int j = 0;j<2;j++) {
 			for(int i = 0;i<3;i++) {
 				Board.LoungeSlots[0][iterate] = 0;
@@ -218,7 +218,7 @@ public class BoardStructure {
 		
 		iterate=0;
 		int HallSlotsStartingx = 273;
-		int HallSlotsStartingy = 553;
+		int HallSlotsStartingy = 530;
 		for(int j = 0;j<2;j++) {
 			for(int i = 0;i<3;i++) {
 				Board.HallSlots[0][iterate] = 0;
@@ -230,7 +230,7 @@ public class BoardStructure {
 		
 		iterate=0;
 		int StudySlotsStartingx = 503;
-		int StudySlotsStartingy = 553;
+		int StudySlotsStartingy = 530;
 		for(int j = 0;j<2;j++) {
 			for(int i = 0;i<3;i++) {
 				Board.StudySlots[0][iterate] = 0;
