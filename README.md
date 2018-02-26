@@ -27,9 +27,9 @@ Using a multidimesional array, a player's moves over the board is tracked, if th
 
 When a player has made all their moves, it does not automatically switch to the next players turns, we feel that this disrupts the pace of the game. Instead once a player has no moves left, they are prompted to enter "done" to switch to the next player. This gives the player time to move weapons around as they wish, if they try and move with 0 moves left they will be greeted with "No moves left, type done." message.
 
-**5. Entering Rooms.**
+**5. Entering/ Exiting Rooms.**
 
-A player may enter any room through the identified entry point, once the token reaches the threshold of the room it automatically switches into a slot in that room. When exiting the room //awaiting Euans commit. Secret passages have also been implememted to fast travel across the board.
+A player may enter any room through the identified entry point, once the token reaches the threshold of the room it automatically switches into a slot in that room. When exiting the room doorways are labeled with numbers, enter that number to exit the room. Secret passages have also been implememted to fast travel across the board.
 
 **Functionality.**
 
