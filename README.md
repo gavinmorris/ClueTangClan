@@ -43,7 +43,7 @@ Hit enter or the JButton to complete a move.
 **Player commands work like this:**
 * **Not case sensitive!**
 * move up = **u**
-* move down = **down**
+* move down = **d**
 * move right = **r**
 * move left = **l**
 
