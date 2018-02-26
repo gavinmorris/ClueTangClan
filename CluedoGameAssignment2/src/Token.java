@@ -86,22 +86,22 @@ public class Token extends JLabel{
 		String imageName = null;
 		ImageIcon icon = null;
 		if(name.equals("green")) {
-			imageName = "green.png";
+			imageName = "Green.png";
 		}
 		else if(name.equals("mustard")) {
-			imageName = "mustard.png";
+			imageName = "Mustard.png";
 		}
 		else if(name.equals("peacock")) {
-			imageName = "peacock.png";
+			imageName = "Peacock.png";
 		}
 		else if(name.equals("plum")) {
-			imageName = "plum.png";
+			imageName = "Plum.png";
 		}
 		else if(name.equals("scarlett")) {
-			imageName = "scarlett.png";
+			imageName = "Scarlett.png";
 		}
 		else if(name.equals("white")) {
-			imageName = "white.png";
+			imageName = "White.png";
 		}
 
 		BufferedImage imageBuffered = null;
