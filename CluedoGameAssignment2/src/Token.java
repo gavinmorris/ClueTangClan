@@ -301,6 +301,9 @@ public class Token extends JLabel{
 				this.xcoordinate = Board.KitchenSlots[1][i];
 				this.ycoordinate = Board.KitchenSlots[2][i];
 				
+				//Set moves to 0
+				SendMessageButtonListener.moveCounter = 0;
+				
 				//Exit the loop
 				break;
 			}
@@ -318,6 +321,9 @@ public class Token extends JLabel{
 				//Move the token to the slot
 				this.xcoordinate = Board.BallRoomSlots[1][i];
 				this.ycoordinate = Board.BallRoomSlots[2][i];
+				
+				//Set moves to 0
+				SendMessageButtonListener.moveCounter = 0;
 				
 				//Exit the loop
 				break;
@@ -337,6 +343,9 @@ public class Token extends JLabel{
 				this.xcoordinate = Board.ConservatorySlots[1][i];
 				this.ycoordinate = Board.ConservatorySlots[2][i];
 				
+				//Set moves to 0
+				SendMessageButtonListener.moveCounter = 0;
+				
 				//Exit the loop
 				break;
 			}
@@ -354,6 +363,9 @@ public class Token extends JLabel{
 				//Move the token to the slot
 				this.xcoordinate = Board.DiningRoomSlots[1][i];
 				this.ycoordinate = Board.DiningRoomSlots[2][i];
+				
+				//Set moves to 0
+				SendMessageButtonListener.moveCounter = 0;
 				
 				//Exit the loop
 				break;
@@ -373,6 +385,9 @@ public class Token extends JLabel{
 				this.xcoordinate = Board.BilliardRoomSlots[1][i];
 				this.ycoordinate = Board.BilliardRoomSlots[2][i];
 				
+				//Set moves to 0
+				SendMessageButtonListener.moveCounter = 0;
+				
 				//Exit the loop
 				break;
 			}
@@ -390,6 +405,9 @@ public class Token extends JLabel{
 				//Move the token to the slot
 				this.xcoordinate = Board.LibrarySlots[1][i];
 				this.ycoordinate = Board.LibrarySlots[2][i];
+				
+				//Set moves to 0
+				SendMessageButtonListener.moveCounter = 0;
 				
 				//Exit the loop
 				break;
@@ -409,6 +427,9 @@ public class Token extends JLabel{
 				this.xcoordinate = Board.LoungeSlots[1][i];
 				this.ycoordinate = Board.LoungeSlots[2][i];
 				
+				//Set moves to 0
+				SendMessageButtonListener.moveCounter = 0;
+				
 				//Exit the loop
 				break;
 			}
@@ -427,6 +448,9 @@ public class Token extends JLabel{
 				this.xcoordinate = Board.HallSlots[1][i];
 				this.ycoordinate = Board.HallSlots[2][i];
 				
+				//Set moves to 0
+				SendMessageButtonListener.moveCounter = 0;
+				
 				//Exit the loop
 				break;
 			}
@@ -444,6 +468,9 @@ public class Token extends JLabel{
 				//Move the token to the slot
 				this.xcoordinate = Board.StudySlots[1][i];
 				this.ycoordinate = Board.StudySlots[2][i];
+				
+				//Set moves to 0
+				SendMessageButtonListener.moveCounter = 0;
 				
 				//Exit the loop
 				break;
