@@ -454,28 +454,28 @@ public class SendMessageButtonListener implements ActionListener {
 					board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.BallRoomEntrance1x;
 					board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.BallRoomEntrance1y;
 					board.tokenAL.get(i%Main.numPlayers).setBounds(board.tokenAL.get(i%Main.numPlayers).xcoordinate, board.tokenAL.get(i%Main.numPlayers).ycoordinate, board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
-					display.textarea.append("1");
+					appendAndRemove();
 				}
 				else if(text.equalsIgnoreCase("2")) {
 					board.tokenAL.get(i%Main.numPlayers).slot = 0;
 					board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.BallRoomEntrance2x;
 					board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.BallRoomEntrance2y;
 					board.tokenAL.get(i%Main.numPlayers).setBounds(board.tokenAL.get(i%Main.numPlayers).xcoordinate, board.tokenAL.get(i%Main.numPlayers).ycoordinate, board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
-					display.textarea.append("2");
+					appendAndRemove();
 				}
 				else if(text.equalsIgnoreCase("3")) {
 					board.tokenAL.get(i%Main.numPlayers).slot = 0;
 					board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.BallRoomEntrance3x;
 					board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.BallRoomEntrance3y;
 					board.tokenAL.get(i%Main.numPlayers).setBounds(board.tokenAL.get(i%Main.numPlayers).xcoordinate, board.tokenAL.get(i%Main.numPlayers).ycoordinate, board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
-					display.textarea.append("3");
+					appendAndRemove();
 				}
 				else if(text.equalsIgnoreCase("4")) {
 					board.tokenAL.get(i%Main.numPlayers).slot = 0;
 					board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.BallRoomEntrance4x;
 					board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.BallRoomEntrance4y;
 					board.tokenAL.get(i%Main.numPlayers).setBounds(board.tokenAL.get(i%Main.numPlayers).xcoordinate, board.tokenAL.get(i%Main.numPlayers).ycoordinate, board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
-					display.textarea.append("4");
+					appendAndRemove();
 				}
 			}
 
@@ -485,14 +485,14 @@ public class SendMessageButtonListener implements ActionListener {
 					board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.DiningRoomEntrance1x;
 					board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.DiningRoomEntrance1y;
 					board.tokenAL.get(i%Main.numPlayers).setBounds(board.tokenAL.get(i%Main.numPlayers).xcoordinate, board.tokenAL.get(i%Main.numPlayers).ycoordinate, board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
-					display.textarea.append("1");
+					appendAndRemove();
 				}
 				else if(text.equalsIgnoreCase("2")) {
 					board.tokenAL.get(i%Main.numPlayers).slot = 0;
 					board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.DiningRoomEntrance2x;
 					board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.DiningRoomEntrance2y;
 					board.tokenAL.get(i%Main.numPlayers).setBounds(board.tokenAL.get(i%Main.numPlayers).xcoordinate, board.tokenAL.get(i%Main.numPlayers).ycoordinate, board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
-					display.textarea.append("2");
+					appendAndRemove();
 				}
 			}
 			else if(board.tokenAL.get(i%Main.numPlayers).slot == 5) {
@@ -501,14 +501,14 @@ public class SendMessageButtonListener implements ActionListener {
 					board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.BilliardRoomEntrance1x;
 					board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.BilliardRoomEntrance1y;
 					board.tokenAL.get(i%Main.numPlayers).setBounds(board.tokenAL.get(i%Main.numPlayers).xcoordinate, board.tokenAL.get(i%Main.numPlayers).ycoordinate, board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
-					display.textarea.append("1");
+					appendAndRemove();
 				}
 				else if(text.equalsIgnoreCase("2")) {
 					board.tokenAL.get(i%Main.numPlayers).slot = 0;
 					board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.BilliardRoomEntrance2x;
 					board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.BilliardRoomEntrance2y;
 					board.tokenAL.get(i%Main.numPlayers).setBounds(board.tokenAL.get(i%Main.numPlayers).xcoordinate, board.tokenAL.get(i%Main.numPlayers).ycoordinate, board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
-					display.textarea.append("2");
+					appendAndRemove();
 				}
 			}
 			else if(board.tokenAL.get(i%Main.numPlayers).slot == 6) {
@@ -517,14 +517,14 @@ public class SendMessageButtonListener implements ActionListener {
 					board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.LibraryEntrance1x;
 					board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.LibraryEntrance1y;
 					board.tokenAL.get(i%Main.numPlayers).setBounds(board.tokenAL.get(i%Main.numPlayers).xcoordinate, board.tokenAL.get(i%Main.numPlayers).ycoordinate, board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
-					display.textarea.append("1");
+					appendAndRemove();
 				}
 				else if(text.equalsIgnoreCase("2")) {
 					board.tokenAL.get(i%Main.numPlayers).slot = 0;
 					board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.LibraryEntrance2x;
 					board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.LibraryEntrance2y;
 					board.tokenAL.get(i%Main.numPlayers).setBounds(board.tokenAL.get(i%Main.numPlayers).xcoordinate, board.tokenAL.get(i%Main.numPlayers).ycoordinate, board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
-					display.textarea.append("2");
+					appendAndRemove();
 				}
 			}
 			else {
@@ -535,21 +535,21 @@ public class SendMessageButtonListener implements ActionListener {
 					board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.HallEntrance1x;
 					board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.HallEntrance1y;
 					board.tokenAL.get(i%Main.numPlayers).setBounds(board.tokenAL.get(i%Main.numPlayers).xcoordinate, board.tokenAL.get(i%Main.numPlayers).ycoordinate, board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
-					display.textarea.append("2");
+					appendAndRemove();
 				}
 				else if(text.equalsIgnoreCase("2")) {
 					board.tokenAL.get(i%Main.numPlayers).slot = 0;
 					board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.HallEntrance2x;
 					board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.HallEntrance2y;
 					board.tokenAL.get(i%Main.numPlayers).setBounds(board.tokenAL.get(i%Main.numPlayers).xcoordinate, board.tokenAL.get(i%Main.numPlayers).ycoordinate, board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
-					display.textarea.append("2");
+					appendAndRemove();
 				}
 				else if(text.equalsIgnoreCase("3")) {
 					board.tokenAL.get(i%Main.numPlayers).slot = 0;
 					board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.HallEntrance3x;
 					board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.HallEntrance3y;
 					board.tokenAL.get(i%Main.numPlayers).setBounds(board.tokenAL.get(i%Main.numPlayers).xcoordinate, board.tokenAL.get(i%Main.numPlayers).ycoordinate, board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
-					display.textarea.append("3");
+					appendAndRemove();
 				}
 			}
 		}
@@ -919,7 +919,7 @@ public class SendMessageButtonListener implements ActionListener {
 				//Set Token as in Room
 				board.tokenAL.get(i%Main.numPlayers).slot = 4;
 				//Set slot as occupied
-				Board.DiningRoomSlots[0][i] = 1;
+				Board.DiningRoomSlots[0][j] = 1;
 				//Move the token to the slot
 				board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.DiningRoomSlots[1][j];
 				board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.DiningRoomSlots[2][j];
