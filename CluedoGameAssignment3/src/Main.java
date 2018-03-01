@@ -20,10 +20,16 @@ public class Main {
 			
 			playerNames = new String[numPlayers];
 			
-			for(int i=0;i<numPlayers;i++) {
+			int i=0;
+			while(i<numPlayers) {
 				playerNames[i] = JOptionPane.showInputDialog("Please enter name of player "+(i+1));
-				if(playerNames[i].equals("")) {
-					i--;
+				if(!playerNames[i].equals("")) {
+					for(int j=i; j>0; j--) {
+						if(playerNames[i].equals(playerNames[j-1])) {
+							i--;
+						}
+					}
+					i++;
 				}
 			}
 			
