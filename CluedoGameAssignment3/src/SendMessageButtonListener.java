@@ -14,18 +14,21 @@ public class SendMessageButtonListener implements ActionListener {
 	public static int moveCounter;
 	public boolean error=false;
 	public boolean notesVisible=false;
+	public boolean murderEnvelopeVisible = false;
 	
 	public Board board;
 	public Display display;
 	public TextualCommand textualcommand;
 	public BoardStructure boardstructure;
+	public MurderEnvelope murderenvelope;
 	public Notes notes;
 	
-	public SendMessageButtonListener(Board board, Display display, TextualCommand textualcommand, BoardStructure boardstructure, Notes notes) {
+	public SendMessageButtonListener(Board board, Display display, TextualCommand textualcommand, BoardStructure boardstructure, MurderEnvelope murderenvelope, Notes notes) {
 		this.board = board;
 		this.display = display;
 		this.textualcommand = textualcommand;
 		this.boardstructure = boardstructure;
+		this.murderenvelope = murderenvelope;
 		this.notes = notes;
 	}
 	
@@ -375,6 +378,16 @@ public class SendMessageButtonListener implements ActionListener {
 				else if(notesVisible == true) {
 					notes.setVisible(false);
 					notesVisible = false;
+				}
+			}
+			else if(text.equalsIgnoreCase("cheat")) {
+				if(murderEnvelopeVisible == false) {
+					murderenvelope.setVisible(true);
+					murderEnvelopeVisible = true;
+				}
+				else if(murderEnvelopeVisible == true) {
+					murderenvelope.setVisible(false);
+					murderEnvelopeVisible = false;
 				}
 			}
 		}	

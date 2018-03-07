@@ -22,7 +22,7 @@ public class Main {
 			
 			int i=0;
 			while(i<numPlayers) {
-				playerNames[i] = JOptionPane.showInputDialog("Please enter name of player "+(i+1));
+				playerNames[i] = JOptionPane.showInputDialog("Please enter name of player " + (i+1) + " (player names must be unique)");
 				if(!playerNames[i].equals("")) {
 					for(int j=i; j>0; j--) {
 						if(playerNames[i].equals(playerNames[j-1])) {
