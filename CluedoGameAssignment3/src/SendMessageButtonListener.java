@@ -124,12 +124,12 @@ public class SendMessageButtonListener implements ActionListener {
 						"\nquit --> terminates the game"
 				);
 				JOptionPane.showMessageDialog(null, help);
+				textualcommand.textfield.setText("");
 			}
 			else if(text.equalsIgnoreCase("notes")) {
 				if(notesVisible == false) {
 					notes.setVisible(true);
 					notesVisible = true;
-					textualcommand.textfield.setText("");
 				}
 				else if(notesVisible == true) {
 					notes.setVisible(false);
