@@ -43,6 +43,16 @@ public class MurderEnvelope extends JPanel{
 		
 	}
 	
+	public Card getSuspect() {
+		return suspect;
+	}
+	public Card getWeapon() {
+		return weapon;
+	}
+	public Card getRoom() {
+		return room;
+	}
+	
 	public int getWidth() {
 		return envelopeWidth;
 	}

@@ -66,7 +66,7 @@ public class Board extends JPanel {
 	public static int[][] StudySlots =  new int[3][6];
     
 	//allows us to iterate through an ArrayList to access players instead of using discrete names in the code
-    ArrayList<Token> tokenAL = new ArrayList<Token>();
+    public ArrayList<Token> tokenAL = new ArrayList<Token>();
 	
     public Weapon candlestick;
     public Weapon knife;
