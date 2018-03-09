@@ -129,25 +129,25 @@ public class Notes extends JPanel {
 	
 	public void readInImages() {
 		try {
-			notesImageBuffered = ImageIO.read(this.getClass().getResource("Notes.jpg"));
+			notesImageBuffered = ImageIO.read(this.getClass().getResource("NotesImages/Notes.jpg"));
 		} catch (IOException ex) {
 			System.out.println("Could not find the image file " + ex.toString());
 		}
 		
 		try {
-			XImageBuffered = ImageIO.read(this.getClass().getResource("X.jpg"));
+			XImageBuffered = ImageIO.read(this.getClass().getResource("NotesImages/X.jpg"));
 		} catch (IOException ex) {
 			System.out.println("Could not find the image file " + ex.toString());
 		}
 		
 		try {
-			AImageBuffered = ImageIO.read(this.getClass().getResource("A.jpg"));
+			AImageBuffered = ImageIO.read(this.getClass().getResource("NotesImages/A.jpg"));
 		} catch (IOException ex) {
 			System.out.println("Could not find the image file " + ex.toString());
 		}
 		
 		try {
-			tickImageBuffered = ImageIO.read(this.getClass().getResource("Tick.jpg"));
+			tickImageBuffered = ImageIO.read(this.getClass().getResource("NotesImages/Tick.jpg"));
 		} catch (IOException ex) {
 			System.out.println("Could not find the image file " + ex.toString());
 		}

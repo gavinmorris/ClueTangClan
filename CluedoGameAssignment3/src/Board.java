@@ -80,7 +80,7 @@ public class Board extends JPanel {
 	public Board() {
 		
 		try {
-			boardBufferedImage = ImageIO.read(this.getClass().getResource("Board.jpg"));
+			boardBufferedImage = ImageIO.read(this.getClass().getResource("BoardImage/Board.jpg"));
 		} catch (IOException ex) {
 			System.out.println("Could not find the image file " + ex.toString());
 		}

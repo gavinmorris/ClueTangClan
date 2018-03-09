@@ -25,67 +25,67 @@ public class Card extends JLabel{
 		String imageName = null;
 		ImageIcon icon = null;
 		if(cardName.equals("green")) {
-			imageName = "GreenCard.jpg";
+			imageName = "CardImages/GreenCard.jpg";
 		}
 		else if(cardName.equals("mustard")) {
-			imageName = "MustardCard.jpg";
+			imageName = "CardImages/MustardCard.jpg";
 		}
 		else if(cardName.equals("peacock")) {
-			imageName = "PeacockCard.jpg";
+			imageName = "CardImages/PeacockCard.jpg";
 		}
 		else if(cardName.equals("plum")) {
-			imageName = "PlumCard.jpg";
+			imageName = "CardImages/PlumCard.jpg";
 		}
 		else if(cardName.equals("scarlett")) {
-			imageName = "ScarlettCard.jpg";
+			imageName = "CardImages/ScarlettCard.jpg";
 		}
 		else if(cardName.equals("white")) {
-			imageName = "WhiteCard.jpg";
+			imageName = "CardImages/WhiteCard.jpg";
 		}
 		else if(cardName.equals("candlestick")) {
-			imageName = "CandlestickCard.jpg";
+			imageName = "CardImages/CandlestickCard.jpg";
 		}
 		else if(cardName.equals("knife")) {
-			imageName = "KnifeCard.jpg";
+			imageName = "CardImages/KnifeCard.jpg";
 		}
 		else if(cardName.equals("lead pipe")) {
-			imageName = "LeadPipeCard.jpg";
+			imageName = "CardImages/LeadPipeCard.jpg";
 		}
 		else if(cardName.equals("revolver")) {
-			imageName = "RevolverCard.jpg";
+			imageName = "CardImages/RevolverCard.jpg";
 		}
 		else if(cardName.equals("rope")) {
-			imageName = "RopeCard.jpg";
+			imageName = "CardImages/RopeCard.jpg";
 		}
 		else if(cardName.equals("wrench")) {
-			imageName = "WrenchCard.jpg";
+			imageName = "CardImages/WrenchCard.jpg";
 		}
 		else if(cardName.equals("ball room")) {
-			imageName = "BallRoomCard.jpg";
+			imageName = "CardImages/BallRoomCard.jpg";
 		}
 		else if(cardName.equals("billiard room")) {
-			imageName = "BilliardRoomCard.jpg";
+			imageName = "CardImages/BilliardRoomCard.jpg";
 		}
 		else if(cardName.equals("conservatory")) {
-			imageName = "ConservatoryCard.jpg";
+			imageName = "CardImages/ConservatoryCard.jpg";
 		}
 		else if(cardName.equals("dining room")) {
-			imageName = "DiningRoomCard.jpg";
+			imageName = "CardImages/DiningRoomCard.jpg";
 		}
 		else if(cardName.equals("hall")) {
-			imageName = "HallCard.jpg";
+			imageName = "CardImages/HallCard.jpg";
 		}
 		else if(cardName.equals("kitchen")) {
-			imageName = "KitchenCard.jpg";
+			imageName = "CardImages/KitchenCard.jpg";
 		}
 		else if(cardName.equals("library")) {
-			imageName = "LibraryCard.jpg";
+			imageName = "CardImages/LibraryCard.jpg";
 		}
 		else if(cardName.equals("lounge")) {
-			imageName = "LoungeCard.jpg";
+			imageName = "CardImages/LoungeCard.jpg";
 		}
 		else if(cardName.equals("study")) {
-			imageName = "StudyCard.jpg";
+			imageName = "CardImages/StudyCard.jpg";
 		}
 
 		BufferedImage imageBuffered = null;
