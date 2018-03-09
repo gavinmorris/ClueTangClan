@@ -55,6 +55,8 @@ public class Board extends JPanel {
 	public static int HallEntrance3x = 388; public static int HallEntrance3y = 484;
 	public static int StudyEntrancex = 434; public static int StudyEntrancey = 484;
 
+    ArrayList<int[][]> RoomSlots = new ArrayList<int[][]>();
+	
 	public static int[][] KitchenSlots =  new int[3][6];
 	public static int[][] BallRoomSlots =  new int[3][6];
 	public static int[][] ConservatorySlots =  new int[3][6];
@@ -95,6 +97,8 @@ public class Board extends JPanel {
 		tokenAL.add(new Token("peacock"));
 	    tokenAL.add(new Token("plum"));
 		
+	    RoomSlots.add(StudySlots);
+	    
 	    candlestick = new Weapon("candlestick", "kitchen");
 	    knife = new Weapon("knife", "ball room");
 	    leadpipe = new Weapon("leadpipe", "dining room");

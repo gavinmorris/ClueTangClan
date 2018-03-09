@@ -1036,6 +1036,7 @@ public class SendMessageButtonListener implements ActionListener {
 				//Set slot as occupied
 				Board.StudySlots[0][j] = 1;
 				//Move the token to the slot
+				board.tokenAL.get(i%Main.numPlayers).xcoordinate = board.RoomSlots.get(i)[0][0];
 				board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.StudySlots[1][j];
 				board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.StudySlots[2][j];
 
