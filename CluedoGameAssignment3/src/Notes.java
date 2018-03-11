@@ -135,7 +135,7 @@ public class Notes extends JPanel {
 		}
 		
 		try {
-			XImageBuffered = ImageIO.read(this.getClass().getResource("NotesImages/X.jpg"));
+			XImageBuffered = ImageIO.read(this.getClass().getResource("NotesImages/X.png"));
 		} catch (IOException ex) {
 			System.out.println("Could not find the image file " + ex.toString());
 		}
