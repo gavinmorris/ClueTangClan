@@ -41,27 +41,27 @@ public class Token extends JLabel{
 	}
 	
 	public void setStartingPosition(String name) {
-		if(name.equals("green")) {
+		if(name.equals("Green")) {
 			this.xcoordinate = Board.greenStartingx;
 			this.ycoordinate = Board.greenStartingy;
 		}
-		else if(name.equals("mustard")) {
+		else if(name.equals("Yellow")) {
 			this.xcoordinate = Board.mustardStartingx;
 			this.ycoordinate = Board.mustardStartingy;			
 		}
-		else if(name.equals("peacock")) {
+		else if(name.equals("Blue")) {
 			this.xcoordinate = Board.peacockStartingx;
 			this.ycoordinate = Board.peacockStartingy;
 		}
-		else if(name.equals("plum")) {
+		else if(name.equals("Purple")) {
 			this.xcoordinate = Board.plumStartingx;
 			this.ycoordinate = Board.plumStartingy;
 		}
-		else if(name.equals("scarlett")) {
+		else if(name.equals("Red")) {
 			this.xcoordinate = Board.scarlettStartingx;
 			this.ycoordinate = Board.scarlettStartingy;
 		}
-		else if(name.equals("white")) {
+		else if(name.equals("White")) {
 			this.xcoordinate = Board.whiteStartingx;
 			this.ycoordinate = Board.whiteStartingy;
 		}
@@ -70,22 +70,22 @@ public class Token extends JLabel{
 	public ImageIcon setLabelIcon(String name) {
 		String imageName = null;
 		ImageIcon icon = null;
-		if(name.equals("green")) {
+		if(name.equals("Green")) {
 			imageName = "TokenImages/Green.png";
 		}
-		else if(name.equals("mustard")) {
+		else if(name.equals("Yellow")) {
 			imageName = "TokenImages/Mustard.png";
 		}
-		else if(name.equals("peacock")) {
+		else if(name.equals("Blue")) {
 			imageName = "TokenImages/Peacock.png";
 		}
-		else if(name.equals("plum")) {
+		else if(name.equals("Purple")) {
 			imageName = "TokenImages/Plum.png";
 		}
-		else if(name.equals("scarlett")) {
+		else if(name.equals("Red")) {
 			imageName = "TokenImages/Scarlett.png";
 		}
-		else if(name.equals("white")) {
+		else if(name.equals("White")) {
 			imageName = "TokenImages/White.png";
 		}
 

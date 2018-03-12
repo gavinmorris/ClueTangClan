@@ -20,9 +20,8 @@ public class Display extends JPanel {
 		textarea.setEditable(false);	//so that the display panel cannot be changed without using the textual command
 		textarea.setLineWrap(true);
 		String result = "";
-		String tokenNames[] = {"Miss. Scarlett (red token)", "Col. Mustard (yellow token)", "Rev. Green (green token)", "Ms. White (white token)", "Mrs. Peacock (blue token)", "Prof. Plum (purple token)"};
 		for(int i=0;i<Main.numPlayers;i++) {
-			result = result +Main.playerNames[i]+" -> "+tokenNames[i]+"\n";
+			result = result +Main.playerNames[i]+" -> "+Board.tokenAL.get(i).name+"\n";
 		}
 		String help = "\n Type help to see instructions.";
 		textarea.setText(result+help+"\n --------------- "  + introText + " ---------------\n"+"Type start to begin.\n");

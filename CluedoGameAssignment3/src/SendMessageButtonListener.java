@@ -42,7 +42,8 @@ public class SendMessageButtonListener implements ActionListener {
 		//according to the text entered in the textual command, move each character one box up, down, left or right
 		if(gameStage == 0) {
 			if(text.equalsIgnoreCase("start")) {
-				moveCounter = diceResult();	
+				whoGoesFirst();
+				moveCounter = diceResult();
 				diceRoll(display, textualcommand);
 				textualcommand.textfield.setText("");
 				gameStage++;
@@ -106,10 +107,13 @@ public class SendMessageButtonListener implements ActionListener {
 			
 			if(text.equalsIgnoreCase("done")) {
 				if(moveCounter == 0) {
-					whoseTurn(display, textualcommand);
-					done--;
+					i++;
+					display.textarea.append(textualcommand.textfield.getText()+"\n" + "It is now "+ Main.playerNames[i%Main.numPlayers] +"'s turn.\n");
+					display.textarea.append("\n" + "Type 'roll' to roll the dice.");
+					textualcommand.textfield.setText("");
 				} else {
 					display.textarea.append(textualcommand.textfield.getText()+"\n" + "You still have moves left");
+					textualcommand.textfield.setText("");
 				}
 			}
 			
@@ -153,6 +157,11 @@ public class SendMessageButtonListener implements ActionListener {
 				display.textarea.append("\nGame Status: terminated" );
 				System.exit(0);
 			}
+			else if(text.equalsIgnoreCase("roll")) {
+				textualcommand.textfield.setText("");
+				whoseTurn(display, textualcommand);
+				done--;
+			}
 			
 			weaponMoves();
 		}	
@@ -161,6 +170,28 @@ public class SendMessageButtonListener implements ActionListener {
 	
 	
 	int MovesinTurn;
+	
+	public void whoGoesFirst() {
+		int[] saveResults = new int[4];
+		for(int i=0;i<Main.numPlayers;i++) {
+			int result = diceResult();
+			saveResults[i] = result;
+			display.textarea.append("\n"+Main.playerNames[i]+" rolled: " +result);
+		}
+		int max = saveResults[0];
+		int bigIndex = 0;
+		for (int i = 1; i < saveResults.length; i++) {
+		    if (saveResults[i] > max) {
+		      max = saveResults[i];
+		      bigIndex = i;
+		    }
+		}
+		
+		display.textarea.append("\n"+Main.playerNames[bigIndex]+" will go first.\n");
+		i = bigIndex;
+		
+	}
+	
 	
 	//alternates whose turn it is to make a move
 	public void whoseTurn(Display display, TextualCommand textualcommand) {
