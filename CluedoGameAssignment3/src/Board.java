@@ -66,7 +66,7 @@ public class Board extends JPanel {
 	public static int[][] StudySlots =  new int[3][6];
     
 	//allows us to iterate through an ArrayList to access players instead of using discrete names in the code
-    public ArrayList<Token> tokenAL = new ArrayList<Token>();
+    public static ArrayList<Token> tokenAL = new ArrayList<Token>();
 	
     public Weapon candlestick;
     public Weapon knife;
@@ -87,13 +87,7 @@ public class Board extends JPanel {
 		boardImage = new ImageIcon(boardBufferedImage);
 		cluedoboard = new JLabel(boardImage);
 		
-		//creating new token objects
-	    tokenAL.add(new Token("scarlett"));
-		tokenAL.add(new Token("mustard"));
-		tokenAL.add(new Token("green"));
-	    tokenAL.add(new Token("white"));
-		tokenAL.add(new Token("peacock"));
-	    tokenAL.add(new Token("plum"));
+
 		
 	    candlestick = new Weapon("candlestick", "kitchen");
 	    knife = new Weapon("knife", "ball room");
@@ -119,12 +113,26 @@ public class Board extends JPanel {
 		layeredPane.add(tokenAL.get(5), JLayeredPane.PALETTE_LAYER);
 		
 		//movePiece("green", greenStartingx, greenStartingy);
-		tokenAL.get(0).setBounds(scarlettStartingx, scarlettStartingy, tokenAL.get(4).imageIcon.getIconWidth(), tokenAL.get(4).imageIcon.getIconHeight());
-		tokenAL.get(1).setBounds(mustardStartingx, mustardStartingy, tokenAL.get(1).imageIcon.getIconWidth(), tokenAL.get(1).imageIcon.getIconHeight());
-		tokenAL.get(2).setBounds(whiteStartingx, whiteStartingy, tokenAL.get(5).imageIcon.getIconWidth(), tokenAL.get(5).imageIcon.getIconHeight());
-		tokenAL.get(3).setBounds(greenStartingx, greenStartingy, tokenAL.get(0).imageIcon.getIconWidth(), tokenAL.get(0).imageIcon.getIconHeight());
-		tokenAL.get(4).setBounds(peacockStartingx, peacockStartingy, tokenAL.get(2).imageIcon.getIconWidth(), tokenAL.get(2).imageIcon.getIconHeight());
-		tokenAL.get(5).setBounds(plumStartingx, plumStartingy, tokenAL.get(3).imageIcon.getIconWidth(), tokenAL.get(3).imageIcon.getIconHeight());
+		for(int i = 0;i<tokenAL.size();i++) {
+			if(tokenAL.get(i).name.equals("Green")) {
+				tokenAL.get(i).setBounds(greenStartingx, greenStartingy, tokenAL.get(i).imageIcon.getIconWidth(), tokenAL.get(i).imageIcon.getIconHeight());
+			}
+			else if(tokenAL.get(i).name.equals("Yellow")) {
+				tokenAL.get(i).setBounds(mustardStartingx, mustardStartingy, tokenAL.get(i).imageIcon.getIconWidth(), tokenAL.get(i).imageIcon.getIconHeight());
+			}
+			else if(tokenAL.get(i).name.equals("Blue")) {
+				tokenAL.get(i).setBounds(peacockStartingx, peacockStartingy, tokenAL.get(i).imageIcon.getIconWidth(), tokenAL.get(i).imageIcon.getIconHeight());
+			}
+			else if(tokenAL.get(i).name.equals("Purple")) {
+				tokenAL.get(i).setBounds(plumStartingx, plumStartingy, tokenAL.get(i).imageIcon.getIconWidth(), tokenAL.get(i).imageIcon.getIconHeight());
+			}
+			else if(tokenAL.get(i).name.equals("Red")) {
+				tokenAL.get(i).setBounds(scarlettStartingx, scarlettStartingy, tokenAL.get(i).imageIcon.getIconWidth(), tokenAL.get(i).imageIcon.getIconHeight());
+			}
+			else if(tokenAL.get(i).name.equals("White")) {
+				tokenAL.get(i).setBounds(whiteStartingx, whiteStartingy, tokenAL.get(i).imageIcon.getIconWidth(), tokenAL.get(i).imageIcon.getIconHeight());
+			}
+		}
 		
 		layeredPane.add(candlestick, JLayeredPane.PALETTE_LAYER);
 		layeredPane.add(knife, JLayeredPane.PALETTE_LAYER);
