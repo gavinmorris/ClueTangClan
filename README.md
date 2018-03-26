@@ -1,13 +1,11 @@
-# ClueTangClan
-
-![alt text](https://cdn-img.easyicon.net/png/5488/548871.gif)
+![alt text](https://i.imgur.com/bK5ti4Z.png)
 
 # Members
 * Euan Hayden (16495896)
 * Jem Cairns (16439124)
 * Gavin Morris (16360966)
 
-# Sprint 2
+# Sprint 3
 
 We have displayed 3 Panels.
 
