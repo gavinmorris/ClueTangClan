@@ -57,6 +57,8 @@ public class SendMessageButtonListener implements ActionListener {
 		}
 		
 		if(gameStage == 1) {	
+			notes.setVisible(false);
+			notesVisible = false;
 			if(Board.tokenAL.get(i%Main.numPlayers).slot != 9) {				
 				ExitRoom();
 			}
@@ -107,12 +109,13 @@ public class SendMessageButtonListener implements ActionListener {
 			
 			if(text.equalsIgnoreCase("done")) {
 				if(moveCounter == 0) {
-					i++;
-					display.textarea.append(textualcommand.textfield.getText()+"\n" + "It is now "+ Main.playerNames[i%Main.numPlayers] +"'s turn.\n");
+					display.textarea.append(textualcommand.textfield.getText()+"\n" + "It is now "+ Main.playerNames[(i+1)%Main.numPlayers] +"'s turn.\n");
 					display.textarea.append("\n" + "Type 'roll' to roll the dice.");
 					textualcommand.textfield.setText("");
-				} else {
-					display.textarea.append(textualcommand.textfield.getText()+"\n" + "You still have moves left");
+				} 
+				else {
+					display.textarea.append(textualcommand.textfield.getText()+"\n" + "You still have moves left\n");
+					display.textarea.append("< "  + Main.playerNames[i%Main.numPlayers] + " ("+ moveCounterDisplay(moveCounter) +") "+"> ");
 					textualcommand.textfield.setText("");
 				}
 			}
@@ -160,9 +163,16 @@ public class SendMessageButtonListener implements ActionListener {
 				System.exit(0);
 			}
 			else if(text.equalsIgnoreCase("roll")) {
-				textualcommand.textfield.setText("");
-				whoseTurn(display, textualcommand);
-				done--;
+				if(moveCounter == 0) {
+					textualcommand.textfield.setText("");
+					whoseTurn(display, textualcommand);
+					done--;
+				} 
+				else {
+					display.textarea.append(textualcommand.textfield.getText()+"\n" + "It is not your turn yet\n");
+					display.textarea.append("< "  + Main.playerNames[i%Main.numPlayers] + " ("+ moveCounterDisplay(moveCounter) +") "+"> ");
+					textualcommand.textfield.setText("");
+				}
 			}
 			weaponMoves();
 		}	
@@ -177,7 +187,7 @@ public class SendMessageButtonListener implements ActionListener {
 		int[] saveResults = new int[Main.numPlayers];
 		int[] drawedPlayers = new int[Main.numPlayers+1];
 		for(int i=0;i<Main.numPlayers;i++) {
-			int result = 7;
+			int result = diceResult();
 			saveResults[i] = result;
 			display.textarea.append("\n"+Main.playerNames[i]+" rolled: " +result);
 			drawedPlayers[i] = 0;
@@ -292,77 +302,84 @@ public class SendMessageButtonListener implements ActionListener {
 		
 		if(Board.tokenAL.get(i%Main.numPlayers).slot == 0 || Board.tokenAL.get(i%Main.numPlayers).slot == 2 || Board.tokenAL.get(i%Main.numPlayers).slot == 6 || Board.tokenAL.get(i%Main.numPlayers).slot == 8) {
 			if(Board.tokenAL.get(i%Main.numPlayers).slot == 0) {
-				RemovefromRoom();
 				if(text.equalsIgnoreCase("exit")) {
+					RemovefromRoom();
 					Board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.KitchenEntrancex;
 					Board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.KitchenEntrancey;
 					Board.tokenAL.get(i%Main.numPlayers).setBounds(Board.tokenAL.get(i%Main.numPlayers).xcoordinate, Board.tokenAL.get(i%Main.numPlayers).ycoordinate, Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
 					appendAndRemove();
 				}
 				else if(text.equalsIgnoreCase("passage")) {
+					RemovefromRoom();
 					AddtoRoom(8);
 				}
 			}
-			else if(Board.tokenAL.get(i%Main.numPlayers).slot == 3) {
-				RemovefromRoom();
+			else if(Board.tokenAL.get(i%Main.numPlayers).slot == 2) {
 				if(text.equalsIgnoreCase("exit")) {
+					RemovefromRoom();
 					Board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.ConservatoryEntrancex;
 					Board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.ConservatoryEntrancey;
 					Board.tokenAL.get(i%Main.numPlayers).setBounds(Board.tokenAL.get(i%Main.numPlayers).xcoordinate, Board.tokenAL.get(i%Main.numPlayers).ycoordinate, Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
 					appendAndRemove();
 				}
 				else if(text.equalsIgnoreCase("passage")) {
+					RemovefromRoom();
 					AddtoRoom(6);
 				}
 			}
-			else if(Board.tokenAL.get(i%Main.numPlayers).slot == 7) {
-				RemovefromRoom();
+			else if(Board.tokenAL.get(i%Main.numPlayers).slot == 6) {
 				if(text.equalsIgnoreCase("exit")) {
+					RemovefromRoom();
 					Board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.LoungeEntrancex;
 					Board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.LoungeEntrancey;
 					Board.tokenAL.get(i%Main.numPlayers).setBounds(Board.tokenAL.get(i%Main.numPlayers).xcoordinate, Board.tokenAL.get(i%Main.numPlayers).ycoordinate, Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
 					appendAndRemove();
 				}
 				else if(text.equalsIgnoreCase("passage")) {
+					RemovefromRoom();
 					AddtoRoom(2);
 				}
 			}
 			else {
-				RemovefromRoom();
 				if(text.equalsIgnoreCase("exit")) {
+					RemovefromRoom();
 					Board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.StudyEntrancex;
 					Board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.StudyEntrancey;
 					Board.tokenAL.get(i%Main.numPlayers).setBounds(Board.tokenAL.get(i%Main.numPlayers).xcoordinate, Board.tokenAL.get(i%Main.numPlayers).ycoordinate, Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
 					appendAndRemove();
 				}
 				else if(text.equalsIgnoreCase("passage")) {
+					RemovefromRoom();
 					AddtoRoom(0);
 				}
 			}
 		}
 
 		else {
-			if(Board.tokenAL.get(i%Main.numPlayers).slot == 2) {	
-				RemovefromRoom();
+			if(Board.tokenAL.get(i%Main.numPlayers).slot == 1) {
 				if(text.equalsIgnoreCase("1")) {
+					RemovefromRoom();
 					Board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.BallRoomEntrance1x;
 					Board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.BallRoomEntrance1y;
 					Board.tokenAL.get(i%Main.numPlayers).setBounds(Board.tokenAL.get(i%Main.numPlayers).xcoordinate, Board.tokenAL.get(i%Main.numPlayers).ycoordinate, Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
 					appendAndRemove();
 				}
 				else if(text.equalsIgnoreCase("2")) {
+					RemovefromRoom();
 					Board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.BallRoomEntrance2x;
 					Board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.BallRoomEntrance2y;
 					Board.tokenAL.get(i%Main.numPlayers).setBounds(Board.tokenAL.get(i%Main.numPlayers).xcoordinate, Board.tokenAL.get(i%Main.numPlayers).ycoordinate, Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
 					appendAndRemove();
 				}
 				else if(text.equalsIgnoreCase("3")) {
+					RemovefromRoom();
 					Board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.BallRoomEntrance3x;
 					Board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.BallRoomEntrance3y;
 					Board.tokenAL.get(i%Main.numPlayers).setBounds(Board.tokenAL.get(i%Main.numPlayers).xcoordinate, Board.tokenAL.get(i%Main.numPlayers).ycoordinate, Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
 					appendAndRemove();
 				}
 				else if(text.equalsIgnoreCase("4")) {
+					RemovefromRoom();
 					Board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.BallRoomEntrance4x;
 					Board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.BallRoomEntrance4y;
 					Board.tokenAL.get(i%Main.numPlayers).setBounds(Board.tokenAL.get(i%Main.numPlayers).xcoordinate, Board.tokenAL.get(i%Main.numPlayers).ycoordinate, Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
@@ -370,45 +387,48 @@ public class SendMessageButtonListener implements ActionListener {
 				}
 			}
 
-			else if(Board.tokenAL.get(i%Main.numPlayers).slot == 4) {
-				RemovefromRoom();
+			else if(Board.tokenAL.get(i%Main.numPlayers).slot == 3) {
 				if(text.equalsIgnoreCase("1")) {
+					RemovefromRoom();
 					Board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.DiningRoomEntrance1x;
 					Board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.DiningRoomEntrance1y;
 					Board.tokenAL.get(i%Main.numPlayers).setBounds(Board.tokenAL.get(i%Main.numPlayers).xcoordinate, Board.tokenAL.get(i%Main.numPlayers).ycoordinate, Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
 					appendAndRemove();
 				}
 				else if(text.equalsIgnoreCase("2")) {
+					RemovefromRoom();
 					Board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.DiningRoomEntrance2x;
 					Board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.DiningRoomEntrance2y;
 					Board.tokenAL.get(i%Main.numPlayers).setBounds(Board.tokenAL.get(i%Main.numPlayers).xcoordinate, Board.tokenAL.get(i%Main.numPlayers).ycoordinate, Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
 					appendAndRemove();
 				}
 			}
-			else if(Board.tokenAL.get(i%Main.numPlayers).slot == 5) {
-				RemovefromRoom();
+			else if(Board.tokenAL.get(i%Main.numPlayers).slot == 4) {
 				if(text.equalsIgnoreCase("1")) {
+					RemovefromRoom();
 					Board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.BilliardRoomEntrance1x;
 					Board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.BilliardRoomEntrance1y;
 					Board.tokenAL.get(i%Main.numPlayers).setBounds(Board.tokenAL.get(i%Main.numPlayers).xcoordinate, Board.tokenAL.get(i%Main.numPlayers).ycoordinate, Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
 					appendAndRemove();
 				}
 				else if(text.equalsIgnoreCase("2")) {
+					RemovefromRoom();
 					Board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.BilliardRoomEntrance2x;
 					Board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.BilliardRoomEntrance2y;
 					Board.tokenAL.get(i%Main.numPlayers).setBounds(Board.tokenAL.get(i%Main.numPlayers).xcoordinate, Board.tokenAL.get(i%Main.numPlayers).ycoordinate, Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
 					appendAndRemove();
 				}
 			}
-			else if(Board.tokenAL.get(i%Main.numPlayers).slot == 6) {
-				RemovefromRoom();
+			else if(Board.tokenAL.get(i%Main.numPlayers).slot == 5) {
 				if(text.equalsIgnoreCase("1")) {
+					RemovefromRoom();
 					Board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.LibraryEntrance1x;
 					Board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.LibraryEntrance1y;
 					Board.tokenAL.get(i%Main.numPlayers).setBounds(Board.tokenAL.get(i%Main.numPlayers).xcoordinate, Board.tokenAL.get(i%Main.numPlayers).ycoordinate, Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
 					appendAndRemove();
 				}
 				else if(text.equalsIgnoreCase("2")) {
+					RemovefromRoom();
 					Board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.LibraryEntrance2x;
 					Board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.LibraryEntrance2y;
 					Board.tokenAL.get(i%Main.numPlayers).setBounds(Board.tokenAL.get(i%Main.numPlayers).xcoordinate, Board.tokenAL.get(i%Main.numPlayers).ycoordinate, Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
@@ -416,20 +436,22 @@ public class SendMessageButtonListener implements ActionListener {
 				}
 			}
 			else {
-				RemovefromRoom();
 				if(text.equalsIgnoreCase("1")) {
+					RemovefromRoom();
 					Board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.HallEntrance1x;
 					Board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.HallEntrance1y;
 					Board.tokenAL.get(i%Main.numPlayers).setBounds(Board.tokenAL.get(i%Main.numPlayers).xcoordinate, Board.tokenAL.get(i%Main.numPlayers).ycoordinate, Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
 					appendAndRemove();
 				}
 				else if(text.equalsIgnoreCase("2")) {
+					RemovefromRoom();
 					Board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.HallEntrance2x;
 					Board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.HallEntrance2y;
 					Board.tokenAL.get(i%Main.numPlayers).setBounds(Board.tokenAL.get(i%Main.numPlayers).xcoordinate, Board.tokenAL.get(i%Main.numPlayers).ycoordinate, Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
 					appendAndRemove();
 				}
 				else if(text.equalsIgnoreCase("3")) {
+					RemovefromRoom();
 					Board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.HallEntrance3x;
 					Board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.HallEntrance3y;
 					Board.tokenAL.get(i%Main.numPlayers).setBounds(Board.tokenAL.get(i%Main.numPlayers).xcoordinate, Board.tokenAL.get(i%Main.numPlayers).ycoordinate, Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
@@ -756,7 +778,7 @@ public class SendMessageButtonListener implements ActionListener {
 		//Find which room they're in
 		int l = Board.tokenAL.get(i%Main.numPlayers).slot;
 		for(int j = 0; j<6;j++) {
-			if(Board.RoomSlots.get(l)[0][j] == 1) {
+			if(Board.tokenAL.get(i%Main.numPlayers).xcoordinate == Board.RoomSlots.get(l)[1][j] && Board.tokenAL.get(i%Main.numPlayers).ycoordinate == Board.RoomSlots.get(l)[2][j]) {
 				//Set board back to S
 				boardstructure.setCoordinatesType('S', Board.tokenAL.get(i%Main.numPlayers).xcoordinate, Board.tokenAL.get(i%Main.numPlayers).ycoordinate);
 				//Set Token as not in a Room
