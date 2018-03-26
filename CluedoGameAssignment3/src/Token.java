@@ -325,9 +325,5 @@ public class Token extends JLabel{
 				notes.notesArray[b][a].setBounds(i, j, notes.XImageIcon.getIconWidth()-1, notes.XImageIcon.getIconHeight()-1); 
 			}
 		}
-	}
-	
-	
-	
-	
+	}	
 }

@@ -174,26 +174,82 @@ public class SendMessageButtonListener implements ActionListener {
 	
 	public void whoGoesFirst() {
 		display.textarea.append("\nRoll to see who goes first:");
-		int[] saveResults = new int[4];
+		int[] saveResults = new int[Main.numPlayers];
+		int[] drawedPlayers = new int[Main.numPlayers+1];
 		for(int i=0;i<Main.numPlayers;i++) {
-			int result = diceResult();
+			int result = 7;
 			saveResults[i] = result;
 			display.textarea.append("\n"+Main.playerNames[i]+" rolled: " +result);
+			drawedPlayers[i] = 0;
 		}
+		drawedPlayers[Main.numPlayers] = 0;
+		int iterate = 1;
 		int max = saveResults[0];
+	    drawedPlayers[0] = 1;
 		int bigIndex = 0;
 		for (int i = 1; i < saveResults.length; i++) {
 		    if (saveResults[i] > max) {
 		      max = saveResults[i];
 		      bigIndex = i;
+				for(int j=0;j<Main.numPlayers;j++) {
+					drawedPlayers[j] = 0;
+				}
+		      drawedPlayers[0] = i;
+		      iterate = 1;
+		    }
+		    else if (saveResults[i] == max) {
+		    		drawedPlayers[iterate] = i+1;
+		    		iterate++;
 		    }
 		}
 		
-		display.textarea.append("\n"+Main.playerNames[bigIndex]+" will go first.\n");
-		i = bigIndex;
-		
+		if(drawedPlayers[1] != 0) {
+			DrawedRoll(drawedPlayers);
+		}
+		else {
+			i = bigIndex;
+		}
+		display.textarea.append("\n\n"+Main.playerNames[i]+" will go first.\n");
 	}
 	
+	public void DrawedRoll(int[] drawedPlayers) {
+		display.textarea.append("\n\nThere was a draw, roll again to decide:");
+		int[] saveResults = new int[6];
+		int l = 0;
+		while(drawedPlayers[l] != 0) {
+			int result = diceResult();
+			saveResults[l] = result;
+			display.textarea.append("\n"+drawedPlayers[l]+" rolled: " +result);
+			l++;
+		}
+		for(int j=0;j<Main.numPlayers;j++) {
+			drawedPlayers[j] = 0;
+		}
+		int iterate = 1;
+		int max = saveResults[0];
+		int bigIndex = 0;
+		for (int i = 1; i < l; i++) {
+		    if (saveResults[i] > max) {
+		      max = saveResults[i];
+		      bigIndex = i;
+				for(int j=0;j<l;j++) {
+					drawedPlayers[j] = 0;
+				}
+		      drawedPlayers[0] = i;
+		      iterate = 1;
+		    }
+		    else if (saveResults[i] == max) {
+		    		drawedPlayers[iterate] = i;
+		    		iterate++;
+		    }
+		}
+		
+		if(drawedPlayers[1] != 0) {
+			DrawedRoll(drawedPlayers);
+		}
+		
+		i = bigIndex;
+	}
 	
 	//alternates whose turn it is to make a move
 	public void whoseTurn(Display display, TextualCommand textualcommand) {
@@ -794,9 +850,6 @@ public class SendMessageButtonListener implements ActionListener {
 			moveRoom(weapon, room);
 			weapon.setPosition(x, y);
 			textualcommand.textfield.setText("");
-		}
-		
-		
+		}	
 	}
-	
 }

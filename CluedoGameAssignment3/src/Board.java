@@ -26,7 +26,7 @@ public class Board extends JPanel {
 	public static int whiteStartingx = 365; public static int whiteStartingy = 24;
 	
 	//declare location within rooms for weapons to go to
-	public static int kitchenx = 65; public static int kitcheny = 44;
+	public static int kitchenx = 75; public static int kitcheny = 130;
 	public static int ballroomx = 300; public static int ballroomy = 44;
 	public static int conservatoryx = 555; public static int conservatoryy = 44;
 	public static int billiardroomx = 555; public static int billiardroomy = 260;
