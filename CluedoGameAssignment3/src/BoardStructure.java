@@ -127,6 +127,8 @@ public class BoardStructure {
 		}
 	}
 	
+	//Easier to create slots than typing them individually
+	//Takes the StartingX and StartingY as the first slot then adds 5 more in a 2x3 grid
 	public void SetSlots() {
 		int iterate = 0;
 		
@@ -135,10 +137,10 @@ public class BoardStructure {
 		for(int j = 0;j<2;j++) {
 			for(int i = 0;i<3;i++) {
 				//Set the slot as empty
-				Board.KitchenSlots[0][iterate] = 0;
+				Board.RoomSlots.get(0)[0][iterate] = 0;
 				//Set the coords of each slots
-				Board.KitchenSlots[1][iterate] = KitchenSlotsStartingx + i*23;
-				Board.KitchenSlots[2][iterate] = KitchenSlotsStartingy + j*23;
+				Board.RoomSlots.get(0)[1][iterate] = KitchenSlotsStartingx + i*23;
+				Board.RoomSlots.get(0)[2][iterate] = KitchenSlotsStartingy + j*23;
 				iterate++;
 			}
 		}
@@ -148,9 +150,9 @@ public class BoardStructure {
 		int BallRoomSlotsStartingy = 70;
 		for(int j = 0;j<2;j++) {
 			for(int i = 0;i<3;i++) {
-				Board.BallRoomSlots[0][iterate] = 0;
-				Board.BallRoomSlots[1][iterate] = BallRoomSlotsStartingx + i*23;
-				Board.BallRoomSlots[2][iterate] = BallRoomSlotsStartingy + j*23;
+				Board.RoomSlots.get(1)[0][iterate] = 0;
+				Board.RoomSlots.get(1)[1][iterate] = BallRoomSlotsStartingx + i*23;
+				Board.RoomSlots.get(1)[2][iterate] = BallRoomSlotsStartingy + j*23;
 				iterate++;
 			}
 		}
@@ -160,9 +162,9 @@ public class BoardStructure {
 		int ConservatorySlotsStartingy = 47;
 		for(int j = 0;j<2;j++) {
 			for(int i = 0;i<3;i++) {
-				Board.ConservatorySlots[0][iterate] = 0;
-				Board.ConservatorySlots[1][iterate] = ConservatorySlotsStartingx + i*23;
-				Board.ConservatorySlots[2][iterate] = ConservatorySlotsStartingy + j*23;
+				Board.RoomSlots.get(2)[0][iterate] = 0;
+				Board.RoomSlots.get(2)[1][iterate] = ConservatorySlotsStartingx + i*23;
+				Board.RoomSlots.get(2)[2][iterate] = ConservatorySlotsStartingy + j*23;
 				iterate++;
 			}
 		}
@@ -172,9 +174,9 @@ public class BoardStructure {
 		int DiningRoomSlotsStartingy = 254;
 		for(int j = 0;j<2;j++) {
 			for(int i = 0;i<3;i++) {
-				Board.DiningRoomSlots[0][iterate] = 0;
-				Board.DiningRoomSlots[1][iterate] = DiningRoomSlotsStartingx + i*23;
-				Board.DiningRoomSlots[2][iterate] = DiningRoomSlotsStartingy + j*23;
+				Board.RoomSlots.get(3)[0][iterate] = 0;
+				Board.RoomSlots.get(3)[1][iterate] = DiningRoomSlotsStartingx + i*23;
+				Board.RoomSlots.get(3)[2][iterate] = DiningRoomSlotsStartingy + j*23;
 				iterate++;
 			}
 		}
@@ -184,9 +186,9 @@ public class BoardStructure {
 		int BilliardRoomSlotsStartingy = 254;
 		for(int j = 0;j<2;j++) {
 			for(int i = 0;i<3;i++) {
-				Board.BilliardRoomSlots[0][iterate] = 0;
-				Board.BilliardRoomSlots[1][iterate] = BilliardRoomSlotsStartingx + i*23;
-				Board.BilliardRoomSlots[2][iterate] = BilliardRoomSlotsStartingy + j*23;
+				Board.RoomSlots.get(4)[0][iterate] = 0;
+				Board.RoomSlots.get(4)[1][iterate] = BilliardRoomSlotsStartingx + i*23;
+				Board.RoomSlots.get(4)[2][iterate] = BilliardRoomSlotsStartingy + j*23;
 				iterate++;
 			}
 		}
@@ -196,9 +198,9 @@ public class BoardStructure {
 		int LibrarySlotsStartingy = 392;
 		for(int j = 0;j<2;j++) {
 			for(int i = 0;i<3;i++) {
-				Board.LibrarySlots[0][iterate] = 0;
-				Board.LibrarySlots[1][iterate] = LibrarySlotsStartingx + i*23;
-				Board.LibrarySlots[2][iterate] = LibrarySlotsStartingy + j*23;
+				Board.RoomSlots.get(5)[0][iterate] = 0;
+				Board.RoomSlots.get(5)[1][iterate] = LibrarySlotsStartingx + i*23;
+				Board.RoomSlots.get(5)[2][iterate] = LibrarySlotsStartingy + j*23;
 				iterate++;
 			}
 		}
@@ -208,9 +210,9 @@ public class BoardStructure {
 		int LoungeSlotsStartingy = 530;
 		for(int j = 0;j<2;j++) {
 			for(int i = 0;i<3;i++) {
-				Board.LoungeSlots[0][iterate] = 0;
-				Board.LoungeSlots[1][iterate] = LoungeSlotsStartingx + i*23;
-				Board.LoungeSlots[2][iterate] = LoungeSlotsStartingy + j*23;
+				Board.RoomSlots.get(6)[0][iterate] = 0;
+				Board.RoomSlots.get(6)[1][iterate] = LoungeSlotsStartingx + i*23;
+				Board.RoomSlots.get(6)[2][iterate] = LoungeSlotsStartingy + j*23;
 				iterate++;
 			}
 		}
@@ -220,9 +222,9 @@ public class BoardStructure {
 		int HallSlotsStartingy = 530;
 		for(int j = 0;j<2;j++) {
 			for(int i = 0;i<3;i++) {
-				Board.HallSlots[0][iterate] = 0;
-				Board.HallSlots[1][iterate] = HallSlotsStartingx + i*23;
-				Board.HallSlots[2][iterate] = HallSlotsStartingy + j*23;
+				Board.RoomSlots.get(7)[0][iterate] = 0;
+				Board.RoomSlots.get(7)[1][iterate] = HallSlotsStartingx + i*23;
+				Board.RoomSlots.get(7)[2][iterate] = HallSlotsStartingy + j*23;
 				iterate++;
 			}
 		}
@@ -232,9 +234,9 @@ public class BoardStructure {
 		int StudySlotsStartingy = 530;
 		for(int j = 0;j<2;j++) {
 			for(int i = 0;i<3;i++) {
-				Board.StudySlots[0][iterate] = 0;
-				Board.StudySlots[1][iterate] = StudySlotsStartingx + i*23;
-				Board.StudySlots[2][iterate] = StudySlotsStartingy + j*23;
+				Board.RoomSlots.get(8)[0][iterate] = 0;
+				Board.RoomSlots.get(8)[1][iterate] = StudySlotsStartingx + i*23;
+				Board.RoomSlots.get(8)[2][iterate] = StudySlotsStartingy + j*23;
 				iterate++;
 			}
 		}

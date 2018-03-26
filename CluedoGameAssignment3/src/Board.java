@@ -55,15 +55,19 @@ public class Board extends JPanel {
 	public static int HallEntrance3x = 388; public static int HallEntrance3y = 484;
 	public static int StudyEntrancex = 434; public static int StudyEntrancey = 484;
 
-	public static int[][] KitchenSlots =  new int[3][6];
-	public static int[][] BallRoomSlots =  new int[3][6];
-	public static int[][] ConservatorySlots =  new int[3][6];
-	public static int[][] DiningRoomSlots =  new int[3][6];
-	public static int[][] BilliardRoomSlots =  new int[3][6];
-	public static int[][] LibrarySlots =  new int[3][6];
-	public static int[][] LoungeSlots =  new int[3][6];
-	public static int[][] HallSlots =  new int[3][6];
-	public static int[][] StudySlots =  new int[3][6];
+	//This arraylist stores if a player is in a room
+	//By using an arraylist of arrays we can condense the code in SendMessageButtonListener
+	//Instead of having an AddtoRoom and RemovefromRoom function for each room we can use AddtoRoom(4) instead
+	//0 = Kitchen
+	//1 = Ball Room
+	//2 = Conservatory
+	//3 = Dining Room
+	//4 = Billiard Room
+	//5 = Library
+	//6 = Lounge
+	//7 = Hall
+	//8 = Study
+	public static ArrayList<int[][]> RoomSlots = new ArrayList<int[][]>();
     
 	//allows us to iterate through an ArrayList to access players instead of using discrete names in the code
     public static ArrayList<Token> tokenAL = new ArrayList<Token>();
@@ -86,8 +90,6 @@ public class Board extends JPanel {
 		}
 		boardImage = new ImageIcon(boardBufferedImage);
 		cluedoboard = new JLabel(boardImage);
-		
-
 		
 	    candlestick = new Weapon("candlestick", "kitchen");
 	    knife = new Weapon("knife", "ball room");
@@ -149,14 +151,20 @@ public class Board extends JPanel {
 		wrench.setBounds(wrench.getX(), wrench.getY(), wrench.imageIcon.getIconWidth(), wrench.imageIcon.getIconHeight());
 		
 		this.add(layeredPane);
-		
 		this.setBorder(new EmptyBorder(4, 4, 0, 4));
 		this.setBackground(Color.DARK_GRAY);
-	}
-	
-	
-
 		
+		//Adding for each room
+		RoomSlots.add(new int[3][6]);
+		RoomSlots.add(new int[3][6]);
+		RoomSlots.add(new int[3][6]);
+		RoomSlots.add(new int[3][6]);
+		RoomSlots.add(new int[3][6]);
+		RoomSlots.add(new int[3][6]);
+		RoomSlots.add(new int[3][6]);
+		RoomSlots.add(new int[3][6]);
+		RoomSlots.add(new int[3][6]);
+	}
 }
 
 

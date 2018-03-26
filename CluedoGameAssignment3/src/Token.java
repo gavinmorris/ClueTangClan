@@ -23,7 +23,8 @@ public class Token extends JLabel{
 	public Token(String name) {
 	    this.name = name;
 	    imageIcon = setLabelIcon(name);
-	    slot = 0;
+	    //0-8 are rooms, so we use 9 to say they are not in a room
+	    slot = 9;
 	    this.setIcon(imageIcon);
 		setStartingPosition(name);
 		

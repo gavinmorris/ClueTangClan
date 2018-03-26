@@ -24,7 +24,7 @@ public class Display extends JPanel {
 			result = result +Main.playerNames[i]+" -> "+Board.tokenAL.get(i).name+"\n";
 		}
 		String help = "\n Type help to see instructions.";
-		textarea.setText(result+help+"\n --------------- "  + introText + " ---------------\n"+"Type start to begin.\n");
+		textarea.setText(result+help+"\n ---------------- "  + introText + " ----------------\n"+"Type start to begin.\n");
 		this.setLayout(new BorderLayout());
 		this.setBackground(Color.DARK_GRAY);
 		this.add(scrollpane);

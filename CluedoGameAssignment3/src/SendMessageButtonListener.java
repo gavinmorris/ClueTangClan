@@ -35,21 +35,21 @@ public class SendMessageButtonListener implements ActionListener {
 	
 	public void actionPerformed(ActionEvent event) {
 		
-		//according to the text entered in the textual command, move each character one box up, down, left or right
 		text = textualcommand.textfield.getText().trim();
 		
 		
 		//according to the text entered in the textual command, move each character one box up, down, left or right
 		if(gameStage == 0) {
 			if(text.equalsIgnoreCase("start")) {
+				display.textarea.append("start\n");
+				textualcommand.textfield.setText("");
 				whoGoesFirst();
 				moveCounter = diceResult();
 				diceRoll(display, textualcommand);
-				textualcommand.textfield.setText("");
 				gameStage++;
 
 				PanelsInJFrame.layeredPane.remove(notes);
-				notes = board.tokenAL.get(i%Main.numPlayers).notes;
+				notes = Board.tokenAL.get(i%Main.numPlayers).notes;
 				notes.setBounds(100, 100, notes.notesImageIcon.getIconWidth()+10, notes.notesImageIcon.getIconHeight()+10);
 				PanelsInJFrame.layeredPane.add(notes, JLayeredPane.PALETTE_LAYER);
 				notes.setVisible(false);
@@ -57,7 +57,7 @@ public class SendMessageButtonListener implements ActionListener {
 		}
 		
 		if(gameStage == 1) {	
-			if(board.tokenAL.get(i%Main.numPlayers).slot != 0) {				
+			if(Board.tokenAL.get(i%Main.numPlayers).slot != 9) {				
 				ExitRoom();
 			}
 			else {
@@ -124,6 +124,8 @@ public class SendMessageButtonListener implements ActionListener {
 						"move candlestick to library\n\n"+
 						"Player commands work like this:\n\n"+
 						"u = move up\nd = move down\nr = move right\nl = move left"+
+						"\n\n While in a room the available commands are:"+
+						"\nexit\npassage"+
 						"\n\nOther Commands:\nhelp --> opens this panel"+
 						"\nquit --> terminates the game"
 				);
@@ -162,7 +164,6 @@ public class SendMessageButtonListener implements ActionListener {
 				whoseTurn(display, textualcommand);
 				done--;
 			}
-			
 			weaponMoves();
 		}	
 	}		
@@ -172,6 +173,7 @@ public class SendMessageButtonListener implements ActionListener {
 	int MovesinTurn;
 	
 	public void whoGoesFirst() {
+		display.textarea.append("\nRoll to see who goes first:");
 		int[] saveResults = new int[4];
 		for(int i=0;i<Main.numPlayers;i++) {
 			int result = diceResult();
@@ -202,7 +204,7 @@ public class SendMessageButtonListener implements ActionListener {
 			textualcommand.textfield.setText("");
 
 			PanelsInJFrame.layeredPane.remove(notes);
-			notes = board.tokenAL.get(i%Main.numPlayers).notes;
+			notes = Board.tokenAL.get(i%Main.numPlayers).notes;
 			notes.setBounds(100, 100, notes.notesImageIcon.getIconWidth()+10, notes.notesImageIcon.getIconHeight()+10);
 			PanelsInJFrame.layeredPane.add(notes, JLayeredPane.PALETTE_LAYER);
 			notes.setVisible(false);
@@ -214,13 +216,13 @@ public class SendMessageButtonListener implements ActionListener {
 		display.textarea.append(textualcommand.textfield.getText() + "\n" + "<-------" + Main.playerNames[i%Main.numPlayers]+" rolled the dice ------->\n");	
 		display.textarea.append("<" + Main.playerNames[i%Main.numPlayers] + " has " + moveCounter +" moves>" );
 		
-		if(board.tokenAL.get(i%Main.numPlayers).slot != 0) {				
+		if(Board.tokenAL.get(i%Main.numPlayers).slot != 9) {				
 			PrintExitOption();
 		}
 	}
 	
 	public void PrintExitOption() {
-		if(board.tokenAL.get(i%Main.numPlayers).slot == 1 || board.tokenAL.get(i%Main.numPlayers).slot == 3 || board.tokenAL.get(i%Main.numPlayers).slot == 7 || board.tokenAL.get(i%Main.numPlayers).slot == 9) {
+		if(Board.tokenAL.get(i%Main.numPlayers).slot == 0 || Board.tokenAL.get(i%Main.numPlayers).slot == 2 || Board.tokenAL.get(i%Main.numPlayers).slot == 6 || Board.tokenAL.get(i%Main.numPlayers).slot == 8) {
 			display.textarea.append("\nWould you like to exit or use a passage" );
 		}
 		else {
@@ -232,160 +234,149 @@ public class SendMessageButtonListener implements ActionListener {
 	
 	public void ExitRoom() {
 		
-		if(board.tokenAL.get(i%Main.numPlayers).slot == 1 || board.tokenAL.get(i%Main.numPlayers).slot == 3 || board.tokenAL.get(i%Main.numPlayers).slot == 7 || board.tokenAL.get(i%Main.numPlayers).slot == 9) {
-			
-			if(board.tokenAL.get(i%Main.numPlayers).slot == 1) {
+		if(Board.tokenAL.get(i%Main.numPlayers).slot == 0 || Board.tokenAL.get(i%Main.numPlayers).slot == 2 || Board.tokenAL.get(i%Main.numPlayers).slot == 6 || Board.tokenAL.get(i%Main.numPlayers).slot == 8) {
+			if(Board.tokenAL.get(i%Main.numPlayers).slot == 0) {
+				RemovefromRoom();
 				if(text.equalsIgnoreCase("exit")) {
-					board.tokenAL.get(i%Main.numPlayers).slot = 0;
-					board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.KitchenEntrancex;
-					board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.KitchenEntrancey;
-					board.tokenAL.get(i%Main.numPlayers).setBounds(board.tokenAL.get(i%Main.numPlayers).xcoordinate, board.tokenAL.get(i%Main.numPlayers).ycoordinate, board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
+					Board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.KitchenEntrancex;
+					Board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.KitchenEntrancey;
+					Board.tokenAL.get(i%Main.numPlayers).setBounds(Board.tokenAL.get(i%Main.numPlayers).xcoordinate, Board.tokenAL.get(i%Main.numPlayers).ycoordinate, Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
 					appendAndRemove();
 				}
 				else if(text.equalsIgnoreCase("passage")) {
-					AddtoStudy();
+					AddtoRoom(8);
 				}
 			}
-			else if(board.tokenAL.get(i%Main.numPlayers).slot == 3) {
+			else if(Board.tokenAL.get(i%Main.numPlayers).slot == 3) {
+				RemovefromRoom();
 				if(text.equalsIgnoreCase("exit")) {
-					board.tokenAL.get(i%Main.numPlayers).slot = 0;
-					board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.ConservatoryEntrancex;
-					board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.ConservatoryEntrancey;
-					board.tokenAL.get(i%Main.numPlayers).setBounds(board.tokenAL.get(i%Main.numPlayers).xcoordinate, board.tokenAL.get(i%Main.numPlayers).ycoordinate, board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
+					Board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.ConservatoryEntrancex;
+					Board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.ConservatoryEntrancey;
+					Board.tokenAL.get(i%Main.numPlayers).setBounds(Board.tokenAL.get(i%Main.numPlayers).xcoordinate, Board.tokenAL.get(i%Main.numPlayers).ycoordinate, Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
 					appendAndRemove();
 				}
 				else if(text.equalsIgnoreCase("passage")) {
-					AddtoLounge();
+					AddtoRoom(6);
 				}
 			}
-			else if(board.tokenAL.get(i%Main.numPlayers).slot == 7) {
+			else if(Board.tokenAL.get(i%Main.numPlayers).slot == 7) {
+				RemovefromRoom();
 				if(text.equalsIgnoreCase("exit")) {
-					board.tokenAL.get(i%Main.numPlayers).slot = 0;
-					board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.LoungeEntrancex;
-					board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.LoungeEntrancey;
-					board.tokenAL.get(i%Main.numPlayers).setBounds(board.tokenAL.get(i%Main.numPlayers).xcoordinate, board.tokenAL.get(i%Main.numPlayers).ycoordinate, board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
+					Board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.LoungeEntrancex;
+					Board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.LoungeEntrancey;
+					Board.tokenAL.get(i%Main.numPlayers).setBounds(Board.tokenAL.get(i%Main.numPlayers).xcoordinate, Board.tokenAL.get(i%Main.numPlayers).ycoordinate, Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
 					appendAndRemove();
 				}
 				else if(text.equalsIgnoreCase("passage")) {
-					AddtoConservatory();
+					AddtoRoom(2);
 				}
 			}
 			else {
+				RemovefromRoom();
 				if(text.equalsIgnoreCase("exit")) {
-					board.tokenAL.get(i%Main.numPlayers).slot = 0;
-					board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.StudyEntrancex;
-					board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.StudyEntrancey;
-					board.tokenAL.get(i%Main.numPlayers).setBounds(board.tokenAL.get(i%Main.numPlayers).xcoordinate, board.tokenAL.get(i%Main.numPlayers).ycoordinate, board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
+					Board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.StudyEntrancex;
+					Board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.StudyEntrancey;
+					Board.tokenAL.get(i%Main.numPlayers).setBounds(Board.tokenAL.get(i%Main.numPlayers).xcoordinate, Board.tokenAL.get(i%Main.numPlayers).ycoordinate, Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
 					appendAndRemove();
 				}
 				else if(text.equalsIgnoreCase("passage")) {
-					AddtoKitchen();
+					AddtoRoom(0);
 				}
 			}
 		}
 
 		else {
-			if(board.tokenAL.get(i%Main.numPlayers).slot == 2) {	
+			if(Board.tokenAL.get(i%Main.numPlayers).slot == 2) {	
+				RemovefromRoom();
 				if(text.equalsIgnoreCase("1")) {
-					board.tokenAL.get(i%Main.numPlayers).slot = 0;
-					board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.BallRoomEntrance1x;
-					board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.BallRoomEntrance1y;
-					board.tokenAL.get(i%Main.numPlayers).setBounds(board.tokenAL.get(i%Main.numPlayers).xcoordinate, board.tokenAL.get(i%Main.numPlayers).ycoordinate, board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
+					Board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.BallRoomEntrance1x;
+					Board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.BallRoomEntrance1y;
+					Board.tokenAL.get(i%Main.numPlayers).setBounds(Board.tokenAL.get(i%Main.numPlayers).xcoordinate, Board.tokenAL.get(i%Main.numPlayers).ycoordinate, Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
 					appendAndRemove();
 				}
 				else if(text.equalsIgnoreCase("2")) {
-					board.tokenAL.get(i%Main.numPlayers).slot = 0;
-					board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.BallRoomEntrance2x;
-					board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.BallRoomEntrance2y;
-					board.tokenAL.get(i%Main.numPlayers).setBounds(board.tokenAL.get(i%Main.numPlayers).xcoordinate, board.tokenAL.get(i%Main.numPlayers).ycoordinate, board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
+					Board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.BallRoomEntrance2x;
+					Board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.BallRoomEntrance2y;
+					Board.tokenAL.get(i%Main.numPlayers).setBounds(Board.tokenAL.get(i%Main.numPlayers).xcoordinate, Board.tokenAL.get(i%Main.numPlayers).ycoordinate, Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
 					appendAndRemove();
 				}
 				else if(text.equalsIgnoreCase("3")) {
-					board.tokenAL.get(i%Main.numPlayers).slot = 0;
-					board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.BallRoomEntrance3x;
-					board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.BallRoomEntrance3y;
-					board.tokenAL.get(i%Main.numPlayers).setBounds(board.tokenAL.get(i%Main.numPlayers).xcoordinate, board.tokenAL.get(i%Main.numPlayers).ycoordinate, board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
+					Board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.BallRoomEntrance3x;
+					Board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.BallRoomEntrance3y;
+					Board.tokenAL.get(i%Main.numPlayers).setBounds(Board.tokenAL.get(i%Main.numPlayers).xcoordinate, Board.tokenAL.get(i%Main.numPlayers).ycoordinate, Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
 					appendAndRemove();
 				}
 				else if(text.equalsIgnoreCase("4")) {
-					board.tokenAL.get(i%Main.numPlayers).slot = 0;
-					board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.BallRoomEntrance4x;
-					board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.BallRoomEntrance4y;
-					board.tokenAL.get(i%Main.numPlayers).setBounds(board.tokenAL.get(i%Main.numPlayers).xcoordinate, board.tokenAL.get(i%Main.numPlayers).ycoordinate, board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
+					Board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.BallRoomEntrance4x;
+					Board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.BallRoomEntrance4y;
+					Board.tokenAL.get(i%Main.numPlayers).setBounds(Board.tokenAL.get(i%Main.numPlayers).xcoordinate, Board.tokenAL.get(i%Main.numPlayers).ycoordinate, Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
 					appendAndRemove();
 				}
 			}
 
-			else if(board.tokenAL.get(i%Main.numPlayers).slot == 4) {
+			else if(Board.tokenAL.get(i%Main.numPlayers).slot == 4) {
+				RemovefromRoom();
 				if(text.equalsIgnoreCase("1")) {
-					board.tokenAL.get(i%Main.numPlayers).slot = 0;
-					board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.DiningRoomEntrance1x;
-					board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.DiningRoomEntrance1y;
-					board.tokenAL.get(i%Main.numPlayers).setBounds(board.tokenAL.get(i%Main.numPlayers).xcoordinate, board.tokenAL.get(i%Main.numPlayers).ycoordinate, board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
+					Board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.DiningRoomEntrance1x;
+					Board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.DiningRoomEntrance1y;
+					Board.tokenAL.get(i%Main.numPlayers).setBounds(Board.tokenAL.get(i%Main.numPlayers).xcoordinate, Board.tokenAL.get(i%Main.numPlayers).ycoordinate, Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
 					appendAndRemove();
 				}
 				else if(text.equalsIgnoreCase("2")) {
-					board.tokenAL.get(i%Main.numPlayers).slot = 0;
-					board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.DiningRoomEntrance2x;
-					board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.DiningRoomEntrance2y;
-					board.tokenAL.get(i%Main.numPlayers).setBounds(board.tokenAL.get(i%Main.numPlayers).xcoordinate, board.tokenAL.get(i%Main.numPlayers).ycoordinate, board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
+					Board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.DiningRoomEntrance2x;
+					Board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.DiningRoomEntrance2y;
+					Board.tokenAL.get(i%Main.numPlayers).setBounds(Board.tokenAL.get(i%Main.numPlayers).xcoordinate, Board.tokenAL.get(i%Main.numPlayers).ycoordinate, Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
 					appendAndRemove();
 				}
 			}
-			else if(board.tokenAL.get(i%Main.numPlayers).slot == 5) {
+			else if(Board.tokenAL.get(i%Main.numPlayers).slot == 5) {
+				RemovefromRoom();
 				if(text.equalsIgnoreCase("1")) {
-					board.tokenAL.get(i%Main.numPlayers).slot = 0;
-					board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.BilliardRoomEntrance1x;
-					board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.BilliardRoomEntrance1y;
-					board.tokenAL.get(i%Main.numPlayers).setBounds(board.tokenAL.get(i%Main.numPlayers).xcoordinate, board.tokenAL.get(i%Main.numPlayers).ycoordinate, board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
+					Board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.BilliardRoomEntrance1x;
+					Board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.BilliardRoomEntrance1y;
+					Board.tokenAL.get(i%Main.numPlayers).setBounds(Board.tokenAL.get(i%Main.numPlayers).xcoordinate, Board.tokenAL.get(i%Main.numPlayers).ycoordinate, Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
 					appendAndRemove();
 				}
 				else if(text.equalsIgnoreCase("2")) {
-					board.tokenAL.get(i%Main.numPlayers).slot = 0;
-					board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.BilliardRoomEntrance2x;
-					board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.BilliardRoomEntrance2y;
-					board.tokenAL.get(i%Main.numPlayers).setBounds(board.tokenAL.get(i%Main.numPlayers).xcoordinate, board.tokenAL.get(i%Main.numPlayers).ycoordinate, board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
+					Board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.BilliardRoomEntrance2x;
+					Board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.BilliardRoomEntrance2y;
+					Board.tokenAL.get(i%Main.numPlayers).setBounds(Board.tokenAL.get(i%Main.numPlayers).xcoordinate, Board.tokenAL.get(i%Main.numPlayers).ycoordinate, Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
 					appendAndRemove();
 				}
 			}
-			else if(board.tokenAL.get(i%Main.numPlayers).slot == 6) {
+			else if(Board.tokenAL.get(i%Main.numPlayers).slot == 6) {
+				RemovefromRoom();
 				if(text.equalsIgnoreCase("1")) {
-					board.tokenAL.get(i%Main.numPlayers).slot = 0;
-					board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.LibraryEntrance1x;
-					board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.LibraryEntrance1y;
-					board.tokenAL.get(i%Main.numPlayers).setBounds(board.tokenAL.get(i%Main.numPlayers).xcoordinate, board.tokenAL.get(i%Main.numPlayers).ycoordinate, board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
+					Board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.LibraryEntrance1x;
+					Board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.LibraryEntrance1y;
+					Board.tokenAL.get(i%Main.numPlayers).setBounds(Board.tokenAL.get(i%Main.numPlayers).xcoordinate, Board.tokenAL.get(i%Main.numPlayers).ycoordinate, Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
 					appendAndRemove();
 				}
 				else if(text.equalsIgnoreCase("2")) {
-					board.tokenAL.get(i%Main.numPlayers).slot = 0;
-					board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.LibraryEntrance2x;
-					board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.LibraryEntrance2y;
-					board.tokenAL.get(i%Main.numPlayers).setBounds(board.tokenAL.get(i%Main.numPlayers).xcoordinate, board.tokenAL.get(i%Main.numPlayers).ycoordinate, board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
+					Board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.LibraryEntrance2x;
+					Board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.LibraryEntrance2y;
+					Board.tokenAL.get(i%Main.numPlayers).setBounds(Board.tokenAL.get(i%Main.numPlayers).xcoordinate, Board.tokenAL.get(i%Main.numPlayers).ycoordinate, Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
 					appendAndRemove();
 				}
 			}
 			else {
-				text = textualcommand.textfield.getText().trim();
-				
+				RemovefromRoom();
 				if(text.equalsIgnoreCase("1")) {
-					board.tokenAL.get(i%Main.numPlayers).slot = 0;
-					board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.HallEntrance1x;
-					board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.HallEntrance1y;
-					board.tokenAL.get(i%Main.numPlayers).setBounds(board.tokenAL.get(i%Main.numPlayers).xcoordinate, board.tokenAL.get(i%Main.numPlayers).ycoordinate, board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
+					Board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.HallEntrance1x;
+					Board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.HallEntrance1y;
+					Board.tokenAL.get(i%Main.numPlayers).setBounds(Board.tokenAL.get(i%Main.numPlayers).xcoordinate, Board.tokenAL.get(i%Main.numPlayers).ycoordinate, Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
 					appendAndRemove();
 				}
 				else if(text.equalsIgnoreCase("2")) {
-					board.tokenAL.get(i%Main.numPlayers).slot = 0;
-					board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.HallEntrance2x;
-					board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.HallEntrance2y;
-					board.tokenAL.get(i%Main.numPlayers).setBounds(board.tokenAL.get(i%Main.numPlayers).xcoordinate, board.tokenAL.get(i%Main.numPlayers).ycoordinate, board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
+					Board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.HallEntrance2x;
+					Board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.HallEntrance2y;
+					Board.tokenAL.get(i%Main.numPlayers).setBounds(Board.tokenAL.get(i%Main.numPlayers).xcoordinate, Board.tokenAL.get(i%Main.numPlayers).ycoordinate, Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
 					appendAndRemove();
 				}
 				else if(text.equalsIgnoreCase("3")) {
-					board.tokenAL.get(i%Main.numPlayers).slot = 0;
-					board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.HallEntrance3x;
-					board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.HallEntrance3y;
-					board.tokenAL.get(i%Main.numPlayers).setBounds(board.tokenAL.get(i%Main.numPlayers).xcoordinate, board.tokenAL.get(i%Main.numPlayers).ycoordinate, board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
+					Board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.HallEntrance3x;
+					Board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.HallEntrance3y;
+					Board.tokenAL.get(i%Main.numPlayers).setBounds(Board.tokenAL.get(i%Main.numPlayers).xcoordinate, Board.tokenAL.get(i%Main.numPlayers).ycoordinate, Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
 					appendAndRemove();
 				}
 			}
@@ -489,46 +480,46 @@ public class SendMessageButtonListener implements ActionListener {
 	
 	public boolean changeWithBoard(int i, int moveCounter, int x, int y, char direction, BoardStructure boardstructure, Display display, TextualCommand textualcommand) {
 		boolean error = false;
-		board.tokenAL.get(i%Main.numPlayers).type = boardstructure.getCoordinatesType(board.tokenAL.get(i%Main.numPlayers).xcoordinate+x, board.tokenAL.get(i%Main.numPlayers).ycoordinate+y);
+		Board.tokenAL.get(i%Main.numPlayers).type = boardstructure.getCoordinatesType(Board.tokenAL.get(i%Main.numPlayers).xcoordinate+x, Board.tokenAL.get(i%Main.numPlayers).ycoordinate+y);
 
-		if(board.tokenAL.get(i%Main.numPlayers).type == 'x') {
+		if(Board.tokenAL.get(i%Main.numPlayers).type == 'x') {
 			//no leaving the board exception
 			display.textarea.append(textualcommand.textfield.getText() + "\nError: Cannot leave the board.\n" + "< " + Main.playerNames[i%Main.numPlayers] 
 					+ " (" + " moves left : " + moveCounter + " " +") " + "> ");
 			textualcommand.textfield.setText("");
 			error = true;
 		}
-		else if(board.tokenAL.get(i%Main.numPlayers).type == 'R') {
+		else if(Board.tokenAL.get(i%Main.numPlayers).type == 'R') {
 			//no walking through walls
 			display.textarea.append(textualcommand.textfield.getText() + "\nError: Cannot enter room this way.\n" + "< " + Main.playerNames[i%Main.numPlayers] 
 					+ " (" + " moves left : " + moveCounter + " " +") " + "> ");
 			textualcommand.textfield.setText("");
 			error = true;
 		}
-		else if(board.tokenAL.get(i%Main.numPlayers).type == 'T') {
+		else if(Board.tokenAL.get(i%Main.numPlayers).type == 'T') {
 			//no walking through walls
 			display.textarea.append(textualcommand.textfield.getText() + "\nError: Square already occupied.\n" + "< " + Main.playerNames[i%Main.numPlayers] 
 					+ " (" + " moves left : " + moveCounter + " " +") " + "> ");
 			textualcommand.textfield.setText("");
 			error = true;
 		}
-		else if(board.tokenAL.get(i%Main.numPlayers).type == '0') {
-			boardstructure.setCoordinatesType('0', board.tokenAL.get(i%Main.numPlayers).xcoordinate, board.tokenAL.get(i%Main.numPlayers).ycoordinate);
-			board.tokenAL.get(i%Main.numPlayers).xcoordinate += x;
-			board.tokenAL.get(i%Main.numPlayers).ycoordinate += y;
-			board.tokenAL.get(i%Main.numPlayers).setBounds(board.tokenAL.get(i%Main.numPlayers).xcoordinate, board.tokenAL.get(i%Main.numPlayers).ycoordinate, board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
-			boardstructure.setCoordinatesType('T', board.tokenAL.get(i%Main.numPlayers).xcoordinate, board.tokenAL.get(i%Main.numPlayers).ycoordinate);
+		else if(Board.tokenAL.get(i%Main.numPlayers).type == '0') {
+			boardstructure.setCoordinatesType('0', Board.tokenAL.get(i%Main.numPlayers).xcoordinate, Board.tokenAL.get(i%Main.numPlayers).ycoordinate);
+			Board.tokenAL.get(i%Main.numPlayers).xcoordinate += x;
+			Board.tokenAL.get(i%Main.numPlayers).ycoordinate += y;
+			Board.tokenAL.get(i%Main.numPlayers).setBounds(Board.tokenAL.get(i%Main.numPlayers).xcoordinate, Board.tokenAL.get(i%Main.numPlayers).ycoordinate, Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
+			boardstructure.setCoordinatesType('T', Board.tokenAL.get(i%Main.numPlayers).xcoordinate, Board.tokenAL.get(i%Main.numPlayers).ycoordinate);
 		}
-		else if(board.tokenAL.get(i%Main.numPlayers).type == 'u') {
+		else if(Board.tokenAL.get(i%Main.numPlayers).type == 'u') {
 			if(direction == 'u') {
 				//Set board state back to 0
-				boardstructure.setCoordinatesType('0', board.tokenAL.get(i%Main.numPlayers).xcoordinate, board.tokenAL.get(i%Main.numPlayers).ycoordinate);
+				boardstructure.setCoordinatesType('0', Board.tokenAL.get(i%Main.numPlayers).xcoordinate, Board.tokenAL.get(i%Main.numPlayers).ycoordinate);
 				//Put Token into room slot
 				uRoomCheck();
 				//Move Token icon 
-				board.tokenAL.get(i%Main.numPlayers).setBounds(board.tokenAL.get(i%Main.numPlayers).xcoordinate, board.tokenAL.get(i%Main.numPlayers).ycoordinate, board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
+				Board.tokenAL.get(i%Main.numPlayers).setBounds(Board.tokenAL.get(i%Main.numPlayers).xcoordinate, Board.tokenAL.get(i%Main.numPlayers).ycoordinate, Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
 				//Set board state
-				boardstructure.setCoordinatesType('T', board.tokenAL.get(i%Main.numPlayers).xcoordinate, board.tokenAL.get(i%Main.numPlayers).ycoordinate);
+				boardstructure.setCoordinatesType('T', Board.tokenAL.get(i%Main.numPlayers).xcoordinate, Board.tokenAL.get(i%Main.numPlayers).ycoordinate);
 			} 
 			else {
 				//cannot enter room this way
@@ -538,16 +529,16 @@ public class SendMessageButtonListener implements ActionListener {
 			}
 			error = true;
 		}
-		else if(board.tokenAL.get(i%Main.numPlayers).type == 'd') {//down
+		else if(Board.tokenAL.get(i%Main.numPlayers).type == 'd') {//down
 			if(direction == 'd') {
 				//Set board state back to 0
-				boardstructure.setCoordinatesType('0', board.tokenAL.get(i%Main.numPlayers).xcoordinate, board.tokenAL.get(i%Main.numPlayers).ycoordinate);
+				boardstructure.setCoordinatesType('0', Board.tokenAL.get(i%Main.numPlayers).xcoordinate, Board.tokenAL.get(i%Main.numPlayers).ycoordinate);
 				//Put Token into room slot
 				dRoomCheck();
 				//Move Token icon 
-				board.tokenAL.get(i%Main.numPlayers).setBounds(board.tokenAL.get(i%Main.numPlayers).xcoordinate, board.tokenAL.get(i%Main.numPlayers).ycoordinate, board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
+				Board.tokenAL.get(i%Main.numPlayers).setBounds(Board.tokenAL.get(i%Main.numPlayers).xcoordinate, Board.tokenAL.get(i%Main.numPlayers).ycoordinate, Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
 				//Set board state
-				boardstructure.setCoordinatesType('T', board.tokenAL.get(i%Main.numPlayers).xcoordinate, board.tokenAL.get(i%Main.numPlayers).ycoordinate);
+				boardstructure.setCoordinatesType('T', Board.tokenAL.get(i%Main.numPlayers).xcoordinate, Board.tokenAL.get(i%Main.numPlayers).ycoordinate);
 			} 
 			else {
 				//cannot enter room this way
@@ -557,16 +548,16 @@ public class SendMessageButtonListener implements ActionListener {
 			}
 			error = true;
 		}
-		else if(board.tokenAL.get(i%Main.numPlayers).type == 'l') {//left
+		else if(Board.tokenAL.get(i%Main.numPlayers).type == 'l') {//left
 			if(direction == 'l') {
 				//Set board state back to 0
-				boardstructure.setCoordinatesType('0', board.tokenAL.get(i%Main.numPlayers).xcoordinate, board.tokenAL.get(i%Main.numPlayers).ycoordinate);
+				boardstructure.setCoordinatesType('0', Board.tokenAL.get(i%Main.numPlayers).xcoordinate, Board.tokenAL.get(i%Main.numPlayers).ycoordinate);
 				//Put Token into room slot
 				lRoomCheck();
 				//Move Token icon 
-				board.tokenAL.get(i%Main.numPlayers).setBounds(board.tokenAL.get(i%Main.numPlayers).xcoordinate, board.tokenAL.get(i%Main.numPlayers).ycoordinate, board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
+				Board.tokenAL.get(i%Main.numPlayers).setBounds(Board.tokenAL.get(i%Main.numPlayers).xcoordinate, Board.tokenAL.get(i%Main.numPlayers).ycoordinate, Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
 				//Set board state
-				boardstructure.setCoordinatesType('T', board.tokenAL.get(i%Main.numPlayers).xcoordinate, board.tokenAL.get(i%Main.numPlayers).ycoordinate);
+				boardstructure.setCoordinatesType('T', Board.tokenAL.get(i%Main.numPlayers).xcoordinate, Board.tokenAL.get(i%Main.numPlayers).ycoordinate);
 			} 
 			else {
 				//cannot enter room this way
@@ -576,16 +567,16 @@ public class SendMessageButtonListener implements ActionListener {
 			}
 			error = true;
 		}
-		else if(board.tokenAL.get(i%Main.numPlayers).type == 'r') {
+		else if(Board.tokenAL.get(i%Main.numPlayers).type == 'r') {
 			if(direction == 'r') {
 				//Set board state back to 0
-				boardstructure.setCoordinatesType('0', board.tokenAL.get(i%Main.numPlayers).xcoordinate, board.tokenAL.get(i%Main.numPlayers).ycoordinate);
+				boardstructure.setCoordinatesType('0', Board.tokenAL.get(i%Main.numPlayers).xcoordinate, Board.tokenAL.get(i%Main.numPlayers).ycoordinate);
 				//Put Token into room slot
 				rRoomCheck();
 				//Move Token icon 
-				board.tokenAL.get(i%Main.numPlayers).setBounds(board.tokenAL.get(i%Main.numPlayers).xcoordinate, board.tokenAL.get(i%Main.numPlayers).ycoordinate, board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
+				Board.tokenAL.get(i%Main.numPlayers).setBounds(Board.tokenAL.get(i%Main.numPlayers).xcoordinate, Board.tokenAL.get(i%Main.numPlayers).ycoordinate, Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
 				//Set board state
-				boardstructure.setCoordinatesType('T', board.tokenAL.get(i%Main.numPlayers).xcoordinate, board.tokenAL.get(i%Main.numPlayers).ycoordinate);
+				boardstructure.setCoordinatesType('T', Board.tokenAL.get(i%Main.numPlayers).xcoordinate, Board.tokenAL.get(i%Main.numPlayers).ycoordinate);
 			} 
 			else {
 				//cannot enter room this way
@@ -619,82 +610,82 @@ public class SendMessageButtonListener implements ActionListener {
 	}
 	
 	public void uRoomCheck() {
-		if(board.tokenAL.get(i%Main.numPlayers).xcoordinate == Board.KitchenEntrancex && board.tokenAL.get(i%Main.numPlayers).ycoordinate == Board.KitchenEntrancey) {
-			AddtoKitchen();
+		if(Board.tokenAL.get(i%Main.numPlayers).xcoordinate == Board.KitchenEntrancex && Board.tokenAL.get(i%Main.numPlayers).ycoordinate == Board.KitchenEntrancey) {
+			AddtoRoom(0);
 		}
-		else if(board.tokenAL.get(i%Main.numPlayers).xcoordinate == Board.BallRoomEntrance2x && board.tokenAL.get(i%Main.numPlayers).ycoordinate == Board.BallRoomEntrance2y) {
-			AddtoBallRoom();
+		else if(Board.tokenAL.get(i%Main.numPlayers).xcoordinate == Board.BallRoomEntrance2x && Board.tokenAL.get(i%Main.numPlayers).ycoordinate == Board.BallRoomEntrance2y) {
+			AddtoRoom(1);
 		}
-		else if(board.tokenAL.get(i%Main.numPlayers).xcoordinate == Board.BallRoomEntrance3x && board.tokenAL.get(i%Main.numPlayers).ycoordinate == Board.BallRoomEntrance3y) {
-			AddtoBallRoom();
+		else if(Board.tokenAL.get(i%Main.numPlayers).xcoordinate == Board.BallRoomEntrance3x && Board.tokenAL.get(i%Main.numPlayers).ycoordinate == Board.BallRoomEntrance3y) {
+			AddtoRoom(1);
 		}
-		else if(board.tokenAL.get(i%Main.numPlayers).xcoordinate == Board.ConservatoryEntrancex && board.tokenAL.get(i%Main.numPlayers).ycoordinate == Board.ConservatoryEntrancey) {
-			AddtoConservatory();
+		else if(Board.tokenAL.get(i%Main.numPlayers).xcoordinate == Board.ConservatoryEntrancex && Board.tokenAL.get(i%Main.numPlayers).ycoordinate == Board.ConservatoryEntrancey) {
+			AddtoRoom(2);
 		}
-		else if(board.tokenAL.get(i%Main.numPlayers).xcoordinate == Board.DiningRoomEntrance2x && board.tokenAL.get(i%Main.numPlayers).ycoordinate == Board.DiningRoomEntrance2y) {
-			AddtoDiningRoom();
+		else if(Board.tokenAL.get(i%Main.numPlayers).xcoordinate == Board.DiningRoomEntrance2x && Board.tokenAL.get(i%Main.numPlayers).ycoordinate == Board.DiningRoomEntrance2y) {
+			AddtoRoom(3);
 		}
 		else {
-			AddtoBilliardRoom();
+			AddtoRoom(4);
 		}
 	}
 	
 	public void dRoomCheck() {
-		if(board.tokenAL.get(i%Main.numPlayers).xcoordinate == Board.LibraryEntrance1x && board.tokenAL.get(i%Main.numPlayers).ycoordinate == Board.LibraryEntrance1y) {
-			AddtoLibrary();
+		if(Board.tokenAL.get(i%Main.numPlayers).xcoordinate == Board.LibraryEntrance1x && Board.tokenAL.get(i%Main.numPlayers).ycoordinate == Board.LibraryEntrance1y) {
+			AddtoRoom(5);
 		}
-		else if(board.tokenAL.get(i%Main.numPlayers).xcoordinate == Board.LoungeEntrancex && board.tokenAL.get(i%Main.numPlayers).ycoordinate == Board.LoungeEntrancey) {
-			AddtoLounge();
+		else if(Board.tokenAL.get(i%Main.numPlayers).xcoordinate == Board.LoungeEntrancex && Board.tokenAL.get(i%Main.numPlayers).ycoordinate == Board.LoungeEntrancey) {
+			AddtoRoom(6);
 		}
-		else if(board.tokenAL.get(i%Main.numPlayers).xcoordinate == Board.HallEntrance1x && board.tokenAL.get(i%Main.numPlayers).ycoordinate == Board.HallEntrance1y) {
-			AddtoHall();
+		else if(Board.tokenAL.get(i%Main.numPlayers).xcoordinate == Board.HallEntrance1x && Board.tokenAL.get(i%Main.numPlayers).ycoordinate == Board.HallEntrance1y) {
+			AddtoRoom(7);
 		}
-		else if(board.tokenAL.get(i%Main.numPlayers).xcoordinate == Board.HallEntrance2x && board.tokenAL.get(i%Main.numPlayers).ycoordinate == Board.HallEntrance2y) {
-			AddtoHall();
+		else if(Board.tokenAL.get(i%Main.numPlayers).xcoordinate == Board.HallEntrance2x && Board.tokenAL.get(i%Main.numPlayers).ycoordinate == Board.HallEntrance2y) {
+			AddtoRoom(7);
 		}
 		else {
-			AddtoStudy();
+			AddtoRoom(8);
 		}
 	}
 	
 	public void lRoomCheck() {
-		if(board.tokenAL.get(i%Main.numPlayers).xcoordinate == Board.BallRoomEntrance4x && board.tokenAL.get(i%Main.numPlayers).ycoordinate == Board.BallRoomEntrance4y) {
-			AddtoBallRoom();
+		if(Board.tokenAL.get(i%Main.numPlayers).xcoordinate == Board.BallRoomEntrance4x && Board.tokenAL.get(i%Main.numPlayers).ycoordinate == Board.BallRoomEntrance4y) {
+			AddtoRoom(1);
 		}
-		else if(board.tokenAL.get(i%Main.numPlayers).xcoordinate == Board.DiningRoomEntrance1x && board.tokenAL.get(i%Main.numPlayers).ycoordinate == Board.DiningRoomEntrance1y) {
-			AddtoDiningRoom();
+		else if(Board.tokenAL.get(i%Main.numPlayers).xcoordinate == Board.DiningRoomEntrance1x && Board.tokenAL.get(i%Main.numPlayers).ycoordinate == Board.DiningRoomEntrance1y) {
+			AddtoRoom(3);
 		}
 		else {
-			AddtoHall();
+			AddtoRoom(7);
 		}
 	}
 	
 	public void rRoomCheck() {
-		if(board.tokenAL.get(i%Main.numPlayers).xcoordinate == Board.BallRoomEntrance1x && board.tokenAL.get(i%Main.numPlayers).ycoordinate == Board.BallRoomEntrance1y) {
-			AddtoBallRoom();
+		if(Board.tokenAL.get(i%Main.numPlayers).xcoordinate == Board.BallRoomEntrance1x && Board.tokenAL.get(i%Main.numPlayers).ycoordinate == Board.BallRoomEntrance1y) {
+			AddtoRoom(1);
 		}
-		else if(board.tokenAL.get(i%Main.numPlayers).xcoordinate == Board.BilliardRoomEntrance1x && board.tokenAL.get(i%Main.numPlayers).ycoordinate == Board.BilliardRoomEntrance1y) {
-			AddtoBilliardRoom();
+		else if(Board.tokenAL.get(i%Main.numPlayers).xcoordinate == Board.BilliardRoomEntrance1x && Board.tokenAL.get(i%Main.numPlayers).ycoordinate == Board.BilliardRoomEntrance1y) {
+			AddtoRoom(4);
 		}
 		else {
-			AddtoLibrary();
+			AddtoRoom(5);
 		}
 	}
 	
-	public void AddtoKitchen() {
+	public void AddtoRoom(int l) {
 		//Find an available slot
 		for(int j = 0; j<6;j++) {
-			if(Board.KitchenSlots[0][j] == 0) {
-				//Set Token as in Room
-				board.tokenAL.get(i%Main.numPlayers).slot = 1;
+			if(Board.RoomSlots.get(l)[0][j] == 0) {
+				//Set Token as in a Room
+				Board.tokenAL.get(i%Main.numPlayers).slot = l;
 				//Set slot as occupied
-				Board.KitchenSlots[0][j] = 1;
+				Board.RoomSlots.get(l)[0][j] = 1;
 				//Move the token to the slot
-				board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.KitchenSlots[1][j];
-				board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.KitchenSlots[2][j];
+				Board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.RoomSlots.get(l)[1][j];
+				Board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.RoomSlots.get(l)[2][j];
 
 				//Move token
-				board.tokenAL.get(i%Main.numPlayers).setBounds(board.tokenAL.get(i%Main.numPlayers).xcoordinate, board.tokenAL.get(i%Main.numPlayers).ycoordinate, board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
+				Board.tokenAL.get(i%Main.numPlayers).setBounds(Board.tokenAL.get(i%Main.numPlayers).xcoordinate, Board.tokenAL.get(i%Main.numPlayers).ycoordinate, Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
 				
 				//Exit the loop
 				break;
@@ -705,199 +696,22 @@ public class SendMessageButtonListener implements ActionListener {
 		appendTextAndTurnInfo();
 	}
 	
-	public void AddtoBallRoom() {
-		//Find an available slot
+	public void RemovefromRoom() {
+		//Find which room they're in
+		int l = Board.tokenAL.get(i%Main.numPlayers).slot;
 		for(int j = 0; j<6;j++) {
-			if(Board.BallRoomSlots[0][j] == 0) {
-				//Set Token as in Room
-				board.tokenAL.get(i%Main.numPlayers).slot = 2;
-				//Set slot as occupied
-				Board.BallRoomSlots[0][j] = 1;
-				//Move the token to the slot
-				board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.BallRoomSlots[1][j];
-				board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.BallRoomSlots[2][j];
-
-				//Move token
-				board.tokenAL.get(i%Main.numPlayers).setBounds(board.tokenAL.get(i%Main.numPlayers).xcoordinate, board.tokenAL.get(i%Main.numPlayers).ycoordinate, board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
-				
+			if(Board.RoomSlots.get(l)[0][j] == 1) {
+				//Set board back to S
+				boardstructure.setCoordinatesType('S', Board.tokenAL.get(i%Main.numPlayers).xcoordinate, Board.tokenAL.get(i%Main.numPlayers).ycoordinate);
+				//Set Token as not in a Room
+				Board.tokenAL.get(i%Main.numPlayers).slot = 9;
+				//Set slot as unoccupied
+				Board.RoomSlots.get(l)[0][j] = 0;
 				//Exit the loop
 				break;
 			}
 		}
-		//Next persons go
-		moveCounter = 0;
-		appendTextAndTurnInfo();
 	}
-	
-	public void AddtoConservatory() {
-		//Find an available slot
-		for(int j = 0; j<6;j++) {
-			if(Board.ConservatorySlots[0][j] == 0) {
-				//Set Token as in Room
-				board.tokenAL.get(i%Main.numPlayers).slot = 3;
-				//Set slot as occupied
-				Board.ConservatorySlots[0][j] = 1;
-				//Move the token to the slot
-				board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.ConservatorySlots[1][j];
-				board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.ConservatorySlots[2][j];
-
-				//Move token
-				board.tokenAL.get(i%Main.numPlayers).setBounds(board.tokenAL.get(i%Main.numPlayers).xcoordinate, board.tokenAL.get(i%Main.numPlayers).ycoordinate, board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
-				
-				//Exit the loop
-				break;
-			}
-		}
-		//Next persons go
-		moveCounter = 0;
-		appendTextAndTurnInfo();
-	}
-	
-	public void AddtoDiningRoom() {
-		//Find an available slot
-		for(int j = 0; j<6;j++) {
-			if(Board.DiningRoomSlots[0][j] == 0) {
-				//Set Token as in Room
-				board.tokenAL.get(i%Main.numPlayers).slot = 4;
-				//Set slot as occupied
-				Board.DiningRoomSlots[0][j] = 1;
-				//Move the token to the slot
-				board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.DiningRoomSlots[1][j];
-				board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.DiningRoomSlots[2][j];
-
-				//Move token
-				board.tokenAL.get(i%Main.numPlayers).setBounds(board.tokenAL.get(i%Main.numPlayers).xcoordinate, board.tokenAL.get(i%Main.numPlayers).ycoordinate, board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
-				
-				//Exit the loop
-				break;
-			}
-		}
-		//Next persons go
-		moveCounter = 0;
-		appendTextAndTurnInfo();
-	}
-	
-	public void AddtoBilliardRoom() {
-		//Find an available slot
-		for(int j = 0; j<6;j++) {
-			if(Board.BilliardRoomSlots[0][j] == 0) {
-				//Set Token as in Room
-				board.tokenAL.get(i%Main.numPlayers).slot = 5;
-				//Set slot as occupied
-				Board.BilliardRoomSlots[0][j] = 1;
-				//Move the token to the slot
-				board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.BilliardRoomSlots[1][j];
-				board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.BilliardRoomSlots[2][j];
-
-				//Move token
-				board.tokenAL.get(i%Main.numPlayers).setBounds(board.tokenAL.get(i%Main.numPlayers).xcoordinate, board.tokenAL.get(i%Main.numPlayers).ycoordinate, board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
-				
-				//Exit the loop
-				break;
-			}
-		}
-		//Next persons go
-		moveCounter = 0;
-		appendTextAndTurnInfo();
-	}
-	
-	public void AddtoLibrary() {
-		//Find an available slot
-		for(int j = 0; j<6;j++) {
-			if(Board.LibrarySlots[0][j] == 0) {
-				//Set Token as in Room
-				board.tokenAL.get(i%Main.numPlayers).slot = 6;
-				//Set slot as occupied
-				Board.LibrarySlots[0][j] = 1;
-				//Move the token to the slot
-				board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.LibrarySlots[1][j];
-				board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.LibrarySlots[2][j];
-
-				//Move token
-				board.tokenAL.get(i%Main.numPlayers).setBounds(board.tokenAL.get(i%Main.numPlayers).xcoordinate, board.tokenAL.get(i%Main.numPlayers).ycoordinate, board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
-				
-				//Exit the loop
-				break;
-			}
-		}
-		//Next persons go
-		moveCounter = 0;
-		appendTextAndTurnInfo();
-	}
-	
-	public void AddtoLounge() {
-		//Find an available slot
-		for(int j = 0; j<6;j++) {
-			if(Board.LoungeSlots[0][j] == 0) {
-				//Set Token as in Room
-				board.tokenAL.get(i%Main.numPlayers).slot = 7;
-				//Set slot as occupied
-				Board.LoungeSlots[0][j] = 1;
-				//Move the token to the slot
-				board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.LoungeSlots[1][j];
-				board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.LoungeSlots[2][j];
-
-				//Move token
-				board.tokenAL.get(i%Main.numPlayers).setBounds(board.tokenAL.get(i%Main.numPlayers).xcoordinate, board.tokenAL.get(i%Main.numPlayers).ycoordinate, board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
-				
-				//Exit the loop
-				break;
-			}
-		}
-		//Next persons go
-		moveCounter = 0;
-		appendTextAndTurnInfo();
-		
-	}
-	
-	public void AddtoHall() {
-		//Find an available slot
-		for(int j = 0; j<6;j++) {
-			if(Board.HallSlots[0][j] == 0) {
-				//Set Token as in Room
-				board.tokenAL.get(i%Main.numPlayers).slot = 8;
-				//Set slot as occupied
-				Board.HallSlots[0][j] = 1;
-				//Move the token to the slot
-				board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.HallSlots[1][j];
-				board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.HallSlots[2][j];
-
-				//Move token
-				board.tokenAL.get(i%Main.numPlayers).setBounds(board.tokenAL.get(i%Main.numPlayers).xcoordinate, board.tokenAL.get(i%Main.numPlayers).ycoordinate, board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
-				
-				//Exit the loop
-				break;
-			}
-		}
-		//Next persons go
-		moveCounter = 0;
-		appendTextAndTurnInfo();
-	}
-	
-	public void AddtoStudy() {
-		//Find an available slot
-		for(int j = 0; j<6;j++) {
-			if(Board.StudySlots[0][j] == 0) {
-				//Set Token as in Room
-				board.tokenAL.get(i%Main.numPlayers).slot = 9;
-				//Set slot as occupied
-				Board.StudySlots[0][j] = 1;
-				//Move the token to the slot
-				board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.StudySlots[1][j];
-				board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.StudySlots[2][j];
-
-				//Move token
-				board.tokenAL.get(i%Main.numPlayers).setBounds(board.tokenAL.get(i%Main.numPlayers).xcoordinate, board.tokenAL.get(i%Main.numPlayers).ycoordinate, board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
-				
-				//Exit the loop
-				break;
-			}
-		}
-		//Next persons go
-		moveCounter = 0;
-		appendTextAndTurnInfo();
-	}
-	
 	
 	public void weaponMoves() {
 		Weapon weapon=null;
