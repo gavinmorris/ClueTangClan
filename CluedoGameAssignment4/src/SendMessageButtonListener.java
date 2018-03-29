@@ -57,9 +57,9 @@ public class SendMessageButtonListener implements ActionListener {
 		}
 		
 		if(gameStage == 1) {	
-//			notes.setVisible(false);
-//			notesVisible = false;
-			if(Board.tokenAL.get(i%Main.numPlayers).slot != 9) {				
+			notes.setVisible(false);
+			notesVisible = false;
+			if(Board.tokenAL.get(i%Main.numPlayers).slot != 10) {				
 				ExitRoom();
 			}
 			else {
@@ -109,7 +109,7 @@ public class SendMessageButtonListener implements ActionListener {
 			
 			if(text.equalsIgnoreCase("done")) {
 				if(moveCounter == 0) {
-					display.textarea.append(textualcommand.textfield.getText()+"\n" + "It is now "+ Main.playerNames[(i+1)%Main.numPlayers] +"'s turn.\n");
+					display.textarea.append(textualcommand.textfield.getText()+"\n\n" + "It is now "+ Main.playerNames[(i+1)%Main.numPlayers] +"'s turn.");
 					display.textarea.append("\n" + "Type 'roll' to roll the dice.");
 					textualcommand.textfield.setText("");
 				} 
@@ -175,7 +175,67 @@ public class SendMessageButtonListener implements ActionListener {
 				}
 			}
 			weaponMoves();
-		}	
+		}
+		if(gameStage == 2) {
+			if(text.equalsIgnoreCase("question")) {
+				display.textarea.append(textualcommand.textfield.getText());
+				textualcommand.textfield.setText("");
+				display.textarea.append("\nEnter the name of the character: " );
+				gameStage = 3;
+			}
+			else if(text.equalsIgnoreCase("done")) {
+				display.textarea.append(textualcommand.textfield.getText()+"\n\n" + "It is now "+ Main.playerNames[(i+1)%Main.numPlayers] +"'s turn.");
+				display.textarea.append("\n" + "Type 'roll' to roll the dice.");
+				textualcommand.textfield.setText("");
+				gameStage = 1;
+			}
+		}
+		if(gameStage == 3) {
+			if(text.equalsIgnoreCase("scarlett")) {
+				AddPlayertoRoom("Scarlett");
+			}
+			else if(text.equalsIgnoreCase("mustard")) {
+				AddPlayertoRoom("Mustard");
+			}
+			else if(text.equalsIgnoreCase("green")) {
+				AddPlayertoRoom("Green");
+			}
+			else if(text.equalsIgnoreCase("white")) {
+				AddPlayertoRoom("White");
+			}
+			else if(text.equalsIgnoreCase("peacock")) {
+				AddPlayertoRoom("Peacock");
+			}
+			else if(text.equalsIgnoreCase("plum")) {
+				AddPlayertoRoom("Plum");
+			}
+		}
+		if(gameStage == 4) {
+			if(text.equalsIgnoreCase("candlestick")) {
+				Weapon weapon = board.candlestick;
+				moveWeapon(weapon);
+			}
+			else if(text.equalsIgnoreCase("knife")) {
+				Weapon weapon = board.knife;
+				moveWeapon(weapon);
+			}
+			else if(text.equalsIgnoreCase("lead pipe")) {
+				Weapon weapon = board.leadpipe;
+				moveWeapon(weapon);
+			}
+			else if(text.equalsIgnoreCase("revolver")) {
+				Weapon weapon = board.revolver;
+				moveWeapon(weapon);
+			}
+			else if(text.equalsIgnoreCase("rope")) {
+				Weapon weapon = board.rope;
+				moveWeapon(weapon);
+			}
+			else if(text.equalsIgnoreCase("wrench")) {
+				Weapon weapon = board.wrench;
+				moveWeapon(weapon);
+			}
+		}
 	}		
 	
 	
@@ -189,7 +249,7 @@ public class SendMessageButtonListener implements ActionListener {
 		for(int i=0;i<Main.numPlayers;i++) {
 			int result = diceResult();
 			saveResults[i] = result;
-			display.textarea.append("\n"+Main.playerNames[i]+" rolled: " +result);
+			display.textarea.append("\n"+Main.playerNames[i]+" rolled: " + result);
 			drawedPlayers[i] = 0;
 		}
 		drawedPlayers[Main.numPlayers] = 0;
@@ -282,7 +342,7 @@ public class SendMessageButtonListener implements ActionListener {
 		display.textarea.append(textualcommand.textfield.getText() + "\n" + "<-------" + Main.playerNames[i%Main.numPlayers]+" rolled the dice ------->\n");	
 		display.textarea.append("<" + Main.playerNames[i%Main.numPlayers] + " has " + moveCounter +" moves>" );
 		
-		if(Board.tokenAL.get(i%Main.numPlayers).slot != 9) {				
+		if(Board.tokenAL.get(i%Main.numPlayers).slot != 10) {				
 			PrintExitOption();
 		}
 	}
@@ -290,6 +350,9 @@ public class SendMessageButtonListener implements ActionListener {
 	public void PrintExitOption() {
 		if(Board.tokenAL.get(i%Main.numPlayers).slot == 0 || Board.tokenAL.get(i%Main.numPlayers).slot == 2 || Board.tokenAL.get(i%Main.numPlayers).slot == 6 || Board.tokenAL.get(i%Main.numPlayers).slot == 8) {
 			display.textarea.append("\nWould you like to exit or use a passage" );
+		}
+		else if(Board.tokenAL.get(i%Main.numPlayers).slot == 9) {
+			display.textarea.append("\nType exit to leave the basement" );
 		}
 		else {
 			display.textarea.append("\nChoose an exit (1-4)" );
@@ -299,7 +362,6 @@ public class SendMessageButtonListener implements ActionListener {
 	}
 	
 	public void ExitRoom() {
-		
 		if(Board.tokenAL.get(i%Main.numPlayers).slot == 0 || Board.tokenAL.get(i%Main.numPlayers).slot == 2 || Board.tokenAL.get(i%Main.numPlayers).slot == 6 || Board.tokenAL.get(i%Main.numPlayers).slot == 8) {
 			if(Board.tokenAL.get(i%Main.numPlayers).slot == 0) {
 				if(text.equalsIgnoreCase("exit")) {
@@ -310,6 +372,7 @@ public class SendMessageButtonListener implements ActionListener {
 					appendAndRemove();
 				}
 				else if(text.equalsIgnoreCase("passage")) {
+					appendAndRemove();
 					RemovefromRoom();
 					AddtoRoom(8);
 				}
@@ -323,6 +386,7 @@ public class SendMessageButtonListener implements ActionListener {
 					appendAndRemove();
 				}
 				else if(text.equalsIgnoreCase("passage")) {
+					appendAndRemove();
 					RemovefromRoom();
 					AddtoRoom(6);
 				}
@@ -336,6 +400,7 @@ public class SendMessageButtonListener implements ActionListener {
 					appendAndRemove();
 				}
 				else if(text.equalsIgnoreCase("passage")) {
+					appendAndRemove();
 					RemovefromRoom();
 					AddtoRoom(2);
 				}
@@ -349,12 +414,23 @@ public class SendMessageButtonListener implements ActionListener {
 					appendAndRemove();
 				}
 				else if(text.equalsIgnoreCase("passage")) {
+					appendAndRemove();
 					RemovefromRoom();
 					AddtoRoom(0);
 				}
 			}
 		}
 
+		else if(Board.tokenAL.get(i%Main.numPlayers).slot == 9) {
+			if(text.equalsIgnoreCase("exit")) {
+				RemovefromRoom();
+				Board.tokenAL.get(i%Main.numPlayers).xcoordinate = Board.BasementEntrancex;
+				Board.tokenAL.get(i%Main.numPlayers).ycoordinate = Board.BasementEntrancey;
+				Board.tokenAL.get(i%Main.numPlayers).setBounds(Board.tokenAL.get(i%Main.numPlayers).xcoordinate, Board.tokenAL.get(i%Main.numPlayers).ycoordinate, Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconWidth(), Board.tokenAL.get(i%Main.numPlayers).imageIcon.getIconHeight());
+				appendAndRemove();
+			}
+		}
+		
 		else {
 			if(Board.tokenAL.get(i%Main.numPlayers).slot == 1) {
 				if(text.equalsIgnoreCase("1")) {
@@ -537,8 +613,12 @@ public class SendMessageButtonListener implements ActionListener {
 	
 	//Display text depending on number of moves left,
 	public void appendTextAndTurnInfo() {
+		if(gameStage == 2) {
+			
+		}
+		
 		//prompts user to type done
-		if(moveCounter == 0) {
+		else if(moveCounter == 0) {
 			if(done == 0) {
 				display.textarea.append(textualcommand.textfield.getText()+"\n" + "No moves left, type done.");
 				display.textarea.append("\n" + "<"  + Main.playerNames[i%Main.numPlayers] +">");
@@ -670,8 +750,7 @@ public class SendMessageButtonListener implements ActionListener {
 			textualcommand.textfield.setText("");
 		}
 
-		boardstructure.printTileTypeBoard();
-		
+		//boardstructure.printTileTypeBoard();
 		return error;
 	}
 	
@@ -707,6 +786,9 @@ public class SendMessageButtonListener implements ActionListener {
 		}
 		else if(Board.tokenAL.get(i%Main.numPlayers).xcoordinate == Board.DiningRoomEntrance2x && Board.tokenAL.get(i%Main.numPlayers).ycoordinate == Board.DiningRoomEntrance2y) {
 			AddtoRoom(3);
+		}
+		else if(Board.tokenAL.get(i%Main.numPlayers).xcoordinate == Board.BasementEntrancex && Board.tokenAL.get(i%Main.numPlayers).ycoordinate == Board.BasementEntrancey) {
+			AddtoRoom(9);
 		}
 		else {
 			AddtoRoom(4);
@@ -756,6 +838,7 @@ public class SendMessageButtonListener implements ActionListener {
 	}
 	
 	public void AddtoRoom(int l) {
+		display.textarea.append(textualcommand.textfield.getText());
 		//Find an available slot
 		for(int j = 0; j<6;j++) {
 			if(Board.RoomSlots.get(l)[0][j] == 0) {
@@ -776,7 +859,47 @@ public class SendMessageButtonListener implements ActionListener {
 		}
 		//Next persons go
 		moveCounter = 0;
-		appendTextAndTurnInfo();
+		//Question or next persons go
+		display.textarea.append("\nType question to make a guess, or type done to finish" );
+		display.textarea.append("\n" + "<"  + Main.playerNames[i%Main.numPlayers] +">");
+		gameStage = 2;
+	}
+	
+	public void AddPlayertoRoom(String CharName) {
+		display.textarea.append(textualcommand.textfield.getText());
+		textualcommand.textfield.setText("");
+		
+		int l = Board.tokenAL.get(i%Main.numPlayers).slot;
+		
+		int store = i;
+		i = Token.findCharacter(CharName);
+		
+		if(Board.tokenAL.get(i).slot != 10) {
+			RemovefromRoom();
+		}
+		
+		//Find an available slot
+		for(int j = 0; j<6;j++) {
+			if(Board.RoomSlots.get(l)[0][j] == 0) {
+				//Set Token as in a Room
+				Board.tokenAL.get(i).slot = l;
+				//Set slot as occupied
+				Board.RoomSlots.get(l)[0][j] = 1;
+				//Move the token to the slot
+				Board.tokenAL.get(i).xcoordinate = Board.RoomSlots.get(l)[1][j];
+				Board.tokenAL.get(i).ycoordinate = Board.RoomSlots.get(l)[2][j];
+
+				//Move token
+				Board.tokenAL.get(i).setBounds(Board.tokenAL.get(i).xcoordinate, Board.tokenAL.get(i).ycoordinate, Board.tokenAL.get(i).imageIcon.getIconWidth(), Board.tokenAL.get(i).imageIcon.getIconHeight());
+				
+				//Exit the loop
+				break;
+			}
+		}
+		
+		display.textarea.append("\nEnter weapon name: " );
+		gameStage = 4;
+		i = store;
 	}
 	
 	public void RemovefromRoom() {
@@ -787,13 +910,27 @@ public class SendMessageButtonListener implements ActionListener {
 				//Set board back to S
 				boardstructure.setCoordinatesType('S', Board.tokenAL.get(i%Main.numPlayers).xcoordinate, Board.tokenAL.get(i%Main.numPlayers).ycoordinate);
 				//Set Token as not in a Room
-				Board.tokenAL.get(i%Main.numPlayers).slot = 9;
+				Board.tokenAL.get(i%Main.numPlayers).slot = 10;
 				//Set slot as unoccupied
 				Board.RoomSlots.get(l)[0][j] = 0;
 				//Exit the loop
 				break;
 			}
 		}
+	}
+	
+	public void moveWeapon(Weapon weapon) {
+		display.textarea.append(textualcommand.textfield.getText());
+		textualcommand.textfield.setText("");
+		
+		moveWeaponToRoom(weapon, Board.Rooms[Board.tokenAL.get(i%Main.numPlayers).slot]);
+		
+		//Add stuff for more questions
+		gameStage = 1;
+		
+		display.textarea.append(textualcommand.textfield.getText()+"\n\n" + "It is now "+ Main.playerNames[(i+1)%Main.numPlayers] +"'s turn.");
+		display.textarea.append("\n" + "Type 'roll' to roll the dice.");
+		textualcommand.textfield.setText("");
 	}
 	
 	public void weaponMoves() {
@@ -851,7 +988,7 @@ public class SendMessageButtonListener implements ActionListener {
 					x = Board.conservatoryx;
 					y = Board.conservatoryy;
 				}
-				else if(words[k].equals("billiard room")) {
+				else if(words[k].equals("billiard")) {
 					if(words[k+1].equals("room")) {
 						room = "billiard room";
 						x = Board.billiardroomx;

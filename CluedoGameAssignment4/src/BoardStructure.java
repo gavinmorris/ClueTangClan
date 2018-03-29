@@ -22,9 +22,9 @@ public class BoardStructure {
 			{	'x', 'x', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'R', 'R', 'R', 'R', 'R', 'R', 'x'	},
 			{	'x', 'R', 'R', 'R', 'R', 'R', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'r', 'R', 'R', 'R', 'R', 'R', 'x'	},
 			{	'x', 'R', 'S', 'S', 'S', 'R', 'R', 'R', 'R', '0', '0', 'R', 'R', 'R', 'R', 'R', '0', '0', '0', 'R', 'R', 'S', 'S', 'S', 'R', 'x'	},
-			{	'x', 'R', 'S', 'S', 'S', 'R', 'R', 'R', 'R', '0', '0', 'R', 'R', 'R', 'R', 'R', '0', '0', '0', 'R', 'R', 'S', 'S', 'S', 'R', 'x'	},
+			{	'x', 'R', 'S', 'S', 'S', 'R', 'R', 'R', 'R', '0', '0', 'R', 'S', 'S', 'S', 'R', '0', '0', '0', 'R', 'R', 'S', 'S', 'S', 'R', 'x'	},
 			{	'x', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'l', '0', '0', 'R', 'S', 'S', 'S', 'R', '0', '0', '0', 'R', 'R', 'R', 'R', 'u', 'R', 'x'	},
-			{	'x', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', '0', '0', 'R', 'S', 'S', 'S', 'R', '0', '0', '0', '0', '0', '0', '0', '0', 'x', 'x'	},
+			{	'x', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', '0', '0', 'R', 'R', 'R', 'R', 'R', '0', '0', '0', '0', '0', '0', '0', '0', 'x', 'x'	},
 			{	'x', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', '0', '0', 'R', 'R', 'R', 'R', 'R', '0', '0', '0', 'R', 'R', 'd', 'R', 'R', 'x', 'x'	},
 			{	'x', 'R', 'R', 'R', 'R', 'R', 'R', 'u', 'R', '0', '0', 'R', 'R', 'R', 'R', 'R', '0', '0', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'x'	},
 			{	'x', 'x', '0', '0', '0', '0', '0', '0', '0', '0', '0', 'R', 'R', 'u', 'R', 'R', '0', '0', 'r', 'R', 'R', 'S', 'S', 'S', 'R', 'x'	},
@@ -237,6 +237,18 @@ public class BoardStructure {
 				Board.RoomSlots.get(8)[0][iterate] = 0;
 				Board.RoomSlots.get(8)[1][iterate] = StudySlotsStartingx + i*23;
 				Board.RoomSlots.get(8)[2][iterate] = StudySlotsStartingy + j*23;
+				iterate++;
+			}
+		}
+		
+		iterate=0;
+		int BasementSlotsStartingx = 296;
+		int BasementSlotsStartingy = 277;
+		for(int j = 0;j<2;j++) {
+			for(int i = 0;i<3;i++) {
+				Board.RoomSlots.get(9)[0][iterate] = 0;
+				Board.RoomSlots.get(9)[1][iterate] = BasementSlotsStartingx + i*23;
+				Board.RoomSlots.get(9)[2][iterate] = BasementSlotsStartingy + j*23;
 				iterate++;
 			}
 		}

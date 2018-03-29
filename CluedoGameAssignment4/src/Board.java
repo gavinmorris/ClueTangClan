@@ -54,6 +54,7 @@ public class Board extends JPanel {
 	public static int HallEntrance2x = 319; public static int HallEntrance2y = 415;
 	public static int HallEntrance3x = 388; public static int HallEntrance3y = 484;
 	public static int StudyEntrancex = 434; public static int StudyEntrancey = 484;
+	public static int BasementEntrancex = 319; public static int BasementEntrancey = 415;
 
 	//This arraylist stores if a player is in a room
 	//By using an arraylist of arrays we can condense the code in SendMessageButtonListener
@@ -67,8 +68,10 @@ public class Board extends JPanel {
 	//6 = Lounge
 	//7 = Hall
 	//8 = Study
+	//9 = Basement
 	public static ArrayList<int[][]> RoomSlots = new ArrayList<int[][]>();
-    
+    public static String[] Rooms = new String[] {"kitchen", "ball room", "conservatory", "dining room", "billiard room", "library", "lounge", "hall", "study"};
+	
 	//allows us to iterate through an ArrayList to access players instead of using discrete names in the code
     public static ArrayList<Token> tokenAL = new ArrayList<Token>();
 	
@@ -163,6 +166,8 @@ public class Board extends JPanel {
 		RoomSlots.add(new int[3][6]);
 		RoomSlots.add(new int[3][6]);
 		RoomSlots.add(new int[3][6]);
+		RoomSlots.add(new int[3][6]);
+		//Basement
 		RoomSlots.add(new int[3][6]);
 	}
 }

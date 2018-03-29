@@ -23,8 +23,8 @@ public class Token extends JLabel{
 	public Token(String name) {
 	    this.name = name;
 	    imageIcon = setLabelIcon(name);
-	    //0-8 are rooms, so we use 9 to say they are not in a room
-	    slot = 9;
+	    //0-8 are rooms, 9 is the basement, so we use 10 to say they are not in a room
+	    slot = 10;
 	    this.setIcon(imageIcon);
 		setStartingPosition(name);
 		
@@ -313,6 +313,18 @@ public class Token extends JLabel{
 			
 		}
 		
+	}
+	
+	public static int findCharacter(String name) {
+		int j = 0;
+		
+		for(j = 0;j<6;j++) {
+			if(name == Board.tokenAL.get(j).name) {
+				break;
+			}
+		}
+		
+		return j;
 	}
 	
 	public void fillRowWithA(int b) {
