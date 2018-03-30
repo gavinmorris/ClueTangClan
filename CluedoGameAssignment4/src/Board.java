@@ -32,7 +32,7 @@ public class Board extends JPanel {
 	public static int billiardroomx = 555; public static int billiardroomy = 260;
 	public static int libraryx = 555; public static int libraryy = 374;
 	public static int studyx = 445; public static int studyy = 511;
-	public static int hallx = 300; public static int hally = 540;
+	public static int hallx = 300; public static int hally = 465;
 	public static int loungex = 155; public static int loungey = 500;
 	public static int diningroomx = 170; public static int diningroomy = 285;
 	

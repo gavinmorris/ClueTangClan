@@ -613,26 +613,25 @@ public class SendMessageButtonListener implements ActionListener {
 	
 	//Display text depending on number of moves left,
 	public void appendTextAndTurnInfo() {
-		if(gameStage == 2) {
-			
-		}
-		
 		//prompts user to type done
-		else if(moveCounter == 0) {
-			if(done == 0) {
-				display.textarea.append(textualcommand.textfield.getText()+"\n" + "No moves left, type done.");
-				display.textarea.append("\n" + "<"  + Main.playerNames[i%Main.numPlayers] +">");
-				done++;
+		if(gameStage == 1) {
+			if(moveCounter == 0) {
+				if(done == 0) {
+					display.textarea.append(textualcommand.textfield.getText()+"\n" + "No moves left, type done.");
+					display.textarea.append("\n" + "<"  + Main.playerNames[i%Main.numPlayers] +">");
+					done++;
+				}
 			}
-		}
-		
-		//moves still left
-		else { 
-			if(error == false) {
-				appendAndRemove();
-			}
-		}
 			
+			//moves still left
+			else { 
+				if(error == false) {
+					appendAndRemove();
+				}
+			}
+				
+		}
+
 		textualcommand.textfield.setText("");
 		display.moveScrollPaneWithText();
 	}
