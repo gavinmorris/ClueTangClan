@@ -107,20 +107,8 @@ public class SendMessageButtonListener implements ActionListener {
 				
 			}
 			
-			if(text.equalsIgnoreCase("done")) {
-				if(moveCounter == 0) {
-					display.textarea.append(textualcommand.textfield.getText()+"\n\n" + "It is now "+ Main.playerNames[(i+1)%Main.numPlayers] +"'s turn.");
-					display.textarea.append("\n" + "Type 'roll' to roll the dice.");
-					textualcommand.textfield.setText("");
-				} 
-				else {
-					display.textarea.append(textualcommand.textfield.getText()+"\n" + "You still have moves left\n");
-					display.textarea.append("< "  + Main.playerNames[i%Main.numPlayers] + " ("+ moveCounterDisplay(moveCounter) +") "+"> ");
-					textualcommand.textfield.setText("");
-				}
-			}
 			
-			else if(text.equalsIgnoreCase("help")) {
+			 if(text.equalsIgnoreCase("help")) {
 				JTextArea help = new JTextArea(
 						"-----------Command Instructions-----------\n\n"+
 						"Weapon commands work like this:\n\n"+
@@ -174,6 +162,23 @@ public class SendMessageButtonListener implements ActionListener {
 					textualcommand.textfield.setText("");
 				}
 			}
+			
+			else if(text.equalsIgnoreCase("clear")) {
+				
+				if(moveCounter == 0) {
+					display.textarea.setText(" ");
+					textualcommand.textfield.setText("");
+					display.playerInfo();
+					display.textarea.append(textualcommand.textfield.getText()+"\n" +" Now type done.\n"+ "<"+ Main.playerNames[(i)%Main.numPlayers] +">");
+					gameStage = 2;
+				}
+				
+				else {
+					display.textarea.append(textualcommand.textfield.getText()+"\n" +"You may not clear the panel when you have moves left\n."+"<"+ Main.playerNames[i%Main.numPlayers] + " ("+ moveCounterDisplay(moveCounter) +") " +">");
+					textualcommand.textfield.setText("");
+				}
+				
+			}
 			weaponMoves();
 		}
 		if(gameStage == 2) {
@@ -184,11 +189,11 @@ public class SendMessageButtonListener implements ActionListener {
 				gameStage = 3;
 			}
 			else if(text.equalsIgnoreCase("done")) {
-				display.textarea.append(textualcommand.textfield.getText()+"\n\n" + "It is now "+ Main.playerNames[(i+1)%Main.numPlayers] +"'s turn.");
-				display.textarea.append("\n" + "Type 'roll' to roll the dice.");
 				textualcommand.textfield.setText("");
-				gameStage = 1;
+				gameStage = 5;
+				display.textarea.append(textualcommand.textfield.getText()+"\n\n" +  Main.playerNames[(i+1)%Main.numPlayers] +" has the screen been cleared?");
 			}
+			
 		}
 		if(gameStage == 3) {
 			if(text.equalsIgnoreCase("scarlett")) {
@@ -236,6 +241,28 @@ public class SendMessageButtonListener implements ActionListener {
 				moveWeapon(weapon);
 			}
 		}
+		
+		if(gameStage == 5) {
+			if(text.equalsIgnoreCase("yes")) {
+				gameStage = 1;
+				if(moveCounter == 0) {
+					display.textarea.append(textualcommand.textfield.getText()+"\n\n" + "It is now "+ Main.playerNames[(i+1)%Main.numPlayers] +"'s turn.");
+					display.textarea.append("\n" + "Type 'roll' to roll the dice.");
+					textualcommand.textfield.setText("");
+				} 
+				else {
+					display.textarea.append(textualcommand.textfield.getText()+"\n" + "You still have moves left\n");
+					display.textarea.append("< "  + Main.playerNames[i%Main.numPlayers] + " ("+ moveCounterDisplay(moveCounter) +") "+"> ");
+					textualcommand.textfield.setText("");
+				}
+			}
+			
+			else if(text.equalsIgnoreCase("no")) {
+				gameStage = 1;
+				display.textarea.append(textualcommand.textfield.getText()+"\n" + "Tell "+ Main.playerNames[(i)%Main.numPlayers] +" to clear the screen");
+				textualcommand.textfield.setText("");
+			}
+		}
 	}		
 	
 	
@@ -280,6 +307,11 @@ public class SendMessageButtonListener implements ActionListener {
 			i = bigIndex;
 		}
 		display.textarea.append("\n\n"+Main.playerNames[i]+" will go first.\n");
+	}
+	
+	public void clearInfoPanel() {
+		display.textarea.append("\n Type clear to clear information and allow next player to ghave their turn.");
+		
 	}
 	
 	public void DrawedRoll(int[] drawedPlayers) {
@@ -617,7 +649,7 @@ public class SendMessageButtonListener implements ActionListener {
 		if(gameStage == 1) {
 			if(moveCounter == 0) {
 				if(done == 0) {
-					display.textarea.append(textualcommand.textfield.getText()+"\n" + "No moves left, type done.");
+					display.textarea.append(textualcommand.textfield.getText()+"\n" + "No moves left, type clear then type done.");
 					display.textarea.append("\n" + "<"  + Main.playerNames[i%Main.numPlayers] +">");
 					done++;
 				}
