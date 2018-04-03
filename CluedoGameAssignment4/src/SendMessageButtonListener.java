@@ -32,7 +32,7 @@ public class SendMessageButtonListener implements ActionListener {
 		this.murderenvelope = murderenvelope;
 		this.notes = notes;
 	}
-	
+	JTextArea log = new JTextArea("-----------Question Log-----------\n");
 	public void actionPerformed(ActionEvent event) {
 		
 		text = textualcommand.textfield.getText().trim();
@@ -134,6 +134,11 @@ public class SendMessageButtonListener implements ActionListener {
 					textualcommand.textfield.setText("");
 				}
 			}
+			 
+			else if(text.equalsIgnoreCase("log")) {
+				JOptionPane.showMessageDialog(null, log);
+				textualcommand.textfield.setText("");
+			}
 			else if(text.equalsIgnoreCase("cheat")) {
 				if(murderEnvelopeVisible == false) {
 					murderenvelope.setVisible(true);
@@ -165,9 +170,7 @@ public class SendMessageButtonListener implements ActionListener {
 			 
 			else if(text.equalsIgnoreCase("done")) {
 				if(moveCounter == 0) {
-					display.textarea.setText(" ");
-					textualcommand.textfield.setText("");
-					display.playerInfo();
+					clearInfo();
 					gameStage = 5;
 					display.textarea.append(textualcommand.textfield.getText()+"\n\n" +  Main.playerNames[(i+1)%Main.numPlayers] +" has the screen been handed over? ");
 				}
@@ -182,19 +185,16 @@ public class SendMessageButtonListener implements ActionListener {
 		}
 		if(gameStage == 2) {
 			if(text.equalsIgnoreCase("question")) {
-				display.textarea.setText(" ");
-				textualcommand.textfield.setText("");
-				display.playerInfo();
+				clearInfo();
 				display.textarea.append(textualcommand.textfield.getText());
 				textualcommand.textfield.setText("");
 				display.textarea.append("\nEnter the name of the character: " );
+				log.append("\nPlayer name: " + Main.playerNames[(i)%Main.numPlayers] + "\n");
 				gameStage = 3;
 			}
 			
 			else if(text.equalsIgnoreCase("done")) {
-				display.textarea.setText(" ");
-				textualcommand.textfield.setText("");
-				display.playerInfo();
+				clearInfo();
 				gameStage = 5;
 				display.textarea.append(textualcommand.textfield.getText()+"\n\n" +  Main.playerNames[(i+1)%Main.numPlayers] +" has the screen been handed over? ");
 			}
@@ -203,47 +203,59 @@ public class SendMessageButtonListener implements ActionListener {
 		if(gameStage == 3) {
 			if(text.equalsIgnoreCase("scarlett")) {
 				AddPlayertoRoom("Scarlett");
+				log.append("Accused : Scarlett\n");
 			}
 			else if(text.equalsIgnoreCase("mustard")) {
 				AddPlayertoRoom("Mustard");
+				log.append("Accused : Mustard\n");
 			}
 			else if(text.equalsIgnoreCase("green")) {
 				AddPlayertoRoom("Green");
+				log.append("Accused : Green\n");
 			}
 			else if(text.equalsIgnoreCase("white")) {
 				AddPlayertoRoom("White");
+				log.append("Accused : White\n");
 			}
 			else if(text.equalsIgnoreCase("peacock")) {
 				AddPlayertoRoom("Peacock");
+				log.append("Accused : Peacock\n");
 			}
 			else if(text.equalsIgnoreCase("plum")) {
 				AddPlayertoRoom("Plum");
+				log.append("Accused : Plum\n");
 			}
 		}
 		if(gameStage == 4) {
 			if(text.equalsIgnoreCase("candlestick")) {
 				Weapon weapon = board.candlestick;
 				moveWeapon(weapon);
+				log.append("Weapon of choice: Candlestick\n");
 			}
 			else if(text.equalsIgnoreCase("knife")) {
 				Weapon weapon = board.knife;
 				moveWeapon(weapon);
+				log.append("Weapon of choice: Knife\n");
 			}
 			else if(text.equalsIgnoreCase("lead pipe")) {
 				Weapon weapon = board.leadpipe;
 				moveWeapon(weapon);
+				log.append("Weapon of choice: Lead Pipe\n");
 			}
 			else if(text.equalsIgnoreCase("revolver")) {
 				Weapon weapon = board.revolver;
 				moveWeapon(weapon);
+				log.append("Weapon of choice: Revolver\n");
 			}
 			else if(text.equalsIgnoreCase("rope")) {
 				Weapon weapon = board.rope;
 				moveWeapon(weapon);
+				log.append("Weapon of choice: Rope\n");
 			}
 			else if(text.equalsIgnoreCase("wrench")) {
 				Weapon weapon = board.wrench;
 				moveWeapon(weapon);
+				log.append("Weapon of choice: Wrench\n");
 			}
 		}
 		
@@ -662,7 +674,12 @@ public class SendMessageButtonListener implements ActionListener {
 		textualcommand.textfield.setText("");
 		display.moveScrollPaneWithText();
 	}
-	
+
+	public void clearInfo() {
+		display.textarea.setText(" ");
+		textualcommand.textfield.setText("");
+		display.playerInfo();
+	}
 	public boolean changeWithBoard(int i, int moveCounter, int x, int y, char direction, BoardStructure boardstructure, Display display, TextualCommand textualcommand) {
 		boolean error = false;
 		Board.tokenAL.get(i%Main.numPlayers).type = boardstructure.getCoordinatesType(Board.tokenAL.get(i%Main.numPlayers).xcoordinate+x, Board.tokenAL.get(i%Main.numPlayers).ycoordinate+y);
@@ -950,13 +967,11 @@ public class SendMessageButtonListener implements ActionListener {
 		textualcommand.textfield.setText("");
 		
 		moveWeaponToRoom(weapon, Board.Rooms[Board.tokenAL.get(i%Main.numPlayers).slot]);
-		
+		clearInfo();
 		//Add stuff for more questions
-		gameStage = 1;
-		
-		display.textarea.append(textualcommand.textfield.getText()+"\n\n" + "It is now "+ Main.playerNames[(i+1)%Main.numPlayers] +"'s turn.");
-		display.textarea.append("\n" + "Type 'roll' to roll the dice.");
-		textualcommand.textfield.setText("");
+		gameStage = 5;
+		display.textarea.append(textualcommand.textfield.getText()+"\n\n" +  Main.playerNames[(i+1)%Main.numPlayers] +" has the screen been handed over? ");
+
 	}
 	
 	public void weaponMoves() {
