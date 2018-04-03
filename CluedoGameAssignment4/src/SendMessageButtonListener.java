@@ -162,36 +162,41 @@ public class SendMessageButtonListener implements ActionListener {
 					textualcommand.textfield.setText("");
 				}
 			}
-			
-			else if(text.equalsIgnoreCase("clear")) {
-				
+			 
+			else if(text.equalsIgnoreCase("done")) {
 				if(moveCounter == 0) {
 					display.textarea.setText(" ");
 					textualcommand.textfield.setText("");
 					display.playerInfo();
-					display.textarea.append(textualcommand.textfield.getText()+"\n" +" Now type done.\n"+ "<"+ Main.playerNames[(i)%Main.numPlayers] +">");
-					gameStage = 2;
+					gameStage = 5;
+					display.textarea.append(textualcommand.textfield.getText()+"\n\n" +  Main.playerNames[(i+1)%Main.numPlayers] +" has the screen been handed over? ");
 				}
 				
 				else {
-					display.textarea.append(textualcommand.textfield.getText()+"\n" +"You may not clear the panel when you have moves left\n."+"<"+ Main.playerNames[i%Main.numPlayers] + " ("+ moveCounterDisplay(moveCounter) +") " +">");
+					display.textarea.append(textualcommand.textfield.getText()+"\n" +"You still have moves left\n."+"<"+ Main.playerNames[i%Main.numPlayers] + " ("+ moveCounterDisplay(moveCounter) +") " +">");
 					textualcommand.textfield.setText("");
 				}
-				
 			}
+			
 			weaponMoves();
 		}
 		if(gameStage == 2) {
 			if(text.equalsIgnoreCase("question")) {
+				display.textarea.setText(" ");
+				textualcommand.textfield.setText("");
+				display.playerInfo();
 				display.textarea.append(textualcommand.textfield.getText());
 				textualcommand.textfield.setText("");
 				display.textarea.append("\nEnter the name of the character: " );
 				gameStage = 3;
 			}
+			
 			else if(text.equalsIgnoreCase("done")) {
+				display.textarea.setText(" ");
 				textualcommand.textfield.setText("");
+				display.playerInfo();
 				gameStage = 5;
-				display.textarea.append(textualcommand.textfield.getText()+"\n\n" +  Main.playerNames[(i+1)%Main.numPlayers] +" has the screen been cleared?");
+				display.textarea.append(textualcommand.textfield.getText()+"\n\n" +  Main.playerNames[(i+1)%Main.numPlayers] +" has the screen been handed over? ");
 			}
 			
 		}
@@ -256,12 +261,6 @@ public class SendMessageButtonListener implements ActionListener {
 					textualcommand.textfield.setText("");
 				}
 			}
-			
-			else if(text.equalsIgnoreCase("no")) {
-				gameStage = 1;
-				display.textarea.append(textualcommand.textfield.getText()+"\n" + "Tell "+ Main.playerNames[(i)%Main.numPlayers] +" to clear the screen");
-				textualcommand.textfield.setText("");
-			}
 		}
 	}		
 	
@@ -308,11 +307,7 @@ public class SendMessageButtonListener implements ActionListener {
 		}
 		display.textarea.append("\n\n"+Main.playerNames[i]+" will go first.\n");
 	}
-	
-	public void clearInfoPanel() {
-		display.textarea.append("\n Type clear to clear information and allow next player to ghave their turn.");
-		
-	}
+
 	
 	public void DrawedRoll(int[] drawedPlayers) {
 		display.textarea.append("\n\nThere was a draw, roll again to decide:");
@@ -649,7 +644,7 @@ public class SendMessageButtonListener implements ActionListener {
 		if(gameStage == 1) {
 			if(moveCounter == 0) {
 				if(done == 0) {
-					display.textarea.append(textualcommand.textfield.getText()+"\n" + "No moves left, type clear then type done.");
+					display.textarea.append(textualcommand.textfield.getText()+"\n" + "No moves left, type done.");
 					display.textarea.append("\n" + "<"  + Main.playerNames[i%Main.numPlayers] +">");
 					done++;
 				}
