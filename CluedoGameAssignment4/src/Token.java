@@ -19,6 +19,8 @@ public class Token extends JLabel{
     public ArrayList<Card> myCardsAL = new ArrayList<Card>();
     
     public Notes notes;
+    
+    public boolean eliminated = false;
 	
 	public Token(String name) {
 	    this.name = name;
@@ -39,6 +41,10 @@ public class Token extends JLabel{
 	}
 	public int getY() {
 	    return ycoordinate;
+	}
+	
+	public boolean isEliminated() {
+		return eliminated;
 	}
 	
 	public void setStartingPosition(String name) {
@@ -100,220 +106,8 @@ public class Token extends JLabel{
 		icon = new ImageIcon(imageBuffered);
 		return icon;
 	}
-	
-	
-	
-	public void displayXCards(int k) {
-		for(int i=0; i<myCardsAL.size(); i++) {
-			int b=0;
-			
-			if(myCardsAL.get(i).cardName.equals("green")) {
-				b=0; 
-				fillRowWithX(b, k);
-			}
-			else if(myCardsAL.get(i).cardName.equals("mustard")) {					
-				b=1;
-				fillRowWithX(b, k);
-			}
-			else if(myCardsAL.get(i).cardName.equals("peacock")) {					
-				b=2;
-				fillRowWithX(b, k);
-			}
-			else if(myCardsAL.get(i).cardName.equals("plum")) {					
-				b=3;
-				fillRowWithX(b, k);
-			}
-			else if(myCardsAL.get(i).cardName.equals("scarlett")) {					
-				b=4;
-				fillRowWithX(b, k);
-			}
-			else if(myCardsAL.get(i).cardName.equals("white")) {					
-				b=5;
-				fillRowWithX(b, k);
-			}
-			
 
-			else if(myCardsAL.get(i).cardName.equals("candlestick")) {					
-				b=6;
-				fillRowWithX(b, k);
-			}
-			else if(myCardsAL.get(i).cardName.equals("knife")) {					
-				b=7;
-				fillRowWithX(b, k);
-			}
-			else if(myCardsAL.get(i).cardName.equals("lead pipe")) {					
-				b=8;
-				fillRowWithX(b, k);
-			}
-			else if(myCardsAL.get(i).cardName.equals("revolver")) {					
-				b=9;
-				fillRowWithX(b, k);
-			}
-			else if(myCardsAL.get(i).cardName.equals("rope")) {					
-				b=10;
-				fillRowWithX(b, k);
-			}
-			else if(myCardsAL.get(i).cardName.equals("wrench")) {					
-				b=11;
-				fillRowWithX(b, k);
-			}
-			
-
-			else if(myCardsAL.get(i).cardName.equals("ball room")) {					
-				b=12;
-				fillRowWithX(b, k);
-			}
-			else if(myCardsAL.get(i).cardName.equals("billiard room")) {					
-				b=13;
-				fillRowWithX(b, k);
-			}
-			else if(myCardsAL.get(i).cardName.equals("conservatory")) {					
-				b=14;
-				fillRowWithX(b, k);
-			}
-			else if(myCardsAL.get(i).cardName.equals("dining room")) {					
-				b=15;
-				fillRowWithX(b, k);
-			}
-			else if(myCardsAL.get(i).cardName.equals("hall")) {					
-				b=16;
-				fillRowWithX(b, k);
-			}
-			else if(myCardsAL.get(i).cardName.equals("kitchen")) {					
-				b=17;
-				fillRowWithX(b, k);
-			}
-			else if(myCardsAL.get(i).cardName.equals("library")) {					
-				b=18;
-				fillRowWithX(b, k);
-			}
-			else if(myCardsAL.get(i).cardName.equals("lounge")) {
-				b=19;
-				fillRowWithX(b, k);
-			}
-			else if(myCardsAL.get(i).cardName.equals("study")) {
-				b=20;
-				fillRowWithX(b, k);
-			}	
-			
-		}
-		
-	}
 	
-	public void fillRowWithX(int b, int k) {
-	
-		for(int a=0; a<Main.numPlayers; a++) {
-			if(a==k) {
-				notes.notesArray[b][a] = new JLabel(notes.tickImageIcon);
-			} else {
-				notes.notesArray[b][a] = new JLabel(notes.XImageIcon);
-			}
-			notes.layeredPane.add(notes.notesArray[b][a], JLayeredPane.PALETTE_LAYER);
-		    int i = (int) notes.notesPositionXArray[b][a];
-		    int j = (int) notes.notesPositionYArray[b][a];
-			notes.notesArray[b][a].setBounds(i, j, notes.XImageIcon.getIconWidth()-1, notes.XImageIcon.getIconHeight()-1); 
-		}
-		
-	}
-	
-	
-	public void displayACards(ArrayList<Card> visibleCardAL) {
-
-		for(int i=0; i<visibleCardAL.size(); i++) {
-			int b=0;
-			
-			if(visibleCardAL.get(i).cardName.equals("green")) {
-				b=0; 
-				fillRowWithA(b);
-			}
-			else if(visibleCardAL.get(i).cardName.equals("mustard")) {					
-				b=1;
-				fillRowWithA(b);
-			}
-			else if(visibleCardAL.get(i).cardName.equals("peacock")) {					
-				b=2;
-				fillRowWithA(b);
-			}
-			else if(visibleCardAL.get(i).cardName.equals("plum")) {					
-				b=3;
-				fillRowWithA(b);
-			}
-			else if(visibleCardAL.get(i).cardName.equals("scarlett")) {					
-				b=4;
-				fillRowWithA(b);
-			}
-			else if(visibleCardAL.get(i).cardName.equals("white")) {					
-				b=5;
-				fillRowWithA(b);
-			}
-			
-
-			else if(visibleCardAL.get(i).cardName.equals("candlestick")) {					
-				b=6;
-				fillRowWithA(b);
-			}
-			else if(visibleCardAL.get(i).cardName.equals("knife")) {					
-				b=7;
-				fillRowWithA(b);
-			}
-			else if(visibleCardAL.get(i).cardName.equals("lead pipe")) {					
-				b=8;
-				fillRowWithA(b);
-			}
-			else if(visibleCardAL.get(i).cardName.equals("revolver")) {					
-				b=9;
-				fillRowWithA(b);
-			}
-			else if(visibleCardAL.get(i).cardName.equals("rope")) {					
-				b=10;
-				fillRowWithA(b);
-			}
-			else if(visibleCardAL.get(i).cardName.equals("wrench")) {					
-				b=11;
-				fillRowWithA(b);
-			}
-			
-
-			else if(visibleCardAL.get(i).cardName.equals("ball room")) {					
-				b=12;
-				fillRowWithA(b);
-			}
-			else if(visibleCardAL.get(i).cardName.equals("billiard room")) {					
-				b=13;
-				fillRowWithA(b);
-			}
-			else if(visibleCardAL.get(i).cardName.equals("conservatory")) {					
-				b=14;
-				fillRowWithA(b);
-			}
-			else if(visibleCardAL.get(i).cardName.equals("dining room")) {					
-				b=15;
-				fillRowWithA(b);
-			}
-			else if(visibleCardAL.get(i).cardName.equals("hall")) {					
-				b=16;
-				fillRowWithA(b);
-			}
-			else if(visibleCardAL.get(i).cardName.equals("kitchen")) {					
-				b=17;
-				fillRowWithA(b);
-			}
-			else if(visibleCardAL.get(i).cardName.equals("library")) {					
-				b=18;
-				fillRowWithA(b);
-			}
-			else if(visibleCardAL.get(i).cardName.equals("lounge")) {
-				b=19;
-				fillRowWithA(b);
-			}
-			else if(visibleCardAL.get(i).cardName.equals("study")) {
-				b=20;
-				fillRowWithA(b);
-			}
-			
-		}
-		
-	}
 	
 	public static int findCharacter(String name) {
 		int j = 0;
@@ -327,7 +121,232 @@ public class Token extends JLabel{
 		return j;
 	}
 	
-	public void fillRowWithA(int b) {
+	
+	
+	public void displayXCardsOnNotes(int playerNum) {
+		for(int i=0; i<myCardsAL.size(); i++) {
+			int cardNum=0;
+			
+			if(myCardsAL.get(i).cardName.equals("green")) {
+				cardNum=0; 
+				fillRowWithXOnNotes(cardNum, playerNum);
+			}
+			else if(myCardsAL.get(i).cardName.equals("mustard")) {					
+				cardNum=1;
+				fillRowWithXOnNotes(cardNum, playerNum);
+			}
+			else if(myCardsAL.get(i).cardName.equals("peacock")) {					
+				cardNum=2;
+				fillRowWithXOnNotes(cardNum, playerNum);
+			}
+			else if(myCardsAL.get(i).cardName.equals("plum")) {					
+				cardNum=3;
+				fillRowWithXOnNotes(cardNum, playerNum);
+			}
+			else if(myCardsAL.get(i).cardName.equals("scarlett")) {					
+				cardNum=4;
+				fillRowWithXOnNotes(cardNum, playerNum);
+			}
+			else if(myCardsAL.get(i).cardName.equals("white")) {					
+				cardNum=5;
+				fillRowWithXOnNotes(cardNum, playerNum);
+			}
+			
+
+			else if(myCardsAL.get(i).cardName.equals("candlestick")) {					
+				cardNum=6;
+				fillRowWithXOnNotes(cardNum, playerNum);
+			}
+			else if(myCardsAL.get(i).cardName.equals("knife")) {					
+				cardNum=7;
+				fillRowWithXOnNotes(cardNum, playerNum);
+			}
+			else if(myCardsAL.get(i).cardName.equals("lead pipe")) {					
+				cardNum=8;
+				fillRowWithXOnNotes(cardNum, playerNum);
+			}
+			else if(myCardsAL.get(i).cardName.equals("revolver")) {					
+				cardNum=9;
+				fillRowWithXOnNotes(cardNum, playerNum);
+			}
+			else if(myCardsAL.get(i).cardName.equals("rope")) {					
+				cardNum=10;
+				fillRowWithXOnNotes(cardNum, playerNum);
+			}
+			else if(myCardsAL.get(i).cardName.equals("wrench")) {					
+				cardNum=11;
+				fillRowWithXOnNotes(cardNum, playerNum);
+			}
+			
+
+			else if(myCardsAL.get(i).cardName.equals("ball room")) {					
+				cardNum=12;
+				fillRowWithXOnNotes(cardNum, playerNum);
+			}
+			else if(myCardsAL.get(i).cardName.equals("billiard room")) {					
+				cardNum=13;
+				fillRowWithXOnNotes(cardNum, playerNum);
+			}
+			else if(myCardsAL.get(i).cardName.equals("conservatory")) {					
+				cardNum=14;
+				fillRowWithXOnNotes(cardNum, playerNum);
+			}
+			else if(myCardsAL.get(i).cardName.equals("dining room")) {					
+				cardNum=15;
+				fillRowWithXOnNotes(cardNum, playerNum);
+			}
+			else if(myCardsAL.get(i).cardName.equals("hall")) {					
+				cardNum=16;
+				fillRowWithXOnNotes(cardNum, playerNum);
+			}
+			else if(myCardsAL.get(i).cardName.equals("kitchen")) {					
+				cardNum=17;
+				fillRowWithXOnNotes(cardNum, playerNum);
+			}
+			else if(myCardsAL.get(i).cardName.equals("library")) {					
+				cardNum=18;
+				fillRowWithXOnNotes(cardNum, playerNum);
+			}
+			else if(myCardsAL.get(i).cardName.equals("lounge")) {
+				cardNum=19;
+				fillRowWithXOnNotes(cardNum, playerNum);
+			}
+			else if(myCardsAL.get(i).cardName.equals("study")) {
+				cardNum=20;
+				fillRowWithXOnNotes(cardNum, playerNum);
+			}	
+			
+		}
+		
+	}
+	
+	public void fillRowWithXOnNotes(int cardNum, int playerNum) {
+	
+		for(int a=0; a<Main.numPlayers; a++) {
+			if(a==playerNum) {
+				notes.notesArray[cardNum][a] = new JLabel(notes.tickImageIcon);
+			} else {
+				notes.notesArray[cardNum][a] = new JLabel(notes.XImageIcon);
+			}
+			notes.layeredPane.add(notes.notesArray[cardNum][a], JLayeredPane.PALETTE_LAYER);
+		    int i = (int) notes.notesPositionXArray[cardNum][a];
+		    int j = (int) notes.notesPositionYArray[cardNum][a];
+			notes.notesArray[cardNum][a].setBounds(i, j, notes.XImageIcon.getIconWidth()-1, notes.XImageIcon.getIconHeight()-1); 
+		}
+		
+	}
+	
+	public void fillCellWithXOnNotes(int cardNum, int playerNum) {
+			
+		notes.notesArray[cardNum][playerNum] = new JLabel(notes.XImageIcon);
+		
+		notes.layeredPane.add(notes.notesArray[cardNum][playerNum], JLayeredPane.PALETTE_LAYER);
+	    int i = (int) notes.notesPositionXArray[cardNum][playerNum];
+	    int j = (int) notes.notesPositionYArray[cardNum][playerNum];
+		notes.notesArray[cardNum][playerNum].setBounds(i, j, notes.XImageIcon.getIconWidth()-1, notes.XImageIcon.getIconHeight()-1); 
+		
+	}
+	
+	
+	public void displayACardsOnNotes(ArrayList<Card> visibleCardAL) {
+
+		for(int i=0; i<visibleCardAL.size(); i++) {
+			int cardNum=0;
+			
+			if(visibleCardAL.get(i).cardName.equals("green")) {
+				cardNum=0; 
+				fillRowWithAOnNotes(cardNum);
+			}
+			else if(visibleCardAL.get(i).cardName.equals("mustard")) {					
+				cardNum=1;
+				fillRowWithAOnNotes(cardNum);
+			}
+			else if(visibleCardAL.get(i).cardName.equals("peacock")) {					
+				cardNum=2;
+				fillRowWithAOnNotes(cardNum);
+			}
+			else if(visibleCardAL.get(i).cardName.equals("plum")) {					
+				cardNum=3;
+				fillRowWithAOnNotes(cardNum);
+			}
+			else if(visibleCardAL.get(i).cardName.equals("scarlett")) {					
+				cardNum=4;
+				fillRowWithAOnNotes(cardNum);
+			}
+			else if(visibleCardAL.get(i).cardName.equals("white")) {					
+				cardNum=5;
+				fillRowWithAOnNotes(cardNum);
+			}
+			
+
+			else if(visibleCardAL.get(i).cardName.equals("candlestick")) {					
+				cardNum=6;
+				fillRowWithAOnNotes(cardNum);
+			}
+			else if(visibleCardAL.get(i).cardName.equals("knife")) {					
+				cardNum=7;
+				fillRowWithAOnNotes(cardNum);
+			}
+			else if(visibleCardAL.get(i).cardName.equals("lead pipe")) {					
+				cardNum=8;
+				fillRowWithAOnNotes(cardNum);
+			}
+			else if(visibleCardAL.get(i).cardName.equals("revolver")) {					
+				cardNum=9;
+				fillRowWithAOnNotes(cardNum);
+			}
+			else if(visibleCardAL.get(i).cardName.equals("rope")) {					
+				cardNum=10;
+				fillRowWithAOnNotes(cardNum);
+			}
+			else if(visibleCardAL.get(i).cardName.equals("wrench")) {					
+				cardNum=11;
+				fillRowWithAOnNotes(cardNum);
+			}
+			
+
+			else if(visibleCardAL.get(i).cardName.equals("ball room")) {					
+				cardNum=12;
+				fillRowWithAOnNotes(cardNum);
+			}
+			else if(visibleCardAL.get(i).cardName.equals("billiard room")) {					
+				cardNum=13;
+				fillRowWithAOnNotes(cardNum);
+			}
+			else if(visibleCardAL.get(i).cardName.equals("conservatory")) {					
+				cardNum=14;
+				fillRowWithAOnNotes(cardNum);
+			}
+			else if(visibleCardAL.get(i).cardName.equals("dining room")) {					
+				cardNum=15;
+				fillRowWithAOnNotes(cardNum);
+			}
+			else if(visibleCardAL.get(i).cardName.equals("hall")) {					
+				cardNum=16;
+				fillRowWithAOnNotes(cardNum);
+			}
+			else if(visibleCardAL.get(i).cardName.equals("kitchen")) {					
+				cardNum=17;
+				fillRowWithAOnNotes(cardNum);
+			}
+			else if(visibleCardAL.get(i).cardName.equals("library")) {					
+				cardNum=18;
+				fillRowWithAOnNotes(cardNum);
+			}
+			else if(visibleCardAL.get(i).cardName.equals("lounge")) {
+				cardNum=19;
+				fillRowWithAOnNotes(cardNum);
+			}
+			else if(visibleCardAL.get(i).cardName.equals("study")) {
+				cardNum=20;
+				fillRowWithAOnNotes(cardNum);
+			}
+			
+		}
+		
+	}
+	
+	public void fillRowWithAOnNotes(int b) {
 		for(int k=0; k<Main.numPlayers; k++) {
 			for(int a=0; a<Main.numPlayers; a++) {
 				notes.notesArray[b][a] = new JLabel(notes.AImageIcon);
@@ -338,4 +357,6 @@ public class Token extends JLabel{
 			}
 		}
 	}	
+	
+	
 }
