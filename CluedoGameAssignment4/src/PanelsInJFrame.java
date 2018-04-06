@@ -124,8 +124,8 @@ public class PanelsInJFrame {
 
 	    
 	    for(int k=0; k<Main.numPlayers; k++) {
-	    	Board.tokenAL.get(k).displayXCards(k);
-	    	Board.tokenAL.get(k).displayACards(visibleCardAL);
+	    	Board.tokenAL.get(k).displayXCardsOnNotes(k);
+	    	Board.tokenAL.get(k).displayACardsOnNotes(visibleCardAL);
 	    }
 	}
 	
