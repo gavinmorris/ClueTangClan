@@ -5,7 +5,7 @@
 * Jem Cairns (16439124)
 * Gavin Morris (16360966)
 
-# Sprint 3
+# Sprint 4
 
 We have displayed 3 Panels.
 
