@@ -341,9 +341,7 @@ public class Token extends JLabel{
 				cardNum=20;
 				fillRowWithAOnNotes(cardNum);
 			}
-			
 		}
-		
 	}
 	
 	public void fillRowWithAOnNotes(int b) {
@@ -357,6 +355,4 @@ public class Token extends JLabel{
 			}
 		}
 	}	
-	
-	
 }
