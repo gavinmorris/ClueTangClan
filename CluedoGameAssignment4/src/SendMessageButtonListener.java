@@ -62,10 +62,8 @@ public class SendMessageButtonListener implements ActionListener {
 		}
 		
 		if(gameStage == 1) {	
-			if(notesVisible == true) {
-				notes.setVisible(false);
-				notesVisible = false;
-			}
+			notes.setVisible(false);
+			notesVisible = false;
 			if(Board.tokenAL.get(currentPlayer%Main.numPlayers).slot != 10) {				
 				ExitRoom();
 			}
@@ -135,11 +133,6 @@ public class SendMessageButtonListener implements ActionListener {
 					notes.setVisible(true);
 					notesVisible = true;
 				}
-				else if(notesVisible == true) {
-					notes.setVisible(false);
-					notesVisible = false;
-					textualcommand.textfield.setText("");
-				}
 			}
 			 
 			else if(text.equalsIgnoreCase("log")) {
@@ -206,24 +199,17 @@ public class SendMessageButtonListener implements ActionListener {
 			else if(text.equalsIgnoreCase("done")) {
 				clearInfo();
 				gameStage = 5;
-				display.textarea.append(textualcommand.textfield.getText()+"\n\n" +  Main.playerNames[(currentPlayer+1)%Main.numPlayers] +" Has the screen been handed over? ");
+				display.textarea.append(textualcommand.textfield.getText()+"\n\n" +  Main.playerNames[(currentPlayer+1)%Main.numPlayers] +" has the screen been handed over? ");
 			}
 			
 		}
 		if(gameStage == 3) {
-			if(notesVisible == true) {
-				notes.setVisible(false);
-				notesVisible = false;
-			}
+			notes.setVisible(false);
+			notesVisible = false;
 			if(text.equalsIgnoreCase("notes")) {
 				if(notesVisible == false) {
 					notes.setVisible(true);
 					notesVisible = true;
-				}
-				else if(notesVisible == true) {
-					notes.setVisible(false);
-					notesVisible = false;
-					textualcommand.textfield.setText("");
 				}
 			}
 			else if(text.equalsIgnoreCase("scarlett")) {
@@ -252,19 +238,12 @@ public class SendMessageButtonListener implements ActionListener {
 			}
 		}
 		if(gameStage == 4) {
-			if(notesVisible == true) {
-				notes.setVisible(false);
-				notesVisible = false;
-			}
+			notes.setVisible(false);
+			notesVisible = false;
 			if(text.equalsIgnoreCase("notes")) {
 				if(notesVisible == false) {
 					notes.setVisible(true);
 					notesVisible = true;
-				}
-				else if(notesVisible == true) {
-					notes.setVisible(false);
-					notesVisible = false;
-					textualcommand.textfield.setText("");
 				}
 			}
 			else if(text.equalsIgnoreCase("candlestick")) {
@@ -325,15 +304,15 @@ public class SendMessageButtonListener implements ActionListener {
 				textualcommand.textfield.setText("");
 				display.textarea.append("\n\n"+ question[0] +" asked: Was it "+ question[1] +" with the "+ question[2] +" in the "+ question[3]);
 				//Check if a player has any of the cards
-				currentPlayer++;
 				QuestionTime();
 			}
 		}
 		if(gameStage == 7) {
 			if(text.equalsIgnoreCase("done")) {
+				currentPlayer++;
 				clearInfo();
 				gameStage = 6;
-				display.textarea.append(textualcommand.textfield.getText()+"\n\n" +  Main.playerNames[(currentPlayer+1)%Main.numPlayers] +" has the screen been handed over? ");
+				display.textarea.append(textualcommand.textfield.getText()+"\n\n" +  Main.playerNames[(currentPlayer)%Main.numPlayers] +" has the screen been handed over? ");
 			}
 		}
 		if(gameStage == 8) {
@@ -344,18 +323,46 @@ public class SendMessageButtonListener implements ActionListener {
 			//tell questioner then type done
 			if(text.equalsIgnoreCase("yes")) {
 				display.textarea.append("\n" + textualcommand.textfield.getText());
+				textualcommand.textfield.setText("");
 				display.textarea.append("\n\n" + storeName + " had the card "+ found[storeCardNo]);
 				display.textarea.append("\nType done to finish your turn");
 				gameStage = 1;
-				currentPlayer = store;
 			}
 		}
 		if(gameStage == 10) {
-			//tell questioner then type done
+			//Go to the next player see if they have any of the cards
 			if(text.equalsIgnoreCase("done")) {
 				clearInfo();
+				currentPlayer++;
 				gameStage = 6;
 				display.textarea.append(textualcommand.textfield.getText()+"\n\n" +  Main.playerNames[(currentPlayer+1)%Main.numPlayers] +" has the screen been handed over? ");
+			}
+		}
+		if(gameStage == 11) {
+			if(notesVisible == true) {
+				notes.setVisible(false);
+				notesVisible = false;
+			}
+			if(text.equalsIgnoreCase("notes")) {
+				if(notesVisible == false) {
+					notes.setVisible(true);
+					notesVisible = true;
+				}
+				else if(notesVisible == true) {
+					notes.setVisible(false);
+					notesVisible = false;
+					textualcommand.textfield.setText("");
+				}
+			}
+			//Run through the array of rooms to see which was inputed
+			for(int i = 0;i<9;i++) {
+				if(text.equalsIgnoreCase(Board.Rooms[i])) {
+					display.textarea.append(textualcommand.textfield.getText());
+					textualcommand.textfield.setText("");
+					question[3] = Board.Rooms[i];
+					gameStage = 12;
+					// TODO gameStage 12 checks the question[1,2,3](character,weapon,room) with the murder envelope
+				}
 			}
 		}
 	}		
@@ -754,11 +761,6 @@ public class SendMessageButtonListener implements ActionListener {
 		if(moveCounter == 0) {
 			if(Board.tokenAL.get(currentPlayer%Main.numPlayers).slot == 10) {
 				if(done == 0) {
-					for(int z=0;z<Board.tokenAL.get(currentPlayer%Main.numPlayers).myCardsAL.size();z++) {
-						System.out.println(Board.tokenAL.get(currentPlayer%Main.numPlayers).myCardsAL.get(z).cardName);
-					}
-					System.out.println();
-					
 					display.textarea.append(textualcommand.textfield.getText()+"\n" + "No moves left, type done.");
 					display.textarea.append("\n" + "<"  + Main.playerNames[currentPlayer%Main.numPlayers] +">");
 					done=1;
@@ -1004,10 +1006,18 @@ public class SendMessageButtonListener implements ActionListener {
 		}
 		//Next persons go
 		moveCounter = 0;
+		
+		//Accusations
+		if(Board.tokenAL.get(currentPlayer%Main.numPlayers).slot == 9) {
+			display.textarea.append("\nType the character you would like to accuse: " );
+			gameStage = 3;
+		}
 		//Question or next persons go
-		display.textarea.append("\nType question to make a guess, or type done to finish" );
-		display.textarea.append("\n" + "<"  + Main.playerNames[currentPlayer%Main.numPlayers] +">");
-		gameStage = 2;
+		else {
+			display.textarea.append("\nType question to make a guess, or type done to finish" );
+			display.textarea.append("\n" + "<"  + Main.playerNames[currentPlayer%Main.numPlayers] +">");
+			gameStage = 2;
+		}
 	}
 	
 	public void AddPlayertoRoom(String CharName) {
@@ -1017,33 +1027,34 @@ public class SendMessageButtonListener implements ActionListener {
 		
 		int l = Board.tokenAL.get(currentPlayer%Main.numPlayers).slot;
 		
-		int store = currentPlayer;
-		currentPlayer = Token.findCharacter(CharName);
-		
-		if(Board.tokenAL.get(currentPlayer).slot != 10) {
-			RemovefromRoom();
-		}
-		
-		//Find an available slot
-		for(int j = 0; j<6;j++) {
-			if(Board.RoomSlots.get(l)[0][j] == 0) {
-				//Set Token as in a Room
-				Board.tokenAL.get(currentPlayer).slot = l;
-				//Set slot as occupied
-				Board.RoomSlots.get(l)[0][j] = 1;
-				//Move the token to the slot
-				Board.tokenAL.get(currentPlayer).xcoordinate = Board.RoomSlots.get(l)[1][j];
-				Board.tokenAL.get(currentPlayer).ycoordinate = Board.RoomSlots.get(l)[2][j];
+		if(l != 9) {
+			int store = currentPlayer;
+			currentPlayer = Token.findCharacter(CharName);
+			
+			if(Board.tokenAL.get(currentPlayer).slot != 10) {
+				RemovefromRoom();
+			}
+			
+			//Find an available slot
+			for(int j = 0; j<6;j++) {
+				if(Board.RoomSlots.get(l)[0][j] == 0) {
+					//Set Token as in a Room
+					Board.tokenAL.get(currentPlayer).slot = l;
+					//Set slot as occupied
+					Board.RoomSlots.get(l)[0][j] = 1;
+					//Move the token to the slot
+					Board.tokenAL.get(currentPlayer).xcoordinate = Board.RoomSlots.get(l)[1][j];
+					Board.tokenAL.get(currentPlayer).ycoordinate = Board.RoomSlots.get(l)[2][j];
 
-				//Move token
-				Board.tokenAL.get(currentPlayer).setBounds(Board.tokenAL.get(currentPlayer).xcoordinate, Board.tokenAL.get(currentPlayer).ycoordinate, Board.tokenAL.get(currentPlayer).imageIcon.getIconWidth(), Board.tokenAL.get(currentPlayer).imageIcon.getIconHeight());
-				
-				//Exit the loop
-				break;
+					//Move token
+					Board.tokenAL.get(currentPlayer).setBounds(Board.tokenAL.get(currentPlayer).xcoordinate, Board.tokenAL.get(currentPlayer).ycoordinate, Board.tokenAL.get(currentPlayer).imageIcon.getIconWidth(), Board.tokenAL.get(currentPlayer).imageIcon.getIconHeight());
+					
+					//Exit the loop
+					break;
+				}
 			}
 		}
-		
-		display.textarea.append("\nEnter weapon name: " );
+		display.textarea.append("\nEnter weapon name: ");
 		gameStage = 4;
 		currentPlayer = store;
 	}
@@ -1068,12 +1079,22 @@ public class SendMessageButtonListener implements ActionListener {
 	public void moveWeapon(Weapon weapon) {
 		display.textarea.append(textualcommand.textfield.getText());
 		textualcommand.textfield.setText("");
-		
-		moveWeaponToRoom(weapon, Board.Rooms[Board.tokenAL.get(currentPlayer%Main.numPlayers).slot]);
-		clearInfo();
-		//Add stuff for more questions
-		gameStage = 6;
-		display.textarea.append(textualcommand.textfield.getText()+"\n\n" +  Main.playerNames[(currentPlayer+1)%Main.numPlayers] +" has the screen been handed over? ");
+
+		System.out.println(Board.tokenAL.get(currentPlayer%Main.numPlayers).name);
+		System.out.println(Board.tokenAL.get(currentPlayer%Main.numPlayers).slot);
+		if(Board.tokenAL.get(currentPlayer%Main.numPlayers).slot == 9) {
+			//dont move weapon, go to room select instead
+			display.textarea.append("\nEnter room name: ");
+			gameStage = 11;
+		}
+		else {
+			moveWeaponToRoom(weapon, Board.Rooms[Board.tokenAL.get(currentPlayer%Main.numPlayers).slot]);
+			clearInfo();
+			//Add stuff for more questions
+			currentPlayer++;
+			gameStage = 6;
+			display.textarea.append(textualcommand.textfield.getText()+"\n\n" +  Main.playerNames[(currentPlayer)%Main.numPlayers] +" has the screen been handed over? ");
+		}
 	}
 	
 	public void QuestionTime() {
@@ -1088,7 +1109,6 @@ public class SendMessageButtonListener implements ActionListener {
 			for(int i = 1;i<4;i++) {
 				for(int j = 0;j<Board.tokenAL.get(currentPlayer%Main.numPlayers).myCardsAL.size();j++) {
 					if(Board.tokenAL.get(currentPlayer%Main.numPlayers).myCardsAL.get(j).cardName.equalsIgnoreCase(question[i])) {
-						System.out.println(Board.tokenAL.get(currentPlayer%Main.numPlayers).myCardsAL.get(j).cardName + ", " + question[i]);
 						found[iterate] = Board.tokenAL.get(currentPlayer%Main.numPlayers).myCardsAL.get(j).cardName;
 						iterate++;
 					}
@@ -1101,7 +1121,6 @@ public class SendMessageButtonListener implements ActionListener {
 				display.textarea.append("\n\n" + "You do not have any of these cards");
 				display.textarea.append("\n" + "Type 'done' to continue.");
 				gameStage = 7;
-				currentPlayer++;
 			}
 			else if(iterate == 1) {
 				storeName = Main.playerNames[(currentPlayer)%Main.numPlayers];
@@ -1131,7 +1150,9 @@ public class SendMessageButtonListener implements ActionListener {
 				storeCardNo = 0;
 				clearInfo();
 				gameStage = 9;
-				display.textarea.append(textualcommand.textfield.getText()+"\n\n" +  Main.playerNames[(currentPlayer+1)%Main.numPlayers] +" has the screen been handed over? ");
+
+				currentPlayer = store;
+				display.textarea.append(textualcommand.textfield.getText()+"\n\n" +  Main.playerNames[(currentPlayer)%Main.numPlayers] +" has the screen been handed over? ");
 			}
 		}
 		else if(iterate == 2) {
@@ -1139,13 +1160,17 @@ public class SendMessageButtonListener implements ActionListener {
 				storeCardNo = 0;
 				clearInfo();
 				gameStage = 9;
-				display.textarea.append(textualcommand.textfield.getText()+"\n\n" +  Main.playerNames[(currentPlayer+1)%Main.numPlayers] +" has the screen been handed over? ");
+				
+				currentPlayer = store;
+				display.textarea.append(textualcommand.textfield.getText()+"\n\n" +  Main.playerNames[(currentPlayer)%Main.numPlayers] +" has the screen been handed over? ");
 			}
 			else if(text.equalsIgnoreCase("2")) {
 				storeCardNo = 1;
 				clearInfo();
 				gameStage = 9;
-				display.textarea.append(textualcommand.textfield.getText()+"\n\n" +  Main.playerNames[(currentPlayer+1)%Main.numPlayers] +" has the screen been handed over? ");
+				
+				currentPlayer = store;
+				display.textarea.append(textualcommand.textfield.getText()+"\n\n" +  Main.playerNames[(currentPlayer)%Main.numPlayers] +" has the screen been handed over? ");
 			}
 		}
 		else {
@@ -1153,19 +1178,25 @@ public class SendMessageButtonListener implements ActionListener {
 				storeCardNo = 0;
 				clearInfo();
 				gameStage = 9;
-				display.textarea.append(textualcommand.textfield.getText()+"\n\n" +  Main.playerNames[(currentPlayer+1)%Main.numPlayers] +" has the screen been handed over? ");
+				
+				currentPlayer = store;
+				display.textarea.append(textualcommand.textfield.getText()+"\n\n" +  Main.playerNames[(currentPlayer)%Main.numPlayers] +" has the screen been handed over? ");
 			}
 			else if(text.equalsIgnoreCase("2")) {
 				storeCardNo = 1;
 				clearInfo();
 				gameStage = 9;
-				display.textarea.append(textualcommand.textfield.getText()+"\n\n" +  Main.playerNames[(currentPlayer+1)%Main.numPlayers] +" has the screen been handed over? ");
+				
+				currentPlayer = store;
+				display.textarea.append(textualcommand.textfield.getText()+"\n\n" +  Main.playerNames[(currentPlayer)%Main.numPlayers] +" has the screen been handed over? ");
 			}
 			else if(text.equalsIgnoreCase("3")) {
 				storeCardNo = 2;
 				clearInfo();
 				gameStage = 9;
-				display.textarea.append(textualcommand.textfield.getText()+"\n\n" +  Main.playerNames[(currentPlayer+1)%Main.numPlayers] +" has the screen been handed over? ");
+				
+				currentPlayer = store;
+				display.textarea.append(textualcommand.textfield.getText()+"\n\n" +  Main.playerNames[(currentPlayer)%Main.numPlayers] +" has the screen been handed over? ");
 			}
 		}
 	}
