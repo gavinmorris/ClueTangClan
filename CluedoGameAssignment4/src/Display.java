@@ -37,7 +37,7 @@ public class Display extends JPanel {
 	public void playerInfo() {
 		String result = "";
 		for(int i=0;i<Main.numPlayers;i++) {
-			result = result +Main.playerNames[i]+" -> "+Board.tokenAL.get(i).name+"\n";
+			result = result + Main.playerNames[i] + " -> " + "Player " + (i+1) + " -> " + Board.tokenAL.get(i).name + "\n";
 		}
 		String help = "\n Type help to see instructions.";
 		textarea.setText("\n ---------------- Player Info ----------------\n"+result+help);

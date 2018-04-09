@@ -247,6 +247,89 @@ public class Token extends JLabel{
 		
 	}
 	
+	public void fillColumnWithXOnNotes(int playerNum) {
+		int[] hasCards = new int[21];
+		for(int i=0; i<21; i++) {
+			hasCards[i] = 0;
+		}
+		for(int i=0; i<myCardsAL.size(); i++) {
+			if(myCardsAL.get(i).cardName.equals("green")) {
+				hasCards[0] = 1;
+			}
+			else if(myCardsAL.get(i).cardName.equals("mustard")) {
+				hasCards[1] = 1;
+			}
+			else if(myCardsAL.get(i).cardName.equals("peacock")) {	
+				hasCards[2] = 1;
+			}
+			else if(myCardsAL.get(i).cardName.equals("plum")) {		
+				hasCards[3] = 1;
+			}
+			else if(myCardsAL.get(i).cardName.equals("scarlett")) {	
+				hasCards[4] = 1;
+			}
+			else if(myCardsAL.get(i).cardName.equals("white")) {	
+				hasCards[5] = 1;
+			}
+			
+
+			else if(myCardsAL.get(i).cardName.equals("candlestick")) {	
+				hasCards[6] = 1;
+			}
+			else if(myCardsAL.get(i).cardName.equals("knife")) {		
+				hasCards[7] = 1;
+			}
+			else if(myCardsAL.get(i).cardName.equals("lead pipe")) {	
+				hasCards[8] = 1;
+			}
+			else if(myCardsAL.get(i).cardName.equals("revolver")) {	
+				hasCards[9] = 1;
+			}
+			else if(myCardsAL.get(i).cardName.equals("rope")) {		
+				hasCards[10] = 1;
+			}
+			else if(myCardsAL.get(i).cardName.equals("wrench")) {	
+				hasCards[11] = 1;
+			}
+			
+
+			else if(myCardsAL.get(i).cardName.equals("ball room")) {	
+				hasCards[12] = 1;
+			}
+			else if(myCardsAL.get(i).cardName.equals("billiard room")) {
+				hasCards[13] = 1;
+			}
+			else if(myCardsAL.get(i).cardName.equals("conservatory")) {	
+				hasCards[14] = 1;
+			}
+			else if(myCardsAL.get(i).cardName.equals("dining room")) {	
+				hasCards[15] = 1;
+			}
+			else if(myCardsAL.get(i).cardName.equals("hall")) {			
+				hasCards[16] = 1;
+			}
+			else if(myCardsAL.get(i).cardName.equals("kitchen")) {	
+				hasCards[17] = 1;
+			}
+			else if(myCardsAL.get(i).cardName.equals("library")) {	
+				hasCards[18] = 1;
+			}
+			else if(myCardsAL.get(i).cardName.equals("lounge")) {
+				hasCards[19] = 1;
+			}
+			else if(myCardsAL.get(i).cardName.equals("study")) {
+				hasCards[20] = 1;
+			}	
+		}
+		
+		for(int i=0; i<21; i++) {
+			if(hasCards[i] == 0) {
+				fillCellWithXOnNotes(i, playerNum);
+			}
+		}
+		
+	}
+	
 	
 	public void displayACardsOnNotes(ArrayList<Card> visibleCardAL) {
 

@@ -29,8 +29,8 @@ public class Main {
 			playerOption.add("Mustard");
 			playerOption.add("Green");
 			playerOption.add("White");
-			playerOption.add("Plum");
 			playerOption.add("Peacock");
+			playerOption.add("Plum");
 			
 			String playerOptSTR = "";
 			

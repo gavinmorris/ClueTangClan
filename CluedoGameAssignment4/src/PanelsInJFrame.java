@@ -25,7 +25,8 @@ public class PanelsInJFrame {
 	
 	public static JLayeredPane layeredPane;
 	
-    public ArrayList<Card> cardAL = new ArrayList<Card>();
+    public static ArrayList<Card> cardAL = new ArrayList<Card>();
+    public static ArrayList<Card> originalCardAL = new ArrayList<Card>(); 
     public ArrayList<Card> visibleCardAL = new ArrayList<Card>();
     public int noOfCards=21;
 	
@@ -61,6 +62,8 @@ public class PanelsInJFrame {
 	    cardAL.add(new Card("library"));
 	    cardAL.add(new Card("lounge"));
 	    cardAL.add(new Card("study"));
+	    
+	    originalCardAL = cardAL;
 	    
 	    dealCards(cardAL);
 		
@@ -101,13 +104,13 @@ public class PanelsInJFrame {
 	    for(int k=0; k<Main.numPlayers; k++) {
 	    	System.out.println("Player " + (k+1));
 	    	for(int i=0; i < Board.tokenAL.get(k).myCardsAL.size(); i++) {
-				System.out.println(Board.tokenAL.get(k).myCardsAL.get(i).cardName + " ");
+				System.out.println(Board.tokenAL.get(k).myCardsAL.get(i).cardName);
 			}
 	    	System.out.print("\n");
 	    }
     	System.out.println("Cards visible to all:");
 	    for(int i=0; i<visibleCardAL.size(); i++) {
-			System.out.println(visibleCardAL.get(i).cardName + " ");
+			System.out.println(visibleCardAL.get(i).cardName);
 	    }
 
 	    
@@ -125,6 +128,7 @@ public class PanelsInJFrame {
 	    
 	    for(int k=0; k<Main.numPlayers; k++) {
 	    	Board.tokenAL.get(k).displayXCardsOnNotes(k);
+			Board.tokenAL.get(k).fillColumnWithXOnNotes(k);
 	    	Board.tokenAL.get(k).displayACardsOnNotes(visibleCardAL);
 	    }
 	}
@@ -173,235 +177,5 @@ public class PanelsInJFrame {
 			}
 		}
     }
-	
-	
-	
-//	public void displayACards() {
-//
-//		for(int i=0; i<visibleCardAL.size(); i++) {
-//			int b=0;
-//			
-//			if(visibleCardAL.get(i).cardName.equals("green")) {
-//				b=0; 
-//				fillRowWithA(b);
-//			}
-//			else if(visibleCardAL.get(i).cardName.equals("mustard")) {					
-//				b=1;
-//				fillRowWithA(b);
-//			}
-//			else if(visibleCardAL.get(i).cardName.equals("peacock")) {					
-//				b=2;
-//				fillRowWithA(b);
-//			}
-//			else if(visibleCardAL.get(i).cardName.equals("plum")) {					
-//				b=3;
-//				fillRowWithA(b);
-//			}
-//			else if(visibleCardAL.get(i).cardName.equals("scarlett")) {					
-//				b=4;
-//				fillRowWithA(b);
-//			}
-//			else if(visibleCardAL.get(i).cardName.equals("white")) {					
-//				b=5;
-//				fillRowWithA(b);
-//			}
-//			
-//
-//			else if(visibleCardAL.get(i).cardName.equals("candlestick")) {					
-//				b=6;
-//				fillRowWithA(b);
-//			}
-//			else if(visibleCardAL.get(i).cardName.equals("knife")) {					
-//				b=7;
-//				fillRowWithA(b);
-//			}
-//			else if(visibleCardAL.get(i).cardName.equals("lead pipe")) {					
-//				b=8;
-//				fillRowWithA(b);
-//			}
-//			else if(visibleCardAL.get(i).cardName.equals("revolver")) {					
-//				b=9;
-//				fillRowWithA(b);
-//			}
-//			else if(visibleCardAL.get(i).cardName.equals("rope")) {					
-//				b=10;
-//				fillRowWithA(b);
-//			}
-//			else if(visibleCardAL.get(i).cardName.equals("wrench")) {					
-//				b=11;
-//				fillRowWithA(b);
-//			}
-//			
-//
-//			else if(visibleCardAL.get(i).cardName.equals("ball room")) {					
-//				b=12;
-//				fillRowWithA(b);
-//			}
-//			else if(visibleCardAL.get(i).cardName.equals("billiard room")) {					
-//				b=13;
-//				fillRowWithA(b);
-//			}
-//			else if(visibleCardAL.get(i).cardName.equals("conservatory")) {					
-//				b=14;
-//				fillRowWithA(b);
-//			}
-//			else if(visibleCardAL.get(i).cardName.equals("dining room")) {					
-//				b=15;
-//				fillRowWithA(b);
-//			}
-//			else if(visibleCardAL.get(i).cardName.equals("hall")) {					
-//				b=16;
-//				fillRowWithA(b);
-//			}
-//			else if(visibleCardAL.get(i).cardName.equals("kitchen")) {					
-//				b=17;
-//				fillRowWithA(b);
-//			}
-//			else if(visibleCardAL.get(i).cardName.equals("library")) {					
-//				b=18;
-//				fillRowWithA(b);
-//			}
-//			else if(visibleCardAL.get(i).cardName.equals("lounge")) {
-//				b=19;
-//				fillRowWithA(b);
-//			}
-//			else if(visibleCardAL.get(i).cardName.equals("study")) {
-//				b=20;
-//				fillRowWithA(b);
-//			}
-//			
-//		}
-//		
-//	}
-//	
-//	public void fillRowWithA(int b) {
-//		for(int k=0; k<Main.numPlayers; k++) {
-//			for(int a=0; a<Main.numPlayers; a++) {
-//				board.tokenAL.get(k).notes.notesArray[b][a] = new JLabel(board.tokenAL.get(k).notes.AImageIcon);
-//				board.tokenAL.get(k).notes.layeredPane.add(board.tokenAL.get(k).notes.notesArray[b][a], JLayeredPane.PALETTE_LAYER);
-//			    int i = (int) board.tokenAL.get(k).notes.notesPositionXArray[b][a];
-//			    int j = (int) board.tokenAL.get(k).notes.notesPositionYArray[b][a];
-//				board.tokenAL.get(k).notes.notesArray[b][a].setBounds(i, j, board.tokenAL.get(k).notes.XImageIcon.getIconWidth()-1, board.tokenAL.get(k).notes.XImageIcon.getIconHeight()-1); 
-//			}
-//		}
-//	}
-	
-//	public void displayXCards() {
-//		
-//		for(int k=0; k<Main.numPlayers; k++) {
-//			
-//			for(int i=0; i<board.tokenAL.get(k).myCardsAL.size(); i++) {
-//				int b=0;
-//				
-//				if(board.tokenAL.get(k).myCardsAL.get(i).cardName.equals("green")) {
-//		b=0; 
-//		fillRowWithX(b, k);
-//	}
-//	else if(board.tokenAL.get(k).myCardsAL.get(i).cardName.equals("mustard")) {					
-//		b=1;
-//		fillRowWithX(b, k);
-//	}
-//	else if(board.tokenAL.get(k).myCardsAL.get(i).cardName.equals("peacock")) {					
-//		b=2;
-//		fillRowWithX(b, k);
-//	}
-//	else if(board.tokenAL.get(k).myCardsAL.get(i).cardName.equals("plum")) {					
-//		b=3;
-//		fillRowWithX(b, k);
-//	}
-//	else if(board.tokenAL.get(k).myCardsAL.get(i).cardName.equals("scarlett")) {					
-//		b=4;
-//		fillRowWithX(b, k);
-//	}
-//	else if(board.tokenAL.get(k).myCardsAL.get(i).cardName.equals("white")) {					
-//		b=5;
-//		fillRowWithX(b, k);
-//	}
-//	
-//	
-//	else if(board.tokenAL.get(k).myCardsAL.get(i).cardName.equals("candlestick")) {					
-//		b=6;
-//		fillRowWithX(b, k);
-//	}
-//	else if(board.tokenAL.get(k).myCardsAL.get(i).cardName.equals("knife")) {					
-//		b=7;
-//		fillRowWithX(b, k);
-//	}
-//	else if(board.tokenAL.get(k).myCardsAL.get(i).cardName.equals("lead pipe")) {					
-//		b=8;
-//		fillRowWithX(b, k);
-//	}
-//	else if(board.tokenAL.get(k).myCardsAL.get(i).cardName.equals("revolver")) {					
-//		b=9;
-//		fillRowWithX(b, k);
-//	}
-//	else if(board.tokenAL.get(k).myCardsAL.get(i).cardName.equals("rope")) {					
-//		b=10;
-//		fillRowWithX(b, k);
-//	}
-//	else if(board.tokenAL.get(k).myCardsAL.get(i).cardName.equals("wrench")) {					
-//		b=11;
-//		fillRowWithX(b, k);
-//	}
-//	
-//	
-//	else if(board.tokenAL.get(k).myCardsAL.get(i).cardName.equals("ball room")) {					
-//		b=12;
-//		fillRowWithX(b, k);
-//	}
-//	else if(board.tokenAL.get(k).myCardsAL.get(i).cardName.equals("billiard room")) {					
-//		b=13;
-//		fillRowWithX(b, k);
-//	}
-//	else if(board.tokenAL.get(k).myCardsAL.get(i).cardName.equals("conservatory")) {					
-//		b=14;
-//		fillRowWithX(b, k);
-//	}
-//	else if(board.tokenAL.get(k).myCardsAL.get(i).cardName.equals("dining room")) {					
-//		b=15;
-//		fillRowWithX(b, k);
-//	}
-//	else if(board.tokenAL.get(k).myCardsAL.get(i).cardName.equals("hall")) {					
-//		b=16;
-//		fillRowWithX(b, k);
-//	}
-//	else if(board.tokenAL.get(k).myCardsAL.get(i).cardName.equals("kitchen")) {					
-//		b=17;
-//		fillRowWithX(b, k);
-//	}
-//	else if(board.tokenAL.get(k).myCardsAL.get(i).cardName.equals("library")) {					
-//		b=18;
-//		fillRowWithX(b, k);
-//	}
-//	else if(board.tokenAL.get(k).myCardsAL.get(i).cardName.equals("lounge")) {
-//		b=19;
-//		fillRowWithX(b, k);
-//	}
-//	else if(board.tokenAL.get(k).myCardsAL.get(i).cardName.equals("study")) {
-//					b=20;
-//					fillRowWithX(b, k);
-//				}	
-//				
-//			}
-//			
-//		}
-//		
-//	}
-//	
-//	public void fillRowWithX(int b, int k) {
-//	
-//		for(int a=0; a<Main.numPlayers; a++) {
-//			if(a==k) {
-//				board.tokenAL.get(k).notes.notesArray[b][a] = new JLabel(board.tokenAL.get(k).notes.tickImageIcon);
-//			} else {
-//				board.tokenAL.get(k).notes.notesArray[b][a] = new JLabel(board.tokenAL.get(k).notes.XImageIcon);
-//			}
-//			board.tokenAL.get(k).notes.layeredPane.add(board.tokenAL.get(k).notes.notesArray[b][a], JLayeredPane.PALETTE_LAYER);
-//		    int i = (int) board.tokenAL.get(k).notes.notesPositionXArray[b][a];
-//		    int j = (int) board.tokenAL.get(k).notes.notesPositionYArray[b][a];
-//			board.tokenAL.get(k).notes.notesArray[b][a].setBounds(i, j, board.tokenAL.get(k).notes.XImageIcon.getIconWidth()-1, board.tokenAL.get(k).notes.XImageIcon.getIconHeight()-1); 
-//		}
-//		
-//	}
 	
 }
