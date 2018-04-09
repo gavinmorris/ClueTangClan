@@ -21,6 +21,7 @@ public class SendMessageButtonListener implements ActionListener {
 	public boolean error=false;
 	public boolean notesVisible=false;
 	public boolean murderEnvelopeVisible = false;
+	public boolean logVisible = false;
 	
 	public Board board;
 	public Display display;
@@ -28,16 +29,17 @@ public class SendMessageButtonListener implements ActionListener {
 	public BoardStructure boardstructure;
 	public MurderEnvelope murderenvelope;
 	public Notes notes;
+	public Log log;
 	
-	public SendMessageButtonListener(Board board, Display display, TextualCommand textualcommand, BoardStructure boardstructure, MurderEnvelope murderenvelope, Notes notes) {
+	public SendMessageButtonListener(Board board, Display display, TextualCommand textualcommand, BoardStructure boardstructure, MurderEnvelope murderenvelope, Notes notes, Log log) {
 		this.board = board;
 		this.display = display;
 		this.textualcommand = textualcommand;
 		this.boardstructure = boardstructure;
 		this.murderenvelope = murderenvelope;
 		this.notes = notes;
+		this.log = log;
 	}
-	JTextArea log = new JTextArea("-----------Question Log-----------\n");
 	public void actionPerformed(ActionEvent event) {
 		
 		text = textualcommand.textfield.getText().trim();
@@ -160,7 +162,6 @@ public class SendMessageButtonListener implements ActionListener {
 				store = currentPlayer;
 				question[3] = Board.Rooms[Board.tokenAL.get(currentPlayer%Main.numPlayers).slot];
 				display.textarea.append("\n\nEnter the name of the character: " );
-				log.append("\nPlayer name: " + Main.playerNames[(currentPlayer)%Main.numPlayers] + "\n");
 				gameStage = 3;
 			}
 			
@@ -201,27 +202,21 @@ public class SendMessageButtonListener implements ActionListener {
 			}
 			else if(text.equalsIgnoreCase("scarlett")) {
 				AddPlayertoRoom("Scarlett");
-				log.append("Accused : Scarlett\n");
 			}
 			else if(text.equalsIgnoreCase("mustard")) {
 				AddPlayertoRoom("Mustard");
-				log.append("Accused : Mustard\n");
 			}
 			else if(text.equalsIgnoreCase("green")) {
 				AddPlayertoRoom("Green");
-				log.append("Accused : Green\n");
 			}
 			else if(text.equalsIgnoreCase("white")) {
 				AddPlayertoRoom("White");
-				log.append("Accused : White\n");
 			}
 			else if(text.equalsIgnoreCase("peacock")) {
 				AddPlayertoRoom("Peacock");
-				log.append("Accused : Peacock\n");
 			}
 			else if(text.equalsIgnoreCase("plum")) {
 				AddPlayertoRoom("Plum");
-				log.append("Accused : Plum\n");
 			}
 		}
 		else if(gameStage == 4) {
@@ -238,37 +233,31 @@ public class SendMessageButtonListener implements ActionListener {
 				Weapon weapon = board.candlestick;
 				question[2] = "candlestick";
 				moveWeapon(weapon);
-				log.append("Weapon of choice: Candlestick\n");
 			}
 			else if(text.equalsIgnoreCase("knife")) {
 				Weapon weapon = board.knife;
 				question[2] = "knife";
 				moveWeapon(weapon);
-				log.append("Weapon of choice: Knife\n");
 			}
 			else if(text.equalsIgnoreCase("lead pipe")) {
 				Weapon weapon = board.leadpipe;
 				question[2] = "lead pipe";
 				moveWeapon(weapon);
-				log.append("Weapon of choice: Lead Pipe\n");
 			}
 			else if(text.equalsIgnoreCase("revolver")) {
 				Weapon weapon = board.revolver;
 				question[2] = "revolver";
 				moveWeapon(weapon);
-				log.append("Weapon of choice: Revolver\n");
 			}
 			else if(text.equalsIgnoreCase("rope")) {
 				Weapon weapon = board.rope;
 				question[2] = "rope";
 				moveWeapon(weapon);
-				log.append("Weapon of choice: Rope\n");
 			}
 			else if(text.equalsIgnoreCase("wrench")) {
 				Weapon weapon = board.wrench;
 				question[2] = "wrench";
 				moveWeapon(weapon);
-				log.append("Weapon of choice: Wrench\n");
 			}
 		}
 		else if(gameStage == 5) {
@@ -308,6 +297,7 @@ public class SendMessageButtonListener implements ActionListener {
 				display.textarea.append("\n" + textualcommand.textfield.getText());
 				textualcommand.textfield.setText("");
 				display.textarea.append("\n\n"+ question[0] +" asked: Was it "+ question[1] +" with the "+ question[2] +" in the "+ question[3]);
+				log.logText.append("\n"+question[0] +" asked was it "+ question[1] +" with the "+ question[2] +" in the "+ question[3]+"\n");
 				//Check if a player has any of the cards
 				QuestionTime();
 			}
@@ -453,8 +443,15 @@ public class SendMessageButtonListener implements ActionListener {
 		}
 		 
 		else if(text.equalsIgnoreCase("log")) {
-			JOptionPane.showMessageDialog(null, log);
-			textualcommand.textfield.setText("");
+			if(logVisible == false) {
+				log.setVisible(true);
+				logVisible = true;
+			}
+			else if(logVisible == true) {
+				log.setVisible(false);
+				logVisible = false;
+				textualcommand.textfield.setText("");
+			}
 		}
 		else if(text.equalsIgnoreCase("cheat")) {
 			if(murderEnvelopeVisible == false) {
@@ -1122,8 +1119,8 @@ public class SendMessageButtonListener implements ActionListener {
 		//Accusations
 		if(Board.tokenAL.get(currentPlayer%Main.numPlayers).slot == 9) {
 			display.textarea.append("\nType the character you would like to accuse: " );
-			gameStage = 3;
 			store = currentPlayer;
+			gameStage = 3;
 		}
 		//Question or next persons go
 		else {
@@ -1140,31 +1137,33 @@ public class SendMessageButtonListener implements ActionListener {
 		
 		int l = Board.tokenAL.get(currentPlayer%Main.numPlayers).slot;
 //		if(l != 9) {
-		currentPlayer = Token.findCharacter(CharName);
-		
-		if(Board.tokenAL.get(currentPlayer).slot != 10) {
-			RemovefromRoom();
-		}
-
-		//Find an available slot
-		for(int j = 0; j<6;j++) {
-			if(Board.RoomSlots.get(l)[0][j] == 0) {
-				//Set Token as in a Room
-				Board.tokenAL.get(currentPlayer).slot = l;
-				//Set slot as occupied
-				Board.RoomSlots.get(l)[0][j] = 1;
-				//Move the token to the slot
-				Board.tokenAL.get(currentPlayer).xcoordinate = Board.RoomSlots.get(l)[1][j];
-				Board.tokenAL.get(currentPlayer).ycoordinate = Board.RoomSlots.get(l)[2][j];
-
-				//Move token
-				Board.tokenAL.get(currentPlayer).setBounds(Board.tokenAL.get(currentPlayer).xcoordinate, Board.tokenAL.get(currentPlayer).ycoordinate, Board.tokenAL.get(currentPlayer).imageIcon.getIconWidth(), Board.tokenAL.get(currentPlayer).imageIcon.getIconHeight());
-
-				//Exit the loop
-				break;
+	
+			store = currentPlayer;
+			currentPlayer = Token.findCharacter(CharName);
+			
+			if(Board.tokenAL.get(currentPlayer).slot != 10) {
+				RemovefromRoom();
 			}
-		}
-//		}
+	
+			//Find an available slot
+			for(int j = 0; j<6;j++) {
+				if(Board.RoomSlots.get(l)[0][j] == 0) {
+					//Set Token as in a Room
+					Board.tokenAL.get(currentPlayer).slot = l;
+					//Set slot as occupied
+					Board.RoomSlots.get(l)[0][j] = 1;
+					//Move the token to the slot
+					Board.tokenAL.get(currentPlayer).xcoordinate = Board.RoomSlots.get(l)[1][j];
+					Board.tokenAL.get(currentPlayer).ycoordinate = Board.RoomSlots.get(l)[2][j];
+	
+					//Move token
+					Board.tokenAL.get(currentPlayer).setBounds(Board.tokenAL.get(currentPlayer).xcoordinate, Board.tokenAL.get(currentPlayer).ycoordinate, Board.tokenAL.get(currentPlayer).imageIcon.getIconWidth(), Board.tokenAL.get(currentPlayer).imageIcon.getIconHeight());
+	
+					//Exit the loop
+					break;
+				}
+			}
+//2		}
 
 		display.textarea.append("\nEnter weapon name: ");
 		gameStage = 4;
@@ -1191,6 +1190,7 @@ public class SendMessageButtonListener implements ActionListener {
 	public void moveWeapon(Weapon weapon) {
 		display.textarea.append(textualcommand.textfield.getText());
 		textualcommand.textfield.setText("");
+		moveWeaponToRoom(weapon, Board.Rooms[Board.tokenAL.get(currentPlayer%Main.numPlayers).slot]);
 
 		if(Board.tokenAL.get(currentPlayer%Main.numPlayers).slot == 9) {
 			//dont move weapon, go to room select instead
@@ -1198,7 +1198,6 @@ public class SendMessageButtonListener implements ActionListener {
 			gameStage = 11;
 		}
 		else {
-			moveWeaponToRoom(weapon, Board.Rooms[Board.tokenAL.get(currentPlayer%Main.numPlayers).slot]);
 			clearInfo();
 			//Add stuff for more questions
 			currentPlayer++;
@@ -1212,6 +1211,7 @@ public class SendMessageButtonListener implements ActionListener {
 		
 		if(question[0] == Main.playerNames[(currentPlayer)%Main.numPlayers]) {
 			display.textarea.append("\n\n" + "Nobody had a matching card. \nType done to finish your turn");
+			log.logText.append("Nobody showed a card.\n");
 			gameStage = 1;
 		}
 		
@@ -1239,18 +1239,21 @@ public class SendMessageButtonListener implements ActionListener {
 				storeName = Main.playerNames[(currentPlayer)%Main.numPlayers];
 				display.textarea.append("\n\n" + "You have the card: " + found[0]);
 				display.textarea.append("\n" + "Type 'show' to show the card to player: " + question[0]);
+				log.logText.append(storeName + " showed a card.\n");
 				gameStage = 8;
 			}
 			else if(iterate == 2) {
 				storeName = Main.playerNames[(currentPlayer)%Main.numPlayers];
 				display.textarea.append("\n\n" + "You have the cards: (1 = " + found[0] + ") and (2 = " + found[1] + ")");
 				display.textarea.append("\n" + "Type 1 or 2 to show a card to player: " + question[0]);
+				log.logText.append(storeName + " showed a card.\n");
 				gameStage = 8;
 			}
 			else {
 				storeName = Main.playerNames[(currentPlayer)%Main.numPlayers];
 				display.textarea.append("\n\n" + "You have the cards: (1 = " + found[0] + "), (2 = " + found[1] + ") and (3 = " + found[2] + ")");
 				display.textarea.append("\n" + "Type 1, 2 or 3 to show the card to player: " + question[0]);
+				log.logText.append(storeName + " showed a card.\n");
 				gameStage = 8;
 			}
 			storeCardNo = iterate;

@@ -17,7 +17,10 @@ public class PanelsInJFrame {
 	
 	public MurderEnvelope murderenvelope;
 	
-	public static Notes notes;
+	public Notes notes;
+	
+	public Log log;
+	
 	
 	public JFrame frame;
 	public int frameWidth=1050;
@@ -40,6 +43,7 @@ public class PanelsInJFrame {
 		textualcommand = new TextualCommand();	
 		
 		notes = new Notes();
+		log = new Log();
 		
 	    cardAL.add(new Card("green"));
 	    cardAL.add(new Card("mustard"));
@@ -77,6 +81,7 @@ public class PanelsInJFrame {
 		layeredPane.add(textualcommand, JLayeredPane.DEFAULT_LAYER);
 		layeredPane.add(notes, JLayeredPane.PALETTE_LAYER);
 		layeredPane.add(murderenvelope, JLayeredPane.PALETTE_LAYER);
+		layeredPane.add(log, JLayeredPane.PALETTE_LAYER);
 		
 		board.setBounds(5, 3, board.boardImage.getIconWidth()+10, board.boardImage.getIconHeight()+10);
 		display.setBounds(board.boardImage.getIconWidth()+10, 4, 390, board.boardImage.getIconHeight()+6);
@@ -85,6 +90,8 @@ public class PanelsInJFrame {
 		notes.setVisible(false);
 		murderenvelope.setBounds(100, 100, murderenvelope.getWidth(), murderenvelope.getHeight());
 		murderenvelope.setVisible(false);
+		log.setBounds(100, 100, 400, 500);
+		log.setVisible(false);
 		
 		frame.add(layeredPane);
 		frame.setLocation(0, 0);
@@ -115,7 +122,7 @@ public class PanelsInJFrame {
 
 	    
 		//activate action listener for transfering text from the textual command to the display panel
-		textualcommand.button.addActionListener(new SendMessageButtonListener(board, display, textualcommand, boardstructure, murderenvelope, notes));
+		textualcommand.button.addActionListener(new SendMessageButtonListener(board, display, textualcommand, boardstructure, murderenvelope, notes, log));
 
 		textualcommand.textfield.addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
