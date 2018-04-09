@@ -50,7 +50,7 @@ public class SendMessageButtonListener implements ActionListener {
 				textualcommand.textfield.setText("");
 				whoGoesFirst();
 				moveCounter = diceResult();
-				diceRoll(display, textualcommand);
+				diceRoll();
 				gameStage++;
 
 				PanelsInJFrame.layeredPane.remove(notes);
@@ -71,7 +71,7 @@ public class SendMessageButtonListener implements ActionListener {
 				if(text.equalsIgnoreCase("u")) {
 					if(moveCounter > 0) {
 						textualcommand.textfield.setText("up");
-						error = moveUp(currentPlayer, moveCounter, boardstructure, display, textualcommand);
+						error = moveUp(currentPlayer, moveCounter);
 						if(error == false) {
 							moveCounter--;
 						}
@@ -81,7 +81,7 @@ public class SendMessageButtonListener implements ActionListener {
 				else if(text.equalsIgnoreCase("d")) {
 					if(moveCounter > 0) {
 						textualcommand.textfield.setText("down");
-						error = moveDown(currentPlayer, moveCounter, boardstructure, display, textualcommand);
+						error = moveDown(currentPlayer, moveCounter);
 						if(error == false) {
 							moveCounter--;
 						}
@@ -91,7 +91,7 @@ public class SendMessageButtonListener implements ActionListener {
 				else if(text.equalsIgnoreCase("l")) {
 					if(moveCounter > 0) {
 						textualcommand.textfield.setText("left");
-						error = moveLeft(currentPlayer, moveCounter, boardstructure, display, textualcommand);
+						error = moveLeft(currentPlayer, moveCounter);
 						if(error == false) {
 							moveCounter--;
 						}
@@ -102,7 +102,7 @@ public class SendMessageButtonListener implements ActionListener {
 				else if(text.equalsIgnoreCase("r")) {
 					if(moveCounter > 0) {
 						textualcommand.textfield.setText("right");
-						error = moveRight(currentPlayer, moveCounter, boardstructure, display, textualcommand);
+						error = moveRight(currentPlayer, moveCounter);
 						if(error == false) {
 							moveCounter--;
 						}
@@ -123,7 +123,7 @@ public class SendMessageButtonListener implements ActionListener {
 			else if(text.equalsIgnoreCase("roll")) {
 				if(moveCounter == 0) {
 					textualcommand.textfield.setText("");
-					whoseTurn(display, textualcommand);
+					whoseTurn();
 					done=0;
 				} 
 				else {
@@ -150,8 +150,6 @@ public class SendMessageButtonListener implements ActionListener {
 					textualcommand.textfield.setText("");
 				}
 			}
-			
-			updateNotes();
 		}
 		else if(gameStage == 2) {
 			if(text.equalsIgnoreCase("question")) {
@@ -438,44 +436,44 @@ public class SendMessageButtonListener implements ActionListener {
 				notesVisible = false;
 			}
 		}
-		else if(gameStage != 1) {
-			if(text.equalsIgnoreCase("help")) {
-				JTextArea help = new JTextArea(
-						"-----------Command Instructions-----------\n\n"+
-						"Weapon commands work like this:\n\n"+
-						"move candlestick to library\n\n"+
-						"Player commands work like this:\n\n"+
-						"u = move up\nd = move down\nr = move right\nl = move left"+
-						"\n\n While in a room the available commands are:"+
-						"\nexit\npassage"+
-						"\n\nOther Commands:\nhelp --> opens this panel"+
-						"\nquit --> terminates the game"
-				);
-				JOptionPane.showMessageDialog(null, help);
+		if(text.equalsIgnoreCase("help")) {
+			JTextArea help = new JTextArea(
+					"-----------Command Instructions-----------\n\n"+
+					"Weapon commands work like this:\n\n"+
+					"move candlestick to library\n\n"+
+					"Player commands work like this:\n\n"+
+					"u = move up\nd = move down\nr = move right\nl = move left"+
+					"\n\n While in a room the available commands are:"+
+					"\nexit\npassage"+
+					"\n\nOther Commands:\nhelp --> opens this panel"+
+					"\nquit --> terminates the game"
+			);
+			JOptionPane.showMessageDialog(null, help);
+			textualcommand.textfield.setText("");
+		}
+		 
+		else if(text.equalsIgnoreCase("log")) {
+			JOptionPane.showMessageDialog(null, log);
+			textualcommand.textfield.setText("");
+		}
+		else if(text.equalsIgnoreCase("cheat")) {
+			if(murderEnvelopeVisible == false) {
+				murderenvelope.setVisible(true);
+				murderEnvelopeVisible = true;
+			}
+			else if(murderEnvelopeVisible == true) {
+				murderenvelope.setVisible(false);
+				murderEnvelopeVisible = false;
 				textualcommand.textfield.setText("");
-			}
-			 
-			else if(text.equalsIgnoreCase("log")) {
-				JOptionPane.showMessageDialog(null, log);
-				textualcommand.textfield.setText("");
-			}
-			else if(text.equalsIgnoreCase("cheat")) {
-				if(murderEnvelopeVisible == false) {
-					murderenvelope.setVisible(true);
-					murderEnvelopeVisible = true;
-				}
-				else if(murderEnvelopeVisible == true) {
-					murderenvelope.setVisible(false);
-					murderEnvelopeVisible = false;
-					textualcommand.textfield.setText("");
-				}
-			}
-
-			else if(text.equalsIgnoreCase("quit")) {
-				display.textarea.append("\nGame Status: terminated" );
-				System.exit(0);
 			}
 		}
+
+		else if(text.equalsIgnoreCase("quit")) {
+			display.textarea.append("\nGame Status: terminated" );
+			System.exit(0);
+		}
+
+		updateNotes();
 	}		
 	
 	int MovesinTurn;
@@ -561,7 +559,7 @@ public class SendMessageButtonListener implements ActionListener {
 	}
 	
 	//alternates whose turn it is to make a move
-	public void whoseTurn(Display display, TextualCommand textualcommand) {
+	public void whoseTurn() {
 		currentPlayer++;
 		boolean playerEliminatedCond = true;
 		while(playerEliminatedCond) {
@@ -575,7 +573,7 @@ public class SendMessageButtonListener implements ActionListener {
 		
 		moveCounter = diceResult();
 		MovesinTurn = moveCounter;
-		diceRoll(display, textualcommand);		
+		diceRoll();		
 		textualcommand.textfield.setText("");
 
 		PanelsInJFrame.layeredPane.remove(notes);
@@ -587,7 +585,7 @@ public class SendMessageButtonListener implements ActionListener {
 	}
 	
 	//dice text
-	public void diceRoll(Display display, TextualCommand textualcommand) {
+	public void diceRoll() {
 		display.textarea.append(textualcommand.textfield.getText() + "\n" + "<-------" + Main.playerNames[currentPlayer%Main.numPlayers]+" rolled the dice ------->\n");	
 		display.textarea.append("<" + Main.playerNames[currentPlayer%Main.numPlayers] + " has " + moveCounter +" moves>" );
 		
@@ -898,7 +896,7 @@ public class SendMessageButtonListener implements ActionListener {
 		textualcommand.textfield.setText("");
 		display.playerInfo();
 	}
-	public boolean changeWithBoard(int i, int moveCounter, int x, int y, char direction, BoardStructure boardstructure, Display display, TextualCommand textualcommand) {
+	public boolean changeWithBoard(int i, int moveCounter, int x, int y, char direction) {
 		boolean error = false;
 		Board.tokenAL.get(currentPlayer%Main.numPlayers).type = boardstructure.getCoordinatesType(Board.tokenAL.get(currentPlayer%Main.numPlayers).xcoordinate+x, Board.tokenAL.get(currentPlayer%Main.numPlayers).ycoordinate+y);
 
@@ -1015,20 +1013,20 @@ public class SendMessageButtonListener implements ActionListener {
 		return error;
 	}
 	
-	public boolean moveUp(int i, int moveCounter, BoardStructure boardstructure, Display display, TextualCommand textualcommand) {
-		boolean error = changeWithBoard(i, moveCounter, 0, -23, 'u', boardstructure, display, textualcommand);
+	public boolean moveUp(int i, int moveCounter) {
+		boolean error = changeWithBoard(i, moveCounter, 0, -23, 'u');
 		return error;
 	}
-	public boolean moveDown(int i, int moveCounter, BoardStructure boardstructure, Display display, TextualCommand textualcommand) {
-		boolean error = changeWithBoard(i, moveCounter, 0, 23, 'd', boardstructure, display, textualcommand);
+	public boolean moveDown(int i, int moveCounter) {
+		boolean error = changeWithBoard(i, moveCounter, 0, 23, 'd');
 		return error;
 	}
-	public boolean moveLeft(int i, int moveCounter, BoardStructure boardstructure, Display display, TextualCommand textualcommand) {
-		boolean error = changeWithBoard(i, moveCounter, -23, 0, 'l', boardstructure, display, textualcommand);
+	public boolean moveLeft(int i, int moveCounter) {
+		boolean error = changeWithBoard(i, moveCounter, -23, 0, 'l');
 		return error;
 	}
-	public boolean moveRight(int i, int moveCounter, BoardStructure boardstructure, Display display, TextualCommand textualcommand) {
-		boolean error = changeWithBoard(i, moveCounter, 23, 0, 'r', boardstructure, display, textualcommand);
+	public boolean moveRight(int i, int moveCounter) {
+		boolean error = changeWithBoard(i, moveCounter, 23, 0, 'r');
 		return error;
 	}
 	
@@ -1194,8 +1192,6 @@ public class SendMessageButtonListener implements ActionListener {
 		display.textarea.append(textualcommand.textfield.getText());
 		textualcommand.textfield.setText("");
 
-		System.out.println(Board.tokenAL.get(currentPlayer%Main.numPlayers).name);
-		System.out.println(Board.tokenAL.get(currentPlayer%Main.numPlayers).slot);
 		if(Board.tokenAL.get(currentPlayer%Main.numPlayers).slot == 9) {
 			//dont move weapon, go to room select instead
 			display.textarea.append("\nEnter room name: ");
