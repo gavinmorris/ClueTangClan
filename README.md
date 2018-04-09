@@ -29,6 +29,10 @@ When a player has made all their moves, it does not automatically switch to the 
 
 A player may enter any room through the identified entry point, once the token reaches the threshold of the room it automatically switches into a slot in that room. When exiting the room doorways are labeled with numbers, enter that number to exit the room. Secret passages have also been implememted to fast travel across the board.
 
+**6. Asking a question.**
+
+When a player enters a room they have two options they can either ask a question or finish their turn. To ask a question they simply type 'question' and to finsh their turn they type 'done'. WHen asking a question you must specify the player name of who you are accusing and the weapon of choice. EVery player will be asked this question and they will show whether they have the card or not.
+
 **Functionality.**
 
 Hit enter or the JButton to complete a move.
