@@ -35,7 +35,6 @@ public class Board extends JPanel {
 	public static int hallx = 300; public static int hally = 465;
 	public static int loungex = 155; public static int loungey = 500;
 	public static int diningroomx = 170; public static int diningroomy = 285;
-	public static int basementx = 319; public static int basementy = 346;
 	
 	//declare room entrances
 	public static int KitchenEntrancex = 135; public static int KitchenEntrancey = 185;
