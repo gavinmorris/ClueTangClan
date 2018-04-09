@@ -61,7 +61,7 @@ public class SendMessageButtonListener implements ActionListener {
 			}
 		}
 		
-		if(gameStage == 1) {	
+		else if(gameStage == 1) {	
 			notes.setVisible(false);
 			notesVisible = false;
 			if(Board.tokenAL.get(currentPlayer%Main.numPlayers).slot != 10) {				
@@ -112,50 +112,14 @@ public class SendMessageButtonListener implements ActionListener {
 				
 			}
 			
-			
-			 if(text.equalsIgnoreCase("help")) {
-				JTextArea help = new JTextArea(
-						"-----------Command Instructions-----------\n\n"+
-						"Weapon commands work like this:\n\n"+
-						"move candlestick to library\n\n"+
-						"Player commands work like this:\n\n"+
-						"u = move up\nd = move down\nr = move right\nl = move left"+
-						"\n\n While in a room the available commands are:"+
-						"\nexit\npassage"+
-						"\n\nOther Commands:\nhelp --> opens this panel"+
-						"\nquit --> terminates the game"
-				);
-				JOptionPane.showMessageDialog(null, help);
-				textualcommand.textfield.setText("");
-			}
-			else if(text.equalsIgnoreCase("notes")) {
+			if(text.equalsIgnoreCase("notes")) {
 				if(notesVisible == false) {
 					notes.setVisible(true);
 					notesVisible = true;
 					textualcommand.textfield.setText("");
 				}
 			}
-			 
-			else if(text.equalsIgnoreCase("log")) {
-				JOptionPane.showMessageDialog(null, log);
-				textualcommand.textfield.setText("");
-			}
-			else if(text.equalsIgnoreCase("cheat")) {
-				if(murderEnvelopeVisible == false) {
-					murderenvelope.setVisible(true);
-					murderEnvelopeVisible = true;
-				}
-				else if(murderEnvelopeVisible == true) {
-					murderenvelope.setVisible(false);
-					murderEnvelopeVisible = false;
-					textualcommand.textfield.setText("");
-				}
-			}
 
-			else if(text.equalsIgnoreCase("quit")) {
-				display.textarea.append("\nGame Status: terminated" );
-				System.exit(0);
-			}
 			else if(text.equalsIgnoreCase("roll")) {
 				if(moveCounter == 0) {
 					textualcommand.textfield.setText("");
@@ -311,12 +275,17 @@ public class SendMessageButtonListener implements ActionListener {
 		}
 		else if(gameStage == 5) {
 			if(text.equalsIgnoreCase("yes")) {
-				if(Board.tokenAL.get((currentPlayer+1)%Main.numPlayers).isEliminated()) {
-					setNotesToCurrentPlayersNotes(currentPlayer+2);
+				boolean playerEliminatedCond = true;
+				int tmp = currentPlayer + 1;
+				while(playerEliminatedCond) {
+					if(Board.tokenAL.get(currentPlayer%Main.numPlayers).isEliminated()) {
+						tmp++;
+					}
+					else {
+						playerEliminatedCond = false;
+					}
 				}
-				else {
-					setNotesToCurrentPlayersNotes(currentPlayer+1);
-				}
+				setNotesToCurrentPlayersNotes(tmp);
 				
 				gameStage = 1;
 				if(moveCounter == 0) {
@@ -393,37 +362,41 @@ public class SendMessageButtonListener implements ActionListener {
 					question[3] = Board.Rooms[i];
 				}
 			}
+			boolean isCorrect = false;
 			if(murderenvelope.getSuspect().cardName.equalsIgnoreCase(question[1])){
 				if(murderenvelope.getWeapon().cardName.equalsIgnoreCase(question[2])){
 					if(murderenvelope.getRoom().cardName.equalsIgnoreCase(question[3])){
-						display.textarea.append("\n\nCorrect, you win!\nType quit to close game.");
-						gameStage = 13;
+						isCorrect = true;
+					}
+				}
+			}
+			if(isCorrect) {
+				display.textarea.append("\n\nCorrect, you win!\nType quit to close game.");
+				gameStage = 13;
+			}
+			else {
+				Board.tokenAL.get(currentPlayer%Main.numPlayers).eliminated = true;
+				display.textarea.append("\nIncorrect guess, you have been eliminated from the game.\n");
+				int k = 0;
+				int t = 0;
+				int[] eliminatedArray = new int[Main.numPlayers];
+				for(int i=0; i<Main.numPlayers; i++) {
+					if(Board.tokenAL.get(i).isEliminated()) {
+						k++;
+						eliminatedArray[i] = 1;
 					}
 					else {
-						Board.tokenAL.get(currentPlayer%Main.numPlayers).eliminated = true;
-						display.textarea.append("\nIncorrect guess, you have been eliminated from the game.\n");
-						int k = 0;
-						int t = 0;
-						int[] eliminatedArray = new int[Main.numPlayers];
-						for(int i=0; i<Main.numPlayers; i++) {
-							if(Board.tokenAL.get(currentPlayer%Main.numPlayers).isEliminated()) {
-								k++;
-								eliminatedArray[i] = 1;
-							}
-							else {
-								eliminatedArray[i] = 0;
-								t=i;
-							}
-						}
-						if(k == Main.numPlayers-1) {
-							display.textarea.append("\nPlayer " + eliminatedArray[t] + " wins!\nType quit to end game.\n");
-							gameStage = 13;
-						}
-						else {
-							display.textarea.append("\nType done to continue.\n");
-							gameStage = 12;
-						}
+						eliminatedArray[i] = 0;
+						t=i;
 					}
+				}
+				if(k == Main.numPlayers-1) {
+					display.textarea.append("\nPlayer " + (t+1) + " wins!\nType quit to end game.\n");
+					gameStage = 13;
+				}
+				else {
+					display.textarea.append("\nType done to continue.\n");
+					gameStage = 12;
 				}
 			}
 			System.out.println(question[1] + " " + question[2] + " " + question[3]);
@@ -463,6 +436,44 @@ public class SendMessageButtonListener implements ActionListener {
 			else if(text.equalsIgnoreCase("")) {
 				notes.setVisible(false);
 				notesVisible = false;
+			}
+		}
+		else if(gameStage != 1) {
+			if(text.equalsIgnoreCase("help")) {
+				JTextArea help = new JTextArea(
+						"-----------Command Instructions-----------\n\n"+
+						"Weapon commands work like this:\n\n"+
+						"move candlestick to library\n\n"+
+						"Player commands work like this:\n\n"+
+						"u = move up\nd = move down\nr = move right\nl = move left"+
+						"\n\n While in a room the available commands are:"+
+						"\nexit\npassage"+
+						"\n\nOther Commands:\nhelp --> opens this panel"+
+						"\nquit --> terminates the game"
+				);
+				JOptionPane.showMessageDialog(null, help);
+				textualcommand.textfield.setText("");
+			}
+			 
+			else if(text.equalsIgnoreCase("log")) {
+				JOptionPane.showMessageDialog(null, log);
+				textualcommand.textfield.setText("");
+			}
+			else if(text.equalsIgnoreCase("cheat")) {
+				if(murderEnvelopeVisible == false) {
+					murderenvelope.setVisible(true);
+					murderEnvelopeVisible = true;
+				}
+				else if(murderEnvelopeVisible == true) {
+					murderenvelope.setVisible(false);
+					murderEnvelopeVisible = false;
+					textualcommand.textfield.setText("");
+				}
+			}
+
+			else if(text.equalsIgnoreCase("quit")) {
+				display.textarea.append("\nGame Status: terminated" );
+				System.exit(0);
 			}
 		}
 	}		
@@ -823,6 +834,9 @@ public class SendMessageButtonListener implements ActionListener {
 		else if (room.equalsIgnoreCase("dining room")){
 			whichRoom(weapon, Board.diningroomx, Board.diningroomy);
 		}
+		else if (room.equalsIgnoreCase("basement")){
+			whichRoom(weapon, Board.basementx, Board.basementy);
+		}
 	}
 	
 	
@@ -1111,6 +1125,7 @@ public class SendMessageButtonListener implements ActionListener {
 		if(Board.tokenAL.get(currentPlayer%Main.numPlayers).slot == 9) {
 			display.textarea.append("\nType the character you would like to accuse: " );
 			gameStage = 3;
+			store = currentPlayer;
 		}
 		//Question or next persons go
 		else {
@@ -1126,38 +1141,33 @@ public class SendMessageButtonListener implements ActionListener {
 		question[1] = CharName;
 		
 		int l = Board.tokenAL.get(currentPlayer%Main.numPlayers).slot;
-		System.out.println("1");
 //		if(l != 9) {
-			currentPlayer = Token.findCharacter(CharName);
-			
-			if(Board.tokenAL.get(currentPlayer).slot != 10) {
-				RemovefromRoom();
+		currentPlayer = Token.findCharacter(CharName);
+		
+		if(Board.tokenAL.get(currentPlayer).slot != 10) {
+			RemovefromRoom();
+		}
+
+		//Find an available slot
+		for(int j = 0; j<6;j++) {
+			if(Board.RoomSlots.get(l)[0][j] == 0) {
+				//Set Token as in a Room
+				Board.tokenAL.get(currentPlayer).slot = l;
+				//Set slot as occupied
+				Board.RoomSlots.get(l)[0][j] = 1;
+				//Move the token to the slot
+				Board.tokenAL.get(currentPlayer).xcoordinate = Board.RoomSlots.get(l)[1][j];
+				Board.tokenAL.get(currentPlayer).ycoordinate = Board.RoomSlots.get(l)[2][j];
+
+				//Move token
+				Board.tokenAL.get(currentPlayer).setBounds(Board.tokenAL.get(currentPlayer).xcoordinate, Board.tokenAL.get(currentPlayer).ycoordinate, Board.tokenAL.get(currentPlayer).imageIcon.getIconWidth(), Board.tokenAL.get(currentPlayer).imageIcon.getIconHeight());
+
+				//Exit the loop
+				break;
 			}
-
-			System.out.println("2");
-			//Find an available slot
-			for(int j = 0; j<6;j++) {
-				System.out.println("3");
-				if(Board.RoomSlots.get(l)[0][j] == 0) {
-					//Set Token as in a Room
-					Board.tokenAL.get(currentPlayer).slot = l;
-					//Set slot as occupied
-					Board.RoomSlots.get(l)[0][j] = 1;
-					//Move the token to the slot
-					Board.tokenAL.get(currentPlayer).xcoordinate = Board.RoomSlots.get(l)[1][j];
-					Board.tokenAL.get(currentPlayer).ycoordinate = Board.RoomSlots.get(l)[2][j];
-
-					//Move token
-					Board.tokenAL.get(currentPlayer).setBounds(Board.tokenAL.get(currentPlayer).xcoordinate, Board.tokenAL.get(currentPlayer).ycoordinate, Board.tokenAL.get(currentPlayer).imageIcon.getIconWidth(), Board.tokenAL.get(currentPlayer).imageIcon.getIconHeight());
-
-					System.out.println("4");
-					//Exit the loop
-					break;
-				}
-			}
+		}
 //		}
 
-		System.out.println("5");
 		display.textarea.append("\nEnter weapon name: ");
 		gameStage = 4;
 		currentPlayer = store;
@@ -1321,80 +1331,79 @@ public class SendMessageButtonListener implements ActionListener {
 		int playerNum=0, cardNum=0;
 		
 		for(int i=0; i<Main.numPlayers; i++) {
-			if(playerName.equals(Main.playerNames[i])) {
+			if(playerName.equalsIgnoreCase(Main.playerNames[i])) {
 				playerNum=i; 
 			}
 		}
-
-		if(cardName.equals("plum")) {					
+		if(cardName.equalsIgnoreCase("green")) {					
 			cardNum=0;
 		}
-		else if(cardName.equals("plum")) {					
+		else if(cardName.equalsIgnoreCase("mustard")) {					
 			cardNum=1;
 		}
-		else if(cardName.equals("peacock")) {					
+		else if(cardName.equalsIgnoreCase("peacock")) {					
 			cardNum=2;
 		}
-		else if(cardName.equals("plum")) {					
+		else if(cardName.equalsIgnoreCase("plum")) {					
 			cardNum=3;
 		}
-		else if(cardName.equals("scarlett")) {					
+		else if(cardName.equalsIgnoreCase("scarlett")) {					
 			cardNum=4;
 		}
-		else if(cardName.equals("white")) {					
+		else if(cardName.equalsIgnoreCase("white")) {					
 			cardNum=5;
 		}
-		else if(cardName.equals("candlestick")) {					
+		else if(cardName.equalsIgnoreCase("candlestick")) {					
 			cardNum=6;
 		}
-		else if(cardName.equals("knife")) {					
+		else if(cardName.equalsIgnoreCase("knife")) {					
 			cardNum=7;
 		}
-		else if(cardName.equals("lead pipe")) {					
+		else if(cardName.equalsIgnoreCase("lead pipe")) {					
 			cardNum=8;
 		}
-		else if(cardName.equals("revolver")) {					
+		else if(cardName.equalsIgnoreCase("revolver")) {					
 			cardNum=9;
 		}
-		else if(cardName.equals("rope")) {					
+		else if(cardName.equalsIgnoreCase("rope")) {					
 			cardNum=10;
 		}
-		else if(cardName.equals("wrench")) {					
+		else if(cardName.equalsIgnoreCase("wrench")) {					
 			cardNum=11;
 		}
-		else if(cardName.equals("ball room")) {					
+		else if(cardName.equalsIgnoreCase("ball room")) {					
 			cardNum=12;
 		}
-		else if(cardName.equals("billiard room")) {					
+		else if(cardName.equalsIgnoreCase("billiard room")) {					
 			cardNum=13;
 		}
-		else if(cardName.equals("conservatory")) {					
+		else if(cardName.equalsIgnoreCase("conservatory")) {					
 			cardNum=14;
 		}
-		else if(cardName.equals("dining room")) {					
+		else if(cardName.equalsIgnoreCase("dining room")) {					
 			cardNum=15;
 		}
-		else if(cardName.equals("hall")) {					
+		else if(cardName.equalsIgnoreCase("hall")) {					
 			cardNum=16;
 		}
-		else if(cardName.equals("kitchen")) {					
+		else if(cardName.equalsIgnoreCase("kitchen")) {					
 			cardNum=17;
 		}
-		else if(cardName.equals("library")) {					
+		else if(cardName.equalsIgnoreCase("library")) {					
 			cardNum=18;
 		}
-		else if(cardName.equals("lounge")) {
+		else if(cardName.equalsIgnoreCase("lounge")) {
 			cardNum=19;
 		}
-		else if(cardName.equals("study")) {
+		else if(cardName.equalsIgnoreCase("study")) {
 			cardNum=20;
 		}
 		
 
-		if(rowOrCell.equals("row")) {
+		if(rowOrCell.equalsIgnoreCase("row")) {
 			Board.tokenAL.get(store%Main.numPlayers).fillRowWithXOnNotes(cardNum, playerNum);
 		}
-		else if(rowOrCell.equals("cell")) {
+		else if(rowOrCell.equalsIgnoreCase("cell")) {
 			Board.tokenAL.get(store%Main.numPlayers).fillCellWithXOnNotes(cardNum, playerNum);
 		}
 	}
@@ -1411,40 +1420,40 @@ public class SendMessageButtonListener implements ActionListener {
 		String[] words = text.split("\\s+"); // splits by whitespace
 		
 		if(words.length > 3 && words.length < 8) {
-			if(words[k++].equals("player")) {
-				if(words[k].equals("1")) {
+			if(words[k++].equalsIgnoreCase("player")) {
+				if(words[k].equalsIgnoreCase("1")) {
 					playerNum = 0;
 					k++;
 				}
-				else if(words[k].equals("2")) {
+				else if(words[k].equalsIgnoreCase("2")) {
 					playerNum = 1;
 					k++;
 				}
-				else if(words[k].equals("3")) {
+				else if(words[k].equalsIgnoreCase("3")) {
 					playerNum = 2;
 					k++;
 				}
-				else if(words[k].equals("4")) {
+				else if(words[k].equalsIgnoreCase("4")) {
 					playerNum = 3;
 					k++;
 				}
-				else if(words[k].equals("5")) {
+				else if(words[k].equalsIgnoreCase("5")) {
 					playerNum = 4;
 					k++;
 				}
-				else if(words[k].equals("6")) {
+				else if(words[k].equalsIgnoreCase("6")) {
 					playerNum = 5;
 					k++;
 				}
 				
-				if(words[k].equals("has")) {
+				if(words[k].equalsIgnoreCase("has")) {
 					isCommand = true;
 					hasCard = true;
 					k++;
 				}
-				else if(words[k].equals("does")) {
-					if(words[k+1].equals("not")) {
-						if(words[k+2].equals("have")) {
+				else if(words[k].equalsIgnoreCase("does")) {
+					if(words[k+1].equalsIgnoreCase("not")) {
+						if(words[k+2].equalsIgnoreCase("have")) {
 							isCommand = true;
 							doesNotHaveCard = true;
 							k+=3;
@@ -1452,97 +1461,97 @@ public class SendMessageButtonListener implements ActionListener {
 					}
 				}
 				if(isCommand) {
-					if(words[k].equals("green")) {
+					if(words[k].equalsIgnoreCase("green")) {
 						card = "green";
 						cardNum=0;
 					} 
-					else if(words[k].equals("mustard")) {
+					else if(words[k].equalsIgnoreCase("mustard")) {
 						card = "mustard";
 						cardNum=1;
 					}
-					else if(words[k].equals("peacock")) {
+					else if(words[k].equalsIgnoreCase("peacock")) {
 						card = "peacock";
 						cardNum=2;
 					}
-					else if(words[k].equals("plum")) {
+					else if(words[k].equalsIgnoreCase("plum")) {
 						card = "plum";
 						cardNum=3;
 					}
-					else if(words[k].equals("scarlett")) {
+					else if(words[k].equalsIgnoreCase("scarlett")) {
 						card = "scarlett";
 						cardNum=4;
 					}
-					else if(words[k].equals("white")) {
+					else if(words[k].equalsIgnoreCase("white")) {
 						card = "white";
 						cardNum=5;
 					}
 					
-					else if(words[k].equals("candlestick")) {
+					else if(words[k].equalsIgnoreCase("candlestick")) {
 						card = "candlestick";
 						cardNum=6;
 					}
-					else if(words[k].equals("knife")) {
+					else if(words[k].equalsIgnoreCase("knife")) {
 						card = "knife";
 						cardNum=7;
 					}
-					else if(words[k].equals("lead")) {
-						if(words[k+1].equals("pipe")) {
+					else if(words[k].equalsIgnoreCase("lead")) {
+						if(words[k+1].equalsIgnoreCase("pipe")) {
 							card = "leadpipe";
 							cardNum=8;
 						}
 					}
-					else if(words[k].equals("revolver")) {
+					else if(words[k].equalsIgnoreCase("revolver")) {
 						card = "revolver";
 						cardNum=9;
 					}
-					else if(words[k].equals("rope")) {
+					else if(words[k].equalsIgnoreCase("rope")) {
 						card = "rope";
 						cardNum=10;
 					}
-					else if(words[k].equals("wrench")) {
+					else if(words[k].equalsIgnoreCase("wrench")) {
 						card = "wrench";
 						cardNum=11;
 					}
 					
-					else if(words[k].equals("ball")) {
-						if(words[k+1].equals("room")) {
+					else if(words[k].equalsIgnoreCase("ball")) {
+						if(words[k+1].equalsIgnoreCase("room")) {
 							card = "ball room";
 							cardNum=12;
 						}
 					}
-					else if(words[k].equals("billiard")) {
-						if(words[k+1].equals("room")) {
+					else if(words[k].equalsIgnoreCase("billiard")) {
+						if(words[k+1].equalsIgnoreCase("room")) {
 							card = "billiard room";
 							cardNum=13;
 						}
 					}
-					else if(words[k].equals("conservatory")) {
+					else if(words[k].equalsIgnoreCase("conservatory")) {
 						card = "conservatory";
 						cardNum=14;
 					}
-					else if(words[k].equals("dining")) {
-						if(words[k+1].equals("room")) {
+					else if(words[k].equalsIgnoreCase("dining")) {
+						if(words[k+1].equalsIgnoreCase("room")) {
 							card = "dining room";
 							cardNum=15;
 						}
 					}
-					else if(words[k].equals("hall")) {
+					else if(words[k].equalsIgnoreCase("hall")) {
 						card = "hall";
 						cardNum=16;
 					}
-					else if(words[k].equals("kitchen")) {
+					else if(words[k].equalsIgnoreCase("kitchen")) {
 						card = "kitchen";
 						cardNum=17;
 					}
-					else if(words[k].equals("library")) {
+					else if(words[k].equalsIgnoreCase("library")) {
 						card = "library";
 						cardNum=18;
 					}
-					else if(words[k].equals("lounge")) {
+					else if(words[k].equalsIgnoreCase("lounge")) {
 						card = "lounge";
 						cardNum=19;
 					}
-					else if(words[k].equals("study")) {
+					else if(words[k].equalsIgnoreCase("study")) {
 						card = "study";
 						cardNum=20;
 					}
@@ -1551,7 +1560,7 @@ public class SendMessageButtonListener implements ActionListener {
 			}
 		}
 		
-		if(!card.equals("")) {
+		if(!card.equalsIgnoreCase("")) {
 			if(hasCard) {
 				Board.tokenAL.get(currentPlayer%Main.numPlayers).fillRowWithXOnNotes(cardNum, playerNum);
 			}
@@ -1564,7 +1573,7 @@ public class SendMessageButtonListener implements ActionListener {
 	
 	public Token whichToken(String name, Token token) {
 		for(int t=0; t<6; t++) {
-			if(Board.tokenAL.get(t).name.equals(name)) {
+			if(Board.tokenAL.get(t).name.equalsIgnoreCase(name)) {
 				token = Board.tokenAL.get(t);
 			}
 		}
