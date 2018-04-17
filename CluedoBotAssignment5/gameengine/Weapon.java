@@ -1,11 +1,15 @@
+package gameengine;
+
 public class Weapon {
 
     private final String name;
     private Coordinates position;
+    private Room currentRoom;
 
     Weapon (String name, Room room) {
         this.name = name;
-        position = room.addItem();
+        currentRoom = room;
+        position = currentRoom.addItem();
     }
 
     public String getName() {
@@ -16,8 +20,10 @@ public class Weapon {
         return position;
     }
 
-    public void setRoom(Room room) {
-        position = room.addItem();
+    void changeRoom(Room room) {
+        currentRoom.removeItem(position);
+        currentRoom = room;
+        position = currentRoom.addItem();
     }
 
     public boolean hasName (String name) {
