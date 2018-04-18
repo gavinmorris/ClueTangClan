@@ -200,71 +200,71 @@ public class ClueTangClan implements BotAPI {
     
     
     public void markOffMyCardsOnNotes(){
-        if(player.hasCard("Green")) {
-        	markOffCardOnNotesForAllPlayers(0, "ClueTangClan");
-        }
-        else if(player.hasCard("Mustard")) {
-        	markOffCardOnNotesForAllPlayers(1, "ClueTangClan");
-        }
-        else if(player.hasCard("Peacock")) {
-        	markOffCardOnNotesForAllPlayers(2, "ClueTangClan");
-        }
-        else if(player.hasCard("Plum")) {
-        	markOffCardOnNotesForAllPlayers(3, "ClueTangClan");
-        }
-        else if(player.hasCard("Scarlett")) {
-        	markOffCardOnNotesForAllPlayers(4, "ClueTangClan");
-        }
-        else if(player.hasCard("White")) {
-        	markOffCardOnNotesForAllPlayers(5, "ClueTangClan");
-        }
+    	if(player.hasCard("Green")) markOffCardOnNotesForAllPlayers(0, getName());
+    	else markOffCardOnNotesForOnePlayer(0, getName());
+    	
+        if(player.hasCard("Mustard")) markOffCardOnNotesForAllPlayers(1, getName());
+    	else markOffCardOnNotesForOnePlayer(1, getName());
+    	
+        if(player.hasCard("Peacock")) markOffCardOnNotesForAllPlayers(2, getName());
+    	else markOffCardOnNotesForOnePlayer(2, getName());
+    	
+        if(player.hasCard("Plum")) markOffCardOnNotesForAllPlayers(3, getName());
+    	else markOffCardOnNotesForOnePlayer(3, getName());
+    	
+        if(player.hasCard("Scarlett")) markOffCardOnNotesForAllPlayers(4, getName());
+    	else markOffCardOnNotesForOnePlayer(4, getName());
+    	
+        if(player.hasCard("White")) markOffCardOnNotesForAllPlayers(5, getName());
+    	else markOffCardOnNotesForOnePlayer(5, getName());
+    	
 
-        else if(player.hasCard("Candlestick")) {
-        	markOffCardOnNotesForAllPlayers(6, "ClueTangClan");
-        }
-        else if(player.hasCard("Dagger")) {
-        	markOffCardOnNotesForAllPlayers(7, "ClueTangClan");
-        }
-        else if(player.hasCard("Leadpipe")) {
-        	markOffCardOnNotesForAllPlayers(8, "ClueTangClan");
-        }
-        else if(player.hasCard("Pistol")) {
-        	markOffCardOnNotesForAllPlayers(9, "ClueTangClan");
-        }
-        else if(player.hasCard("Rope")) {
-        	markOffCardOnNotesForAllPlayers(10, "ClueTangClan");
-        }
-        else if(player.hasCard("Wrench")) {
-        	markOffCardOnNotesForAllPlayers(11, "ClueTangClan");
-        }
+        if(player.hasCard("Candlestick")) markOffCardOnNotesForAllPlayers(6, getName());
+    	else markOffCardOnNotesForOnePlayer(6, getName());
+    	
+        if(player.hasCard("Dagger")) markOffCardOnNotesForAllPlayers(7, getName());
+    	else markOffCardOnNotesForOnePlayer(7, getName());
+    	
+        if(player.hasCard("Leadpipe")) markOffCardOnNotesForAllPlayers(8, getName());
+    	else markOffCardOnNotesForOnePlayer(8, getName());
+    	
+        if(player.hasCard("Pistol")) markOffCardOnNotesForAllPlayers(9, getName());
+    	else markOffCardOnNotesForOnePlayer(9, getName());
+    	
+        if(player.hasCard("Rope")) markOffCardOnNotesForAllPlayers(10, getName());
+    	else markOffCardOnNotesForOnePlayer(10, getName());
+    	
+        if(player.hasCard("Wrench")) markOffCardOnNotesForAllPlayers(11, getName());
+    	else markOffCardOnNotesForOnePlayer(11, getName());
+    	
 
-        else if(player.hasCard("Ballroom")) {
-        	markOffCardOnNotesForAllPlayers(12, "ClueTangClan");
-        }
-        else if(player.hasCard("Billiard Room")) {
-        	markOffCardOnNotesForAllPlayers(13, "ClueTangClan");
-        }
-        else if(player.hasCard("Conservatory")) {
-        	markOffCardOnNotesForAllPlayers(14, "ClueTangClan");
-        }
-        else if(player.hasCard("Dining Room")) {
-        	markOffCardOnNotesForAllPlayers(15, "ClueTangClan");
-        }
-        else if(player.hasCard("Hall")) {
-        	markOffCardOnNotesForAllPlayers(16, "ClueTangClan");
-        }
-        else if(player.hasCard("Kitchen")) {
-        	markOffCardOnNotesForAllPlayers(17, "ClueTangClan");
-        }
-        else if(player.hasCard("Library")) {
-        	markOffCardOnNotesForAllPlayers(18, "ClueTangClan");
-        }
-        else if(player.hasCard("Lounge")) {
-        	markOffCardOnNotesForAllPlayers(19, "ClueTangClan");
-        }
-        else if(player.hasCard("Study")) {
-        	markOffCardOnNotesForAllPlayers(20, "ClueTangClan");
-        }
+        if(player.hasCard("Ballroom")) markOffCardOnNotesForAllPlayers(12, getName());
+    	else markOffCardOnNotesForOnePlayer(12, getName());
+    	
+        if(player.hasCard("Billiard Room")) markOffCardOnNotesForAllPlayers(13, getName());
+    	else markOffCardOnNotesForOnePlayer(13, getName());
+    	
+        if(player.hasCard("Conservatory")) markOffCardOnNotesForAllPlayers(14, getName());
+    	else markOffCardOnNotesForOnePlayer(14, getName());
+    	
+        if(player.hasCard("Dining Room")) markOffCardOnNotesForAllPlayers(15, getName());
+    	else markOffCardOnNotesForOnePlayer(15, getName());
+    	
+        if(player.hasCard("Hall")) markOffCardOnNotesForAllPlayers(16, getName());
+    	else markOffCardOnNotesForOnePlayer(16, getName());
+    	
+        if(player.hasCard("Kitchen")) markOffCardOnNotesForAllPlayers(17, getName());
+    	else markOffCardOnNotesForOnePlayer(17, getName());
+    	
+        if(player.hasCard("Library")) markOffCardOnNotesForAllPlayers(18, getName());
+    	else markOffCardOnNotesForOnePlayer(18, getName());
+    	
+        if(player.hasCard("Lounge")) markOffCardOnNotesForAllPlayers(19, getName());
+    	else markOffCardOnNotesForOnePlayer(19, getName());
+    	
+        if(player.hasCard("Study")) markOffCardOnNotesForAllPlayers(20, getName());
+    	else markOffCardOnNotesForOnePlayer(20, getName());
+    	
     }
     public void markOffCardOnNotesForAllPlayers(int cardNum, String playerName) {
     	for(int j=0; j<numPlayers; j++) {
