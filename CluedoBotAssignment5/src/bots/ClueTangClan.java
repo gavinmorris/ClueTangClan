@@ -369,6 +369,36 @@ public class ClueTangClan implements BotAPI {
     	
     	return returnString;
     }
+
+	@Override
+	public String getVersion() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void notifyPlayerName(String playerName) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void notifyTurnOver(String playerName, String position) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void notifyQuery(String playerName, String query) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void notifyReply(String playerName, boolean cardShown) {
+		// TODO Auto-generated method stub
+		
+	}
     
     
 
