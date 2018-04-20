@@ -71,9 +71,9 @@ public class ClueTangClan implements BotAPI {
     	checkGeneralLogAndUpdateNotes();
     	markOffSingleNumsOnNotesForOnePlayer();
     	
-    	doWeKnowTheSuspect();
-    	doWeKnowTheWeapon();
-    	doWeKnowTheRoom();
+    	checkIfWeKnowTheSuspect();
+    	checkIfWeKnowTheWeapon();
+    	checkIfWeKnowTheRoom();
     	
     	int guessingTime=0;
     	if(weKnowTheSuspect) guessingTime++;
