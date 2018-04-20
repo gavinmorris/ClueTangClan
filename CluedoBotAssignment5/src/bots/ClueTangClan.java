@@ -10,8 +10,20 @@ public class ClueTangClan implements BotAPI {
 	private int strategy=0;
 	private int numPlayers;
 	private final int numCards = 21;
-	private char[][] notes;
+	private final int numSuspects = 6;
+	private final int numWeapons = 6;
+	private final int numRooms = 9;
+	private ArrayList<ArrayList<ArrayList<Character>>> notes = new ArrayList<ArrayList<ArrayList<Character>>>();
 	private String[] playerNames;
+	private int notesCounter=1;
+	private int previousLogLength=0;
+	
+	private boolean weKnowTheSuspect=false;
+	private boolean weKnowTheWeapon=false;
+	private boolean weKnowTheRoom=false;
+	private String suspect="";
+	private String weapon="";
+	private String room="";
 	
     // The public API of Bot must not change
     // This is ONLY class that you can edit in the program
@@ -37,33 +49,17 @@ public class ClueTangClan implements BotAPI {
         numPlayers = playersInfo.numPlayers();
         playerNames = playersInfo.getPlayersNames();
         
-        notes = new char[21][numPlayers];
+        for(int i=0; i<numPlayers; i++) {
+        	notes.add(new ArrayList<ArrayList<Character>>());
+        }
         for(int i=0; i<numCards; i++) {
         	for(int j=0; j<numPlayers; j++) {
-        		notes[i][j] = '0';
+        		notes.get(j).add(new ArrayList<Character>());
+        		notes.get(j).get(i).add('0');
         	}
         }
         
         markOffMyCardsOnNotes();
-        
-    	if(player.getToken().getName().equalsIgnoreCase("green")) {
-    		strategy=1;
-    	}
-    	else if(player.getToken().getName().equalsIgnoreCase("mustard")) {
-    		strategy=2;
-    	}
-    	else if(player.getToken().getName().equalsIgnoreCase("peacock")) {
-    		strategy=3;
-    	}
-    	else if(player.getToken().getName().equalsIgnoreCase("plum")) {
-    		strategy=4;
-    	}
-    	else if(player.getToken().getName().equalsIgnoreCase("scarlett")) {
-    		strategy=5;
-    	}
-    	else if(player.getToken().getName().equalsIgnoreCase("white")) {
-    		strategy=6;
-    	}
     }
 
     public String getName() {
@@ -71,23 +67,25 @@ public class ClueTangClan implements BotAPI {
     }
 
     public String getCommand() {
-        // Add your code here
-    	String move = "";
-    	if(move == "roll") {
-    		return "roll";
+    	
+    	checkGeneralLogAndUpdateNotes();
+    	markOffSingleNumsOnNotesForOnePlayer();
+    	
+    	checkIfWeKnowTheSuspect();
+    	checkIfWeKnowTheWeapon();
+    	checkIfWeKnowTheRoom();
+    	
+    	int guessingTime=0;
+    	if(weKnowTheSuspect) guessingTime++;
+    	if(weKnowTheWeapon) guessingTime++;
+    	if(weKnowTheRoom) guessingTime++;
+    	
+    	if(guessingTime>=2) {
+    		//root one to basement
     	}
-    	else if(move == "question") {
-    		return "question";
-    	}
-    	else if(move == "passage") {
-    		return "passage";
-    	}
-    	else if(move == "accuse") {
-    		return "accuse";
-    	}
-    	else {
-            return "done";
-    	}
+    	
+    	
+        return "done";
     }
 
     public String getMove() {
@@ -119,6 +117,92 @@ public class ClueTangClan implements BotAPI {
         // Add your code here
         return matchingCards.get().toString();
     }
+    
+    public void notifyResponse(Log response) {
+    	Iterator<String> iterator = response.iterator();
+		ArrayList<String> messages = new ArrayList<String>();
+		int logLength = 0;
+		while(iterator.hasNext()) {
+			logLength++;
+			String temp = response.next();
+			messages.add(temp);
+			System.out.println(temp);
+		}
+
+		System.out.println(logLength);
+		String[] logQuestion = messages.get(logLength-2).toString().split(" ");
+		String[] logAnswer = messages.get(logLength-1).toString().split(" ");
+		int logQuestionLength = logQuestion.length;
+		int logAnswerLength = logAnswer.length;
+
+		String queriedPlayerName="";
+		int queriedPlayerNum;
+		
+		String suspectName="";
+		String weaponName="";
+		String roomName="";
+		int suspectNum;
+		int weaponNum;
+		int roomNum;
+		
+		String cardName="";
+		int cardNum=0;
+
+		boolean hasCard=false;
+		
+		//get card name name and num if there is one
+		//also get queried player name and num
+		if(logAnswer[logAnswerLength-2].equalsIgnoreCase("card:")) {
+			cardNum = logLength-1;
+			cardName = removeFullStop(logAnswer[cardNum]);
+			queriedPlayerNum = logAnswerLength-5;
+		}
+		else {
+			queriedPlayerNum = logAnswerLength-6;
+		}
+		queriedPlayerName = logAnswer[queriedPlayerNum];
+		
+		//get room name and num
+		if(logQuestion[logQuestionLength-2].equalsIgnoreCase("Dining")) {
+			roomNum = logQuestionLength-2;
+			roomName = "Dining Room";
+		}
+		else if(logQuestion[logQuestionLength-2].equalsIgnoreCase("Billiard")) {
+			roomNum = logQuestionLength-2;
+			roomName = "Billiard Room";
+		}
+		else {
+			roomNum = logQuestionLength-1;
+			roomName = removeFullStop(logQuestion[roomNum]);
+		}
+		
+		//get weapon name and num
+		if(logQuestion[roomNum-4].equalsIgnoreCase("Lead")) {
+			weaponNum = roomNum-4;
+			weaponName = "Lead Pipe";
+		}
+		else {
+			weaponNum = roomNum-3;
+			weaponName = logQuestion[weaponNum];
+		}
+		
+		//get suspect name and num
+		suspectNum = weaponNum-3;
+		suspectName = logQuestion[suspectNum];
+		
+		if(cardName!="") {
+			hasCard=true;
+		}
+
+		if(hasCard) {
+			markOffCardOnNotesForAllPlayers(getCardNum(cardName), queriedPlayerName);
+		}
+		else {
+			markOffCardOnNotesForOnePlayer(getCardNum(suspectName), queriedPlayerName);
+			markOffCardOnNotesForOnePlayer(getCardNum(weaponName), queriedPlayerName);
+			markOffCardOnNotesForOnePlayer(getCardNum(roomName), queriedPlayerName);
+		}
+    }
 
     
     
@@ -131,73 +215,105 @@ public class ClueTangClan implements BotAPI {
     
     //our functions
     
-    public void notifyResponse(Log response) {
-		String queriedPlayerName="";
-		String shownCardName="";
-		int queriedPlayerNum=11;
-		int shownCardNum=15;
-		
-		String suspectName="";
-		String weaponName="";
-		String roomName="";
-		int suspectNum=4;
-		int weaponNum=7;
-		int roomNum=10;
+    
+    
+    
+    //notes functions 
+   
+	 public void checkGeneralLogAndUpdateNotes() {
 
-		boolean hasCard=false;
-
+		Iterator<String> iterator = log.iterator();
 		ArrayList<String> messages = new ArrayList<String>();
-		int length=0;
-		while(response.hasNext()) {
-			messages.add(response.next());
-			length++;
+		int logLength = 0;
+		while(iterator.hasNext()) {
+			logLength++;
+			String temp = log.next();
+			messages.add(temp);
+			System.out.println(temp);
 		}
+		int currentLogLength = logLength;
 		
-		suspectName = messages.get(suspectNum).toString();
-		
-		if(messages.get(weaponNum).toString().equalsIgnoreCase("Lead")) {
-			queriedPlayerNum++;
-			shownCardNum++;
-			roomNum++;
-			weaponName = "Lead Pipe";
-		}
-		else {
-			weaponName = messages.get(weaponNum).toString();
-		}
-		
-		if(messages.get(roomNum).toString().equalsIgnoreCase("Dining")) {
-			queriedPlayerNum++;
-			shownCardNum++;
-			roomName = "Dining Room";
-		}
-		else if(messages.get(roomNum).toString().equalsIgnoreCase("Billiard")) {
-			queriedPlayerNum++;
-			shownCardNum++;
-			roomName = "Billiard Room";
-		}
-		else {
-			roomName = removeFullStop(messages.get(roomNum).toString());
-		}
-		
-		queriedPlayerName = messages.get(queriedPlayerNum).toString();
-		
-		if(messages.get(queriedPlayerNum+1).toString().equalsIgnoreCase("showed")) {
-			hasCard=true;
-			shownCardName = messages.get(queriedPlayerNum+4).toString();
-		}
+		while(logLength>2) {
+			System.out.println(logLength);
+			String[] logQuestion = messages.get(logLength-2).toString().split(" ");
+			String[] logAnswer = messages.get(logLength-1).toString().split(" ");
+			int logQuestionLength = logQuestion.length;
+			int logAnswerLength = logAnswer.length;
+			System.out.println(logQuestionLength);
+			System.out.println(logAnswerLength);
 
-		if(hasCard) {
-			markOffCardOnNotesForAllPlayers(getCardNum(shownCardName), queriedPlayerName);
+			String queriedPlayerName="";
+			int queriedPlayerNum;
+			
+			String suspectName="";
+			String weaponName="";
+			String roomName="";
+			int suspectNum;
+			int weaponNum;
+			int roomNum;
+
+			boolean hasCard=false;
+			
+			//get queried player name and num
+			if(logAnswer[logAnswerLength-1].equalsIgnoreCase("cards.")) {
+				queriedPlayerNum = logAnswerLength-6;
+			}
+			else {
+				queriedPlayerNum = logAnswerLength-4;
+			}
+			queriedPlayerName = logAnswer[queriedPlayerNum];
+			
+			//get room name and num
+			if(logQuestion[logQuestionLength-2].equalsIgnoreCase("Dining")) {
+				roomNum = logQuestionLength-2;
+				roomName = "Dining Room";
+			}
+			else if(logQuestion[logQuestionLength-2].equalsIgnoreCase("Billiard")) {
+				roomNum = logQuestionLength-2;
+				roomName = "Billiard Room";
+			}
+			else {
+				roomNum = logQuestionLength-1;
+				roomName = removeFullStop(logQuestion[roomNum]);
+			}
+			
+			//get weapon name and num
+			if(logQuestion[roomNum-4].equalsIgnoreCase("Lead")) {
+				weaponNum = roomNum-4;
+				weaponName = "Lead Pipe";
+			}
+			else {
+				weaponNum = roomNum-3;
+				weaponName = logQuestion[weaponNum];
+			}
+			
+			//get suspect name and num
+			suspectNum = weaponNum-3;
+			suspectName = logQuestion[suspectNum];
+			
+			if(logAnswer[queriedPlayerNum+1].equalsIgnoreCase("showed")) {
+				hasCard=true;
+			}
+
+			if(hasCard) {
+				markOffPotentialCardsOnNotesForOnePlayer(getCardNum(suspectName), getCardNum(weaponName), getCardNum(roomName), queriedPlayerName);
+			}
+			else {
+				markOffCardOnNotesForOnePlayer(getCardNum(suspectName), queriedPlayerName);
+				markOffCardOnNotesForOnePlayer(getCardNum(weaponName), queriedPlayerName);
+				markOffCardOnNotesForOnePlayer(getCardNum(roomName), queriedPlayerName);
+			}
+			logLength-=2;
+			if(logLength == previousLogLength) {
+				break;
+			}
+			
 		}
-		else {
-			markOffCardOnNotesForOnePlayer(getCardNum(suspectName), queriedPlayerName);
-			markOffCardOnNotesForOnePlayer(getCardNum(weaponName), queriedPlayerName);
-			markOffCardOnNotesForOnePlayer(getCardNum(roomName), queriedPlayerName);
-		}
+		previousLogLength = currentLogLength;
+		
+		
     }
-    
-    
-    
+
     
     public void markOffMyCardsOnNotes(){
     	if(player.hasCard("Green")) markOffCardOnNotesForAllPlayers(0, getName());
@@ -268,31 +384,126 @@ public class ClueTangClan implements BotAPI {
     }
     public void markOffCardOnNotesForAllPlayers(int cardNum, String playerName) {
     	for(int j=0; j<numPlayers; j++) {
+			for(int k=0; k<notes.get(j).get(cardNum).size(); k++) {
+				notes.get(j).get(cardNum).remove(k);
+			}
     		if(playerNames[j].equals(playerName)) {
-    			notes[cardNum][j] = 'y';
+    			notes.get(j).get(cardNum).add('y');
     		}
     		else {
-    			notes[cardNum][j] = 'x';
+    			notes.get(j).get(cardNum).add('x');
     		}
     	}
     }
     public void markOffCardOnNotesForOnePlayer(int cardNum, String playerName) {
     	for(int j=0; j<numPlayers; j++) {
     		if(playerNames[j].equals(playerName)) {
-    			notes[cardNum][j] = 'x';
+        		for(int k=0; k<notes.get(j).get(cardNum).size(); k++) {
+    				notes.get(j).get(cardNum).remove(k);
+    			}
+    			notes.get(j).get(cardNum).add('x');
     		}
     	}
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    public void markOffPotentialCardsOnNotesForOnePlayer(int suspectNum, int weaponNum, int roomNum, String playerName) {
+    	for(int j=0; j<numPlayers; j++) {
+    		if(playerNames[j].equals(playerName)) {
+    			if(notes.get(j).get(suspectNum).get(0) == '0') {
+    				notes.get(j).get(suspectNum).remove(0);
+        			notes.get(j).get(suspectNum).add((char) (notesCounter+'0'));
+    			}
+    			else if(notes.get(j).get(suspectNum).get(0) == 'x' || notes.get(j).get(suspectNum).get(0) == 'y') {
+    				//-----------add in propability code--------------
+    			}
+    			else {
+        			notes.get(j).get(suspectNum).add((char) (notesCounter+'0'));
+    			}
+    			if(notes.get(j).get(weaponNum).get(0) == '0') {
+    				notes.get(j).get(weaponNum).remove(0);
+        			notes.get(j).get(weaponNum).add((char) (notesCounter+'0'));
+    			}
+    			else if(notes.get(j).get(weaponNum).get(0) == 'x' || notes.get(j).get(weaponNum).get(0) == 'y') {
+    				//-----------add in propability code--------------
+    			}
+    			else {
+        			notes.get(j).get(weaponNum).add((char) (notesCounter+'0'));
+    			}
+    			if(notes.get(j).get(roomNum).get(0) == '0') {
+    				notes.get(j).get(roomNum).remove(0);
+        			notes.get(j).get(roomNum).add((char) (notesCounter+'0'));
+    			}
+    			else if(notes.get(j).get(roomNum).get(0) == 'x' || notes.get(j).get(roomNum).get(0) == 'y') {
+    				//-----------add in propability code--------------
+    			}
+    			else {
+        			notes.get(j).get(roomNum).add((char) (notesCounter+'0'));
+    			}
+    		}
+    	}
+    	notesCounter++;
+    }
+    public void markOffSingleNumsOnNotesForOnePlayer() {
+    	for(int j=0; j<numPlayers; j++) {
+    		for(int k=1; k==notesCounter; k++) {
+    			int counter=0;
+    			int cardNum=0;
+    			for(int i=0; i<numCards; i++) {
+    				for(int a=0; a<notes.get(j).get(i).size(); a++) {
+        	    		if(notes.get(j).get(i).get(a) == (char) k) {
+        	    			counter++;
+        	    			cardNum=i;
+        	    		}
+    				}
+    	    	}
+    			if(counter==1) {
+    				markOffCardOnNotesForAllPlayers(cardNum, playerNames[j]);
+    			}
+    		}
+		}
+    }
+     
+    public void checkIfWeKnowTheSuspect() {
+    	if(!weKnowTheSuspect) {
+    		for(int i=0; i<numSuspects; i++) {
+    			int counter=0;
+    			for(int j=0; j<numPlayers; j++) {
+    				if(notes.get(j).get(i).get(0) == 'x') counter++;
+    			}
+        		if(counter==numPlayers) {
+        			suspect = getCardName(i);
+        			weKnowTheSuspect=true;
+        		}
+    		}
+    	}
+    }
+    public void checkIfWeKnowTheWeapon() {
+    	if(!weKnowTheWeapon) {
+    		for(int i=numSuspects; i<numSuspects+numWeapons; i++) {
+    			int counter=0;
+    			for(int j=0; j<numPlayers; j++) {
+    				if(notes.get(j).get(i).get(0) == 'x') counter++;
+    			}
+        		if(counter==numPlayers) {
+        			weapon = getCardName(i);
+        			weKnowTheWeapon=true;
+        		}
+    		}
+    	}
+    }
+    public void checkIfWeKnowTheRoom() {
+    	if(!weKnowTheRoom) {
+    		for(int i=0; i<numSuspects+numWeapons+numRooms; i++) {
+    			int counter=0;
+    			for(int j=0; j<numPlayers; j++) {
+    				if(notes.get(j).get(i).get(0) == 'x') counter++;
+    			}
+        		if(counter==numPlayers) {
+        			room = getCardName(i);
+        			weKnowTheRoom=true;
+        		}
+    		}
+    	}
+    }
     
     
     
@@ -369,36 +580,6 @@ public class ClueTangClan implements BotAPI {
     	
     	return returnString;
     }
-
-	@Override
-	public String getVersion() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void notifyPlayerName(String playerName) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void notifyTurnOver(String playerName, String position) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void notifyQuery(String playerName, String query) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void notifyReply(String playerName, boolean cardShown) {
-		// TODO Auto-generated method stub
-		
-	}
     
     
 
