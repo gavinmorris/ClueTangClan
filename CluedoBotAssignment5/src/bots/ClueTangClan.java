@@ -17,6 +17,7 @@ public class ClueTangClan implements BotAPI {
 	private String[] playerNames;
 	private int notesCounter=1;
 	private int previousLogLength=0;
+	public int[] shownCards = new int[numCards];
 	
 	private boolean weKnowTheSuspect=false;
 	private boolean weKnowTheWeapon=false;
@@ -60,6 +61,10 @@ public class ClueTangClan implements BotAPI {
         }
         
         markOffMyCardsOnNotes();
+        
+        for(int i=0; i<numCards; i++) {
+        	shownCards[i] = 0;
+        }
     }
 
     public String getName() {
@@ -69,7 +74,6 @@ public class ClueTangClan implements BotAPI {
     public String getCommand() {
     	
     	checkGeneralLogAndUpdateNotes();
-    	markOffSingleNumsOnNotesForOnePlayer();
     	
     	checkIfWeKnowTheSuspect();
     	checkIfWeKnowTheWeapon();
@@ -114,10 +118,55 @@ public class ClueTangClan implements BotAPI {
     }
 
     public String getCard(Cards matchingCards) {
-        // Add your code here
-        return matchingCards.get().toString();
+    	Iterator<Card> iterator = matchingCards.iterator();
+		ArrayList<Card> cards = new ArrayList<Card>();
+		int noOfCards = 0;
+		while(iterator.hasNext()) {
+			noOfCards++;
+			Card temp = matchingCards.next();
+			cards.add(temp);
+			System.out.println(temp);
+		}
+    	
+		String returnedCard = "";
+    	if(noOfCards<3) {
+        	if(isOurTokenCard(cards.get(0).toString(), cards.get(1).toString())) {
+        		returnedCard = player.getToken().getName();
+        	}
+        	else if(cardHasBeenShown(cards.get(0).toString(), cards.get(1).toString())){
+        		returnedCard = shownCard(cards.get(0).toString(), cards.get(1).toString());
+        	}
+        	else if(cardIsWeapon(cards.get(0).toString(), cards.get(1).toString())) {
+        		returnedCard = weaponCard(cards.get(0).toString(), cards.get(1).toString());
+        	}
+        	else if(cardIsSuspect(cards.get(0).toString(), cards.get(1).toString())) {
+        		returnedCard = suspectCard(cards.get(0).toString(), cards.get(1).toString());
+        	}
+        	else {
+        		returnedCard = roomCard(cards.get(0).toString(), cards.get(1).toString());
+        	}
+    	}
+    	else {
+        	if(isOurTokenCard(cards.get(0).toString(), cards.get(1).toString(), cards.get(2).toString())) {
+        		returnedCard = player.getToken().getName();
+        	}
+        	else if(cardHasBeenShown(cards.get(0).toString(), cards.get(1).toString(), cards.get(2).toString())){
+        		returnedCard = shownCard(cards.get(0).toString(), cards.get(1).toString(), cards.get(2).toString());
+        	}
+        	else if(cardIsWeapon(cards.get(0).toString(), cards.get(1).toString(), cards.get(2).toString())) {
+        		returnedCard = weaponCard(cards.get(0).toString(), cards.get(1).toString(), cards.get(2).toString());
+        	}
+        	else if(cardIsSuspect(cards.get(0).toString(), cards.get(1).toString(), cards.get(2).toString())) {
+        		returnedCard = suspectCard(cards.get(0).toString(), cards.get(1).toString(), cards.get(2).toString());
+        	}
+        	else {
+        		returnedCard = roomCard(cards.get(0).toString(), cards.get(1).toString(), cards.get(2).toString());
+        	}
+    	}
+    	shownCards[getCardNum(returnedCard)] = 1;
+    	return returnedCard;
     }
-    
+
     public void notifyResponse(Log response) {
     	Iterator<String> iterator = response.iterator();
 		ArrayList<String> messages = new ArrayList<String>();
@@ -220,7 +269,7 @@ public class ClueTangClan implements BotAPI {
     
     //notes functions 
    
-		public void checkGeneralLogAndUpdateNotes() {
+	public void checkGeneralLogAndUpdateNotes() {
 
 		Iterator<String> iterator = log.iterator();
 		ArrayList<String> messages = new ArrayList<String>();
@@ -324,75 +373,7 @@ public class ClueTangClan implements BotAPI {
     }
 
 
-    
-    public void markOffMyCardsOnNotes(){
-    	if(player.hasCard("Green")) markOffCardOnNotesForAllPlayers(0, getName());
-    	else markOffCardOnNotesForOnePlayer(0, getName());
-    	
-        if(player.hasCard("Mustard")) markOffCardOnNotesForAllPlayers(1, getName());
-    	else markOffCardOnNotesForOnePlayer(1, getName());
-    	
-        if(player.hasCard("Peacock")) markOffCardOnNotesForAllPlayers(2, getName());
-    	else markOffCardOnNotesForOnePlayer(2, getName());
-    	
-        if(player.hasCard("Plum")) markOffCardOnNotesForAllPlayers(3, getName());
-    	else markOffCardOnNotesForOnePlayer(3, getName());
-    	
-        if(player.hasCard("Scarlett")) markOffCardOnNotesForAllPlayers(4, getName());
-    	else markOffCardOnNotesForOnePlayer(4, getName());
-    	
-        if(player.hasCard("White")) markOffCardOnNotesForAllPlayers(5, getName());
-    	else markOffCardOnNotesForOnePlayer(5, getName());
-    	
-
-        if(player.hasCard("Candlestick")) markOffCardOnNotesForAllPlayers(6, getName());
-    	else markOffCardOnNotesForOnePlayer(6, getName());
-    	
-        if(player.hasCard("Dagger")) markOffCardOnNotesForAllPlayers(7, getName());
-    	else markOffCardOnNotesForOnePlayer(7, getName());
-    	
-        if(player.hasCard("Leadpipe")) markOffCardOnNotesForAllPlayers(8, getName());
-    	else markOffCardOnNotesForOnePlayer(8, getName());
-    	
-        if(player.hasCard("Pistol")) markOffCardOnNotesForAllPlayers(9, getName());
-    	else markOffCardOnNotesForOnePlayer(9, getName());
-    	
-        if(player.hasCard("Rope")) markOffCardOnNotesForAllPlayers(10, getName());
-    	else markOffCardOnNotesForOnePlayer(10, getName());
-    	
-        if(player.hasCard("Wrench")) markOffCardOnNotesForAllPlayers(11, getName());
-    	else markOffCardOnNotesForOnePlayer(11, getName());
-    	
-
-        if(player.hasCard("Ballroom")) markOffCardOnNotesForAllPlayers(12, getName());
-    	else markOffCardOnNotesForOnePlayer(12, getName());
-    	
-        if(player.hasCard("Billiard Room")) markOffCardOnNotesForAllPlayers(13, getName());
-    	else markOffCardOnNotesForOnePlayer(13, getName());
-    	
-        if(player.hasCard("Conservatory")) markOffCardOnNotesForAllPlayers(14, getName());
-    	else markOffCardOnNotesForOnePlayer(14, getName());
-    	
-        if(player.hasCard("Dining Room")) markOffCardOnNotesForAllPlayers(15, getName());
-    	else markOffCardOnNotesForOnePlayer(15, getName());
-    	
-        if(player.hasCard("Hall")) markOffCardOnNotesForAllPlayers(16, getName());
-    	else markOffCardOnNotesForOnePlayer(16, getName());
-    	
-        if(player.hasCard("Kitchen")) markOffCardOnNotesForAllPlayers(17, getName());
-    	else markOffCardOnNotesForOnePlayer(17, getName());
-    	
-        if(player.hasCard("Library")) markOffCardOnNotesForAllPlayers(18, getName());
-    	else markOffCardOnNotesForOnePlayer(18, getName());
-    	
-        if(player.hasCard("Lounge")) markOffCardOnNotesForAllPlayers(19, getName());
-    	else markOffCardOnNotesForOnePlayer(19, getName());
-    	
-        if(player.hasCard("Study")) markOffCardOnNotesForAllPlayers(20, getName());
-    	else markOffCardOnNotesForOnePlayer(20, getName());
-    	
-    }
-        public void markOffCardOnNotesForAllPlayers(int cardNum, String playerName) {
+    public void markOffCardOnNotesForAllPlayers(int cardNum, String playerName) {
     	for(int j=0; j<numPlayers; j++) {
 			for(int k=0; k<notes.get(j).get(cardNum).size();) {
 				notes.get(j).get(cardNum).remove(k);
@@ -474,7 +455,75 @@ public class ClueTangClan implements BotAPI {
     		}
 		}
     }
-    
+     
+    public void markOffMyCardsOnNotes(){
+    	if(player.hasCard("Green")) markOffCardOnNotesForAllPlayers(0, getName());
+    	else markOffCardOnNotesForOnePlayer(0, getName());
+    	
+        if(player.hasCard("Mustard")) markOffCardOnNotesForAllPlayers(1, getName());
+    	else markOffCardOnNotesForOnePlayer(1, getName());
+    	
+        if(player.hasCard("Peacock")) markOffCardOnNotesForAllPlayers(2, getName());
+    	else markOffCardOnNotesForOnePlayer(2, getName());
+    	
+        if(player.hasCard("Plum")) markOffCardOnNotesForAllPlayers(3, getName());
+    	else markOffCardOnNotesForOnePlayer(3, getName());
+    	
+        if(player.hasCard("Scarlett")) markOffCardOnNotesForAllPlayers(4, getName());
+    	else markOffCardOnNotesForOnePlayer(4, getName());
+    	
+        if(player.hasCard("White")) markOffCardOnNotesForAllPlayers(5, getName());
+    	else markOffCardOnNotesForOnePlayer(5, getName());
+    	
+
+        if(player.hasCard("Candlestick")) markOffCardOnNotesForAllPlayers(6, getName());
+    	else markOffCardOnNotesForOnePlayer(6, getName());
+    	
+        if(player.hasCard("Dagger")) markOffCardOnNotesForAllPlayers(7, getName());
+    	else markOffCardOnNotesForOnePlayer(7, getName());
+    	
+        if(player.hasCard("Leadpipe")) markOffCardOnNotesForAllPlayers(8, getName());
+    	else markOffCardOnNotesForOnePlayer(8, getName());
+    	
+        if(player.hasCard("Pistol")) markOffCardOnNotesForAllPlayers(9, getName());
+    	else markOffCardOnNotesForOnePlayer(9, getName());
+    	
+        if(player.hasCard("Rope")) markOffCardOnNotesForAllPlayers(10, getName());
+    	else markOffCardOnNotesForOnePlayer(10, getName());
+    	
+        if(player.hasCard("Wrench")) markOffCardOnNotesForAllPlayers(11, getName());
+    	else markOffCardOnNotesForOnePlayer(11, getName());
+    	
+
+        if(player.hasCard("Ballroom")) markOffCardOnNotesForAllPlayers(12, getName());
+    	else markOffCardOnNotesForOnePlayer(12, getName());
+    	
+        if(player.hasCard("Billiard Room")) markOffCardOnNotesForAllPlayers(13, getName());
+    	else markOffCardOnNotesForOnePlayer(13, getName());
+    	
+        if(player.hasCard("Conservatory")) markOffCardOnNotesForAllPlayers(14, getName());
+    	else markOffCardOnNotesForOnePlayer(14, getName());
+    	
+        if(player.hasCard("Dining Room")) markOffCardOnNotesForAllPlayers(15, getName());
+    	else markOffCardOnNotesForOnePlayer(15, getName());
+    	
+        if(player.hasCard("Hall")) markOffCardOnNotesForAllPlayers(16, getName());
+    	else markOffCardOnNotesForOnePlayer(16, getName());
+    	
+        if(player.hasCard("Kitchen")) markOffCardOnNotesForAllPlayers(17, getName());
+    	else markOffCardOnNotesForOnePlayer(17, getName());
+    	
+        if(player.hasCard("Library")) markOffCardOnNotesForAllPlayers(18, getName());
+    	else markOffCardOnNotesForOnePlayer(18, getName());
+    	
+        if(player.hasCard("Lounge")) markOffCardOnNotesForAllPlayers(19, getName());
+    	else markOffCardOnNotesForOnePlayer(19, getName());
+    	
+        if(player.hasCard("Study")) markOffCardOnNotesForAllPlayers(20, getName());
+    	else markOffCardOnNotesForOnePlayer(20, getName());
+    	
+    }
+ 
      
     public void checkIfWeKnowTheSuspect() {
     	if(!weKnowTheSuspect) {
@@ -519,6 +568,195 @@ public class ClueTangClan implements BotAPI {
     	}
     }
     
+    
+    
+    
+    //returning a card when we are queried functions
+    
+    public boolean isOurTokenCard(String a, String b) {
+    	return isOurTokenCard(a, b, "");
+    }
+    public boolean isOurTokenCard(String a, String b, String c) {
+    	if(a.equalsIgnoreCase(player.getToken().getName()) || b.equalsIgnoreCase(player.getToken().getName()) || c.equalsIgnoreCase(player.getToken().getName())) return true;
+    	else return false;
+    }
+    public boolean cardHasBeenShown(String a, String b) {
+    	return cardHasBeenShown(a, b, "");
+    }
+    public boolean cardHasBeenShown(String a, String b, String c) {
+    	boolean result = false;
+    	for(int i=0; i<numCards; i++) {
+    		if(a.equalsIgnoreCase(getCardName(i)) && shownCards[i]==1) {
+    			result = true;
+    		}
+    	}
+    	for(int i=0; i<numCards; i++) {
+    		if(b.equalsIgnoreCase(getCardName(i)) && shownCards[i]==1) {
+    			result = true;
+    		}
+    	}
+    	for(int i=0; i<numCards; i++) {
+    		if(c.equalsIgnoreCase(getCardName(i)) && shownCards[i]==1) {
+    			result = true;
+    		}
+    	}
+    	return result;
+    }
+    public String shownCard(String a, String b) {
+    	return shownCard(a, b, "");
+    }
+    public String shownCard(String a, String b, String c) {
+    	String result = "";
+    	for(int i=0; i<numCards; i++) {
+    		if(c.equalsIgnoreCase(getCardName(i)) && shownCards[i]==1) {
+    			result = getCardName(shownCards[i]);
+    		}
+    	}
+    	for(int i=0; i<numCards; i++) {
+    		if(a.equalsIgnoreCase(getCardName(i)) && shownCards[i]==1) {
+    			result = getCardName(shownCards[i]);
+    		}
+    	}
+    	for(int i=0; i<numCards; i++) {
+    		if(b.equalsIgnoreCase(getCardName(i)) && shownCards[i]==1) {
+    			result = getCardName(shownCards[i]);
+    		}
+    	}
+    	return result;
+    }
+    public boolean cardIsWeapon(String a, String b) {
+    	return cardIsWeapon(a, b, "");
+    }
+    public boolean cardIsWeapon(String a, String b, String c) {
+    	boolean result = false;
+    	for(int i=numSuspects; i<numSuspects+numWeapons; i++) {
+    		if(c.equalsIgnoreCase(getCardName(i)) && shownCards[i]==1) {
+    			result = true;
+    		}
+    	}
+    	for(int i=numSuspects; i<numSuspects+numWeapons; i++) {
+    		if(a.equalsIgnoreCase(getCardName(i)) && shownCards[i]==1) {
+    			result = true;
+    		}
+    	}
+    	for(int i=numSuspects; i<numSuspects+numWeapons; i++) {
+    		if(b.equalsIgnoreCase(getCardName(i)) && shownCards[i]==1) {
+    			result = true;
+    		}
+    	}
+    	return result;
+    }    
+    public String weaponCard(String a, String b) {
+    	return weaponCard(a, b, "");
+    }
+    public String weaponCard(String a, String b, String c) {
+    	String result = "";
+    	for(int i=numSuspects; i<numSuspects+numWeapons; i++) {
+    		if(c.equalsIgnoreCase(getCardName(i)) && shownCards[i]==1) {
+    			result = getCardName(shownCards[i]);
+    		}
+    	}
+    	for(int i=numSuspects; i<numSuspects+numWeapons; i++) {
+    		if(a.equalsIgnoreCase(getCardName(i)) && shownCards[i]==1) {
+    			result = getCardName(shownCards[i]);
+    		}
+    	}
+    	for(int i=numSuspects; i<numSuspects+numWeapons; i++) {
+    		if(b.equalsIgnoreCase(getCardName(i)) && shownCards[i]==1) {
+    			result = getCardName(shownCards[i]);
+    		}
+    	}
+    	return result;
+    }
+    public boolean cardIsSuspect(String a, String b) {
+    	return cardIsSuspect(a, b, "");
+    }
+    public boolean cardIsSuspect(String a, String b, String c) {
+    	boolean result = false;
+    	for(int i=0; i<numSuspects; i++) {
+    		if(c.equalsIgnoreCase(getCardName(i)) && shownCards[i]==1) {
+    			result = true;
+    		}
+    	}
+    	for(int i=0; i<numSuspects; i++) {
+    		if(a.equalsIgnoreCase(getCardName(i)) && shownCards[i]==1) {
+    			result = true;
+    		}
+    	}
+    	for(int i=0; i<numSuspects; i++) {
+    		if(b.equalsIgnoreCase(getCardName(i)) && shownCards[i]==1) {
+    			result = true;
+    		}
+    	}
+    	return result;
+    }    
+    public String suspectCard(String a, String b) {
+    	return suspectCard(a, b, "");
+    }
+    public String suspectCard(String a, String b, String c) {
+    	String result = "";
+    	for(int i=0; i<numSuspects; i++) {
+    		if(c.equalsIgnoreCase(getCardName(i)) && shownCards[i]==1) {
+    			result = getCardName(shownCards[i]);
+    		}
+    	}
+    	for(int i=0; i<numSuspects; i++) {
+    		if(a.equalsIgnoreCase(getCardName(i)) && shownCards[i]==1) {
+    			result = getCardName(shownCards[i]);
+    		}
+    	}
+    	for(int i=0; i<numSuspects; i++) {
+    		if(b.equalsIgnoreCase(getCardName(i)) && shownCards[i]==1) {
+    			result = getCardName(shownCards[i]);
+    		}
+    	}
+    	return result;
+    }
+    public boolean cardIsRoom(String a, String b) {
+    	return cardIsRoom(a, b, "");
+    }
+    public boolean cardIsRoom(String a, String b, String c) {
+    	boolean result = false;
+    	for(int i=numSuspects+numWeapons; i<numSuspects+numWeapons+numRooms; i++) {
+    		if(c.equalsIgnoreCase(getCardName(i)) && shownCards[i]==1) {
+    			result = true;
+    		}
+    	}
+    	for(int i=numSuspects+numWeapons; i<numSuspects+numWeapons+numRooms; i++) {
+    		if(a.equalsIgnoreCase(getCardName(i)) && shownCards[i]==1) {
+    			result = true;
+    		}
+    	}
+    	for(int i=numSuspects+numWeapons; i<numSuspects+numWeapons+numRooms; i++) {
+    		if(b.equalsIgnoreCase(getCardName(i)) && shownCards[i]==1) {
+    			result = true;
+    		}
+    	}
+    	return result;
+    }    
+    public String roomCard(String a, String b) {
+    	return roomCard(a, b, "");
+    }
+    public String roomCard(String a, String b, String c) {
+    	String result = "";
+    	for(int i=numSuspects+numWeapons; i<numSuspects+numWeapons+numRooms; i++) {
+    		if(c.equalsIgnoreCase(getCardName(i)) && shownCards[i]==1) {
+    			result = getCardName(shownCards[i]);
+    		}
+    	}
+    	for(int i=numSuspects+numWeapons; i<numSuspects+numWeapons+numRooms; i++) {
+    		if(a.equalsIgnoreCase(getCardName(i)) && shownCards[i]==1) {
+    			result = getCardName(shownCards[i]);
+    		}
+    	}
+    	for(int i=numSuspects+numWeapons; i<numSuspects+numWeapons+numRooms; i++) {
+    		if(b.equalsIgnoreCase(getCardName(i)) && shownCards[i]==1) {
+    			result = getCardName(shownCards[i]);
+    		}
+    	}
+    	return result;
+    }
+
     
     
     
