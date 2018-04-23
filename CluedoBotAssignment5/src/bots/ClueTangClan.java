@@ -1,6 +1,7 @@
 package bots;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 
 import gameengine.*;
@@ -25,7 +26,20 @@ public class ClueTangClan implements BotAPI {
 	private String suspect="";
 	private String weapon="";
 	private String room="";
-	
+	private int weNeedThis = 0;
+	private int  movesTaken = 0;
+	private int size = 0;
+	private boolean roll = true;
+	private int exitNumIterator = 0;
+	private boolean inRoom = false;
+	    
+	//hardcoded for test it should be set to pickARoute
+	private String route = "loungeDiningBallBillLib";
+	private String exitNum[] = null;
+	    
+	private String pickARoute() {
+	    return "";
+	}
     // The public API of Bot must not change
     // This is ONLY class that you can edit in the program
     // Rename Bot to the name of your team. Use camel case.
@@ -65,6 +79,27 @@ public class ClueTangClan implements BotAPI {
         for(int i=0; i<numCards; i++) {
         	shownCards[i] = 0;
         }
+        
+        if(player.getToken().getName() == "Green") {
+			size = twoToBallRoom.length;
+		}
+		else if(player.getToken().getName() == "Peacock") {
+			size = threeToConvservatory.length;
+		}
+		else if(player.getToken().getName() == "Plum") {
+			size = fourToStudy.length;
+		}
+		else if(player.getToken().getName() == "Scarlett") {	
+			size = fiveToLounge.length;
+		}
+		else if(player.getToken().getName() == "Mustard") {	
+			size = sixToDiningRoom.length;
+		}
+		else if(player.getToken().getName() == "White") {	
+			size = oneToBallRoom.length;
+		} 
+        
+        
     }
 
     public String getName() {
@@ -89,12 +124,226 @@ public class ClueTangClan implements BotAPI {
     	}
     	
     	
-        return "done";
+    	setSize();
+	    
+    	if(roll) {
+		  		roll = false;
+		  		
+		  		boolean loungecons = route.toLowerCase().indexOf("loungecons") !=-1? true: false ;
+		  		boolean conslounge = route.toLowerCase().indexOf("conslounge") !=-1? true: false ;
+		  		boolean kitstudy = route.toLowerCase().indexOf("kitstudy") !=-1? true: false ;
+		  		boolean studykit = route.toLowerCase().indexOf("studykit") !=-1? true: false ;
+
+		  		if(player.getToken().isInRoom()) {
+			  		if(loungecons && player.getToken().getRoom().toString().equalsIgnoreCase("lounge")) {
+			  			return "passage";
+			  		}
+			  		
+			  		else if(conslounge && player.getToken().getRoom().toString().equalsIgnoreCase("conservatory")) {
+			  			return "passage";
+			  		}
+			  		
+			  		else if(kitstudy && player.getToken().getRoom().toString().equalsIgnoreCase("kitchen")) {
+			  			return "passage";
+			  		}
+			  		
+			  		else if(studykit && player.getToken().getRoom().toString().equalsIgnoreCase("study")) {
+			  			return "passage";
+			  		}
+			  		else {
+
+			  			if(player.getToken().isInRoom()) {
+			  				movesTaken = 0;
+			  			}
+			  			
+			  			return "roll";
+			  		}
+		  		}	
+		  		else
+		  			
+		  			if(player.getToken().isInRoom()) {
+		  				movesTaken = 0;
+		  			}
+		  			
+		  			return "roll";
+		  	 }	
+		 else {			    
+		  		roll = true;
+
+		  	    return "done";
+		 }
     }
 
     public String getMove() {
-        // Add your code here
-        return "r";
+    	String move = null;
+		
+		if(inRoom) {   
+			    	if(player.getToken().getRoom().toString().equalsIgnoreCase("Lounge")) {
+			    		if(route.toLowerCase().endsWith("lounge")) {
+			    			move = loungeToHall[movesTaken];
+				    		movesTaken++;
+			    		}
+			    		else {
+				    		move = loungeToDiningRoom[movesTaken];
+				    		movesTaken++;	
+			    		}
+			        }   		
+			    	else if(player.getToken().getRoom().toString().equalsIgnoreCase("Dining Room")) {
+				    	if(exitNum[exitNumIterator].equals("1")) {
+				    		if(route.endsWith("Dining")) {
+				    			move = diningRoomToHall[movesTaken];
+						    	movesTaken++;
+				    		}
+				    		else {
+							  	move = diningRoomToLounge[movesTaken];
+						    	movesTaken++;
+				    		}
+				    	}
+				    	else if (exitNum[exitNumIterator].equals("2")) {
+				    		boolean diningKitchen = route.toLowerCase().indexOf("diningkit") !=-1? true: false ;
+						  	if(diningKitchen) {
+						  		move = diningRoomToKitchen[movesTaken];
+						  		movesTaken++;
+						  	}
+						  	else {
+					    		move = diningRoomToBallRoom[movesTaken];
+						    	movesTaken++;
+				    		}
+				    	}
+			    	}	
+			    	else if(player.getToken().getRoom().toString().equalsIgnoreCase("Kitchen")) {
+			    		
+			    		boolean kitchenDining = route.toLowerCase().indexOf("kitdining") !=-1? true: false ;
+
+				  		if(kitchenDining) {
+				  			move = kitchenToDiningRoom[movesTaken];
+				  			movesTaken++;
+				  		}
+				  		else {
+				    		move = kitchenToBallRoom[movesTaken];
+				    		movesTaken++;
+				  		}
+			    	}	
+			    	else if(player.getToken().getRoom().toString().equalsIgnoreCase("Ballroom")) {
+			    		
+			    		if(exitNum[exitNumIterator].equals("1") ) {
+				    		move = ballRoomToKitchen[movesTaken];
+				    		movesTaken++;	
+			    		}
+			    		else if(exitNum[exitNumIterator].equals("2")) {
+				    		move = ballRoomToDiningRoom[movesTaken];
+				    		movesTaken++;	
+			    		}
+			    		
+			    		else if(exitNum[exitNumIterator].equals("3") ) {
+				    		move = ballRoomToBilliardRoom[movesTaken];
+				    		movesTaken++;	
+			    		}
+			    		else if(exitNum[exitNumIterator].equals("4") ) {
+				    		move = ballRoomToConservatory[movesTaken];
+				    		movesTaken++;	
+			    		}
+			    		
+			    	}
+			    	else if(player.getToken().getRoom().toString().equalsIgnoreCase("Conservatory")) {
+			    		
+			    		boolean consBill = route.toLowerCase().indexOf("consbill") !=-1? true: false ;
+
+				  		if(consBill) {
+				  			move = conservatoryToBilliardRoom[movesTaken];
+				  			movesTaken++;
+				  		}
+				  		else {
+				    		move = conservatoryToBallRoom[movesTaken];
+				    		movesTaken++;
+				  		}
+			    	}
+			    	else if(player.getToken().getRoom().toString().equalsIgnoreCase("Billiard Room")) {	
+			    		if(exitNum[exitNumIterator].equals("1") ) {
+			    			boolean billBall = route.toLowerCase().indexOf("billBall") !=-1? true: false ;
+					  		if(billBall) {
+					  			move = billiardRoomToBallRoom[movesTaken];
+					  			movesTaken++;
+					  		}
+					  		else {
+					    		move = billiardRoomToConservatory[movesTaken];
+					    		movesTaken++;
+					  		}
+			    		}
+			    		else if(exitNum[exitNumIterator].equals("2") ) {
+			    			move = billiardRoomToLibrary[movesTaken];
+				    		movesTaken++;	
+			    		}
+			    	}
+			    	else if(player.getToken().getRoom().toString().equalsIgnoreCase("Library")) {
+			    		if(exitNum[exitNumIterator].equals("1") ) {
+				    		boolean libStudy = route.toLowerCase().indexOf("libstudy") !=-1? true: false ;
+						  	if(libStudy) {
+						  		move = libraryToStudy[movesTaken];
+						  		movesTaken++;
+						  	}
+						  	else {
+				    			move = libraryToHall[movesTaken];
+					    		movesTaken++;
+						  	}
+				    	}	
+				    	else if(exitNum[exitNumIterator].equals("2") ) {
+					    	move = libraryToBilliardRoom[movesTaken];
+					    	movesTaken++;
+				    	}
+			    	}
+			    	else if(player.getToken().getRoom().toString().equalsIgnoreCase("Study")) {		
+			    		boolean studylib = route.toLowerCase().indexOf("studylib") !=-1? true: false ;
+
+				  		if(studylib) {
+				  			move = studyToLib[movesTaken];
+				  			movesTaken++;
+				  		}
+				  		else {
+				    		move = studyToHall[movesTaken];
+				    		movesTaken++;
+				  		}
+			    	}
+			    	else if(player.getToken().getRoom().toString().equalsIgnoreCase("Hall")) {
+			    		if(exitNum[exitNumIterator].equals("1") ) {
+				    		move = hallToBasement[movesTaken];
+				    		movesTaken++;
+			    		}
+			    		
+			    		else if(exitNum[exitNumIterator].equals("2")) {
+			    			move = hallToStudy[movesTaken];
+				    		movesTaken++;
+			    		}
+			    	}
+			}	
+			else {
+	    		if(player.getToken().getName() == "Green") {
+	    			move = twoToBallRoom[movesTaken];
+	        		movesTaken++;
+	    		}
+	    		else if(player.getToken().getName() == "Peacock") {	
+	    			move = threeToConvservatory[movesTaken];
+	    			movesTaken++;
+	    		}
+	    		else if(player.getToken().getName() == "Plum") {	 
+	    			move = fourToStudy[movesTaken];
+	    			movesTaken++;
+	    		}
+	    		else if(player.getToken().getName() == "Scarlett") {	
+	    			move = fiveToLounge[movesTaken];
+	    			movesTaken++;
+	    		}
+	    		else if(player.getToken().getName() == "Mustard") {	
+	    			move = sixToDiningRoom[movesTaken];
+	    			movesTaken++;
+	    		}
+	    		else if(player.getToken().getName() == "White") {	
+	    			move = oneToBallRoom[movesTaken];
+	    			movesTaken++;
+	    		}
+		}
+		
+            return move;
     }
 
     public String getSuspect() {
@@ -113,8 +362,12 @@ public class ClueTangClan implements BotAPI {
     }
 
     public String getDoor() {
-        // Add your code here
-        return "1";
+    	if(weNeedThis >0) {
+    		exitNumIterator++;
+    	}
+		    movesTaken = 0;
+    	weNeedThis++;
+	    return exitNum[exitNumIterator];
     }
 
     public String getCard(Cards matchingCards) {
@@ -252,21 +505,7 @@ public class ClueTangClan implements BotAPI {
 			markOffCardOnNotesForOnePlayer(getCardNum(roomName), queriedPlayerName);
 		}
     }
-
-    
-    
-    
-    
-    
-    
-    
-
-    
     //our functions
-    
-    
-    
-    
     //notes functions 
    
 	public void checkGeneralLogAndUpdateNotes() {
@@ -755,12 +994,7 @@ public class ClueTangClan implements BotAPI {
     		}
     	}
     	return result;
-    }
-
-    
-    
-    
-    
+    }   
     
     public int getCardNum(String cardName) {
     	int num=0;
@@ -832,7 +1066,396 @@ public class ClueTangClan implements BotAPI {
     	
     	return returnString;
     }
+
+	@Override
+	public String getVersion() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void notifyPlayerName(String playerName) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void notifyTurnOver(String playerName, String position) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void notifyQuery(String playerName, String query) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void notifyReply(String playerName, boolean cardShown) {
+		// TODO Auto-generated method stub
+		
+	}
     
+	private void setSize() {
+    	if(movesTaken == size) {
+    		movesTaken = 0;
+    	}
+    	exitNum = setExitNum();
+    	
+    	if(player.getToken().isInRoom()) {
+    		inRoom = true;
+    		if(player.getToken().getRoom().toString().equalsIgnoreCase("Lounge")) {
+    			if(route.toLowerCase().endsWith("lounge")) {
+    				size = loungeToHall.length;
+    			}
+    			else {
+    				size = loungeToDiningRoom.length;
+    			}
+	        }   		
+	    	else if(player.getToken().getRoom().toString().equalsIgnoreCase("Dining Room")) {
+		    	if(exitNum[exitNumIterator].equals("1")) {
+			    	if(route.endsWith("Dining")) {
+			    		size = diningRoomToHall.length;
+			    	}
+			    	else {
+			    		size = diningRoomToLounge.length;
+			    	}
+		    	}
+		    	else if(exitNum[exitNumIterator].equals("2")) {
+		    		boolean diningKitchen = route.toLowerCase().indexOf("diningkit") !=-1? true: false ;
+		    		if(diningKitchen) {
+		    			size = diningRoomToKitchen.length;
+		    		}
+		    		else {
+		    			size = diningRoomToBallRoom.length;
+		    		}
+		    	}
+		  	}
+	    	else if(player.getToken().getRoom().toString().equalsIgnoreCase("Kitchen")) {
+	    		boolean kitchenDining = route.toLowerCase().indexOf("kitdining") !=-1? true: false ;
+
+		  		if(kitchenDining) {
+		  			size = kitchenToDiningRoom.length;
+		  		}
+		  		else {
+		  			size = kitchenToBallRoom.length;	
+		  		}
+	    	}	
+	    	else if(player.getToken().getRoom().toString().equalsIgnoreCase("Ballroom")) {
+	    		
+	    		if(exitNum[exitNumIterator].equals("1")) {
+	    			size = ballRoomToKitchen.length;	
+	    		}
+	    		else if(exitNum[exitNumIterator].equals("2")) {
+	    			size = ballRoomToDiningRoom.length;
+	    		}
+	    		
+	    		else if(exitNum[exitNumIterator].equals("3")) {
+		    		size = ballRoomToBilliardRoom.length;	
+	    		}
+	    		else if(exitNum[exitNumIterator].equals("4")) {
+		    		size = ballRoomToConservatory.length;
+	    		}
+	    		
+	    	}
+	    	else if(player.getToken().getRoom().toString().equalsIgnoreCase("Conservatory")) {
+	    		
+	    		boolean consBill = route.toLowerCase().indexOf("consbill") !=-1? true: false ;
+
+		  		if(consBill) {
+		  			size = conservatoryToBilliardRoom.length;
+		  		}
+		  		else {
+		  			size = conservatoryToBallRoom.length ;		
+		  		}
+	    	}
+	    	else if(player.getToken().getRoom().toString().equalsIgnoreCase("Billiard Room")) {	
+	    		if(exitNum[exitNumIterator].equals("1")) {
+	    			boolean billBall = route.toLowerCase().indexOf("billBall") !=-1? true: false ;
+			  		if(billBall) {
+			  			size = billiardRoomToBallRoom.length;
+			  		}
+			  		else {
+			  			size = billiardRoomToConservatory.length;
+			  		}
+	    		}
+	    		else if(exitNum[exitNumIterator].equals("2")) {
+	    			size = billiardRoomToLibrary.length;	
+	    		}
+	    	}
+	    	else if(player.getToken().getRoom().toString().equalsIgnoreCase("Library")) {
+		    	if(exitNum[exitNumIterator].equals("1")) {
+		    		boolean libStudy = route.toLowerCase().indexOf("libstudy") !=-1? true: false ;
+		    		if(libStudy) {
+		    			size = libraryToStudy.length;
+		    		}
+		    		else {    			
+		    			size = libraryToHall.length;
+		    		}
+		    	}	
+		    	else if(exitNum[exitNumIterator].equals("2")) {
+			    	size = libraryToBilliardRoom.length;
+		    	}
+		  	}
+	    	else if(player.getToken().getRoom().toString().equalsIgnoreCase("Study")) {	
+	    		
+	    		boolean studylib = route.toLowerCase().indexOf("studylib") !=-1? true: false ;
+
+		  		if(studylib ) {
+		  			size = studyToLib.length;
+		  		}
+		  		else {
+		  			size = studyToHall.length;
+		  		}
+	    	}
+	    	else if(player.getToken().getRoom().toString().equalsIgnoreCase("Hall")) {
+	    		if(exitNum[exitNumIterator].equals("1") ) {
+		    		size = hallToBasement.length;
+	    		}
+	    		
+	    		else if(exitNum[exitNumIterator].equals("2")) {
+	    			size = hallToStudy.length;
+	    		}
+	    	}
+    	}
+    }
     
+	 String kitchenToDiningRoom[] = {"d", "d", "r", "r", "r", "r" , "d" , "d", "d", "d", "l"};
+	    String kitchenToBallRoom[] = {"d", "r", "r", "r", "u", "u", "r"};
+	    
+	    //exit 1
+	    String ballRoomToKitchen[] = {"l", "d", "d", "l", "l", "l", "u"};
+	    
+	    //exit 2
+	    String ballRoomToDiningRoom[] = {"d", "d", "d", "d", "d", "l", "l"};
+	    
+	    //exit 3
+	    String ballRoomToBilliardRoom[] = {"d", "d", "r", "r", "r", "r"};
+	    
+	    //exit 4
+	    String ballRoomToConservatory[] = {"r", "r", "r", "u"};
+	    
+	    String conservatoryToBallRoom[] = {"d","l", "l", "l"};
+	    String conservatoryToBilliardRoom[] = {"d", "d", "d", "l", "d", "d", "r"};   
+	    
+	    //exit 1
+	    String billiardRoomToBallRoom[]= {"l", "l", "l", "l", "u", "u"};
+	    String billiardRoomToConservatory[] = {"l", "u", "u", "r", "u", "u", "u"};
+	    
+	    //exit 2
+	    String billiardRoomToLibrary[] = {"d", "l", "l", "d"};
+	    
+	    //exit 1
+	    String libraryToBilliardRoom[] = {"u", "r", "r", "u"};
+	    
+	    //exit 2 
+	    String libraryToHall[]= {"l", "l", "d", "l", "l", "l", "d"};
+	    String libraryToStudy[] = {"l", "d", "d", "r", "d", "d", "d"};
+	    
+	    String studyToLibrary[] = {"u", "u", "u", "l", "u", "u", "r"};
+	    String studyToHall[] = {"u", "l", "l", "l"};
+	    String studyToLib[] = {"u", "u", "u", "l", "u", "u", "r"};
+	    
+	    //exit 1
+	    String hallToLibrary[] = {"u", "r", "r","r","u", "r", "r"};
+	    String hallToDiningRoom[] = {"u", "l", "l", "l", "l", "l", "u", "u"};
+	    String hallToLounge[] = {"u", "l", "l", "l", "l", "l","d", "d"};
+	    String hallToBasement[] = {"u", "u"};
+	    
+	    //exit 2
+	    String hallToStudy[] = {"r", "r", "r", "d"};
+	    
+	    String loungeToHall[] = {"u", "u", "r", "r", "r", "r", "r", "d"};
+	    String loungeToDiningRoom[]= {"u", "u", "u", "u"};
+	    
+	    //exit 1
+	    String diningRoomToKitchen[]= {"r", "u", "u", "u", "u", "l", "l", "l", "l", "u", "u"};
+	    String diningRoomToBallRoom[] = {"r", "r", "u", "u", "u", "u", "u"};
+	    String diningRoomToHall[] = {"d", "d", "r", "r", "r", "r", "r", "d"};
+	    
+	    //exit2
+	    String diningRoomToLounge[] = {"d", "d", "d", "d"};
+	    
+	   //1
+	    String oneToBallRoom[] = { "d","l", "l", "d", "d", "d", "d", "r"};
+	    
+	    //2
+	    String twoToBallRoom[] = {"d","d", "r", "r", "d", "d", "d", "d", "l"};
+	    
+	    //3
+	    String threeToConvservatory[] = {"l", "l", "l", "l", "l", "u", "u"};
+	    
+	    //4
+	    String fourToStudy[] = {"l", "l", "l", "l", "l", "l", "d", "d"};
+	    
+	    //5
+	    String fiveToLounge[] = {"u", "u", "u", "u", "u", "u", "l", "d"};
+	    
+	    //6
+	    String sixToLounge[] = { "r", "r","r", "r", "r", "d", "d"};
+	    String sixToDiningRoom[] = {"r", "r", "r", "r", "r", "r", "d", "d"};
+	     
+	    //------Exit patterns for getDoor()--------
+	    
+	   //Dining
+	    String diningBallBillLib[] = {"2", "3", "2", "1" ,"1"};
+	    String diningBallConsLounge[] = {"2", "4", "1"};//passage
+	    String diningBallKitchenStudy[] = {"2", "1"};//passage
+	    String diningBallBillLibStudy[] = {"2","3", "2", "1", "1"};
+	    String diningLounge[] = {"2", "1"};
+	    String diningHall[] = {"1", "1"};
+	    String diningBallBillConsLounge[] = {"2", "3", "2", "1", "1","1"};//passage
+	    String diningBallKitStudyLib[] = {"2", "1", "1", "1"};//passage
+	    String diningKitStudy[] = {"2", "1"};//passage
+	    String diningLoungeConsBillLib[] = {"1", "2", "1", "1"};//passage
+	    
+	    //kitchen
+	    String kitBallBillLib[] = {"3", "2", "1", "1"}; 
+	    String kitBallDiningLounge[] = {"2", "1", "1"};
+	    String kitBallConsLounge[] = {"4", "1"};//passage
+	    String kitStudyLib[]= {"1"};//passage
+	    String kitBallDining[]= {"2", "1", "1"};
+	    String kitStudy[] = {"1"};//passage
+	    String kitDining[] = {"1", "1"};
+	    String kitDiningLounge[] = {"1", "1"};
+	    
+	    //ballroom
+	    String ballConsBillLibStudy[] = {"4","2", "1", "1"};
+	    String ballBillLibStudy[] = {"3", "2", "1", "1"};
+	    String ballConsLoungeDining[] = {"4", "1", "1"};//passage
+	    String ballKitStudyLib[] = {"1", "1", "1"};//passage
+	    String ballKitStudy[] = {"1", "1"};//passage
+	    String ballConsLounge[] = {"4", "1"};//passage
+	    String ballDiningLounge[] = {"2", "1", "1"};
+	    String ballBillLib[] = {"3", "2", "1", "1"};
+	    String ballDining[] = {"2", "1", "1"};
+	    
+	    //conservatory
+	    String consBallBillLibStudy[] = {"3", "2", "1", "1"};
+	    String consBallKitStudyLib[] = {"1", "1", "1"};
+	    String consBallDiningLounge[] = {"2", "1", "1"};
+	    String consBillLibStudy[] = {"2", "1", "1"};
+	    String consBallBillLib[] = {"3", "2", "1"};
+	    String consBallKitStudy[] = {"1", "1"}; //passage
+	    String consBillLib[] = {"2", "1", "1"};
+	    String consLoungeDining[] = {"1", "1"};//passage 
+	    String consBallDining[] = {"2", "1"};
+	    String consLounge[] = {"1"}; //passage
+
+	    //billiard Room
+	    String billBallConsLoungeDining[] = {"1","4", "1" ,"1"}; //passage
+	    String billBallKitStudyLib[] = {"1","1","1","1"}; //passage
+	    String billConsLoungeDining[] = {"1", "1","1"}; //passage
+	    String billBallKitStudy[] = {"1","1" ,"1"}; //passage
+	    String billBallDiningLounge[] = {"1","2","1","1"};
+	    String billLibStudy[] = {"2","1","1"};
+	    String billBallDining[] = {"1", "2","1","1"};
+	    String billConsLounge[] = {"1","1"}; //passage
+	    String billLib[] = {"2","1","1"};
+	    
+	    //library
+	    String libBillBallDiningLounge[] = {"2", "1", "2","1", "1"};
+	    String libStudyKitBallDining[] = {"1","2","1","1"};//passage
+	    String libBillConsLoungeDining[] = {"2","1","1","1"};//passage
+	    String libBillBallDining[] = {"2","1","2","1"};
+	    String libBillConsLounge[] = {"2", "1","1"};//passage
+	    String libStudy[] = {"1","1"};
+	    String lib[] = {"1"};
+	    
+	    //study
+	    String studyLibBillConsLounge[]  = {"2","1","1"}; // passage
+	    String studyLibBillBallDining[]  = {"2","1","2","1","1"};
+	    String studyKitBallDiningLounge[]  = {"2","1","1"}; // passage
+	    String studyKitBallBillLib[]  = {"3","2","1","1"}; // passage
+	    String studyKitBallConsLounge[]  = {"4","1"}; // passage
+	    String studyKitBallDining[]  = {"2", "1", "1"}; // passage
+	    String studyKitDining[]  = {"1","1"}; // passage
+	    String studyLib[]  = {"1","1"};
+	    
+	    //Lounge
+	    String loungeDiningBallBillLib[] = {"2","3","2","1", "1"};
+	    String loungeConsBillBallDining[] = {"1","2","1","1"};//passage
+	    String loungeConsBallDining[] = {"2","1","1"};//passage
+	    String loungeDining[] = {"1","1"};
+	    String loungeConsBallKitStudy[] = {"1","1"}; //passage
+	    String loungeDiningKitStudy[] = {"2","1"}; //passage
+	    String lounge[] = {"1"};
+	    String loungeConsBillLib[] = {"2","1","1"};
+
+	    private String[] setExitNum() {
+	    	String exitNumArray[] = null;
+	    	if(route.equalsIgnoreCase("diningBallConsLounge"))exitNumArray = Arrays.copyOf(diningBallConsLounge, diningBallConsLounge.length);
+	    	else if(route.equalsIgnoreCase("diningBallBillLib"))exitNumArray = Arrays.copyOf(diningBallBillLib, diningBallBillLib.length);
+	    	else if(route.equalsIgnoreCase("diningBallKitchenStudy"))exitNumArray = Arrays.copyOf(diningBallKitchenStudy, diningBallKitchenStudy.length);
+	    	else if(route.equalsIgnoreCase("diningBallBillLibStudy"))exitNumArray = Arrays.copyOf(diningBallBillLibStudy, diningBallBillLibStudy.length);
+	    	else if(route.equalsIgnoreCase("diningLounge"))exitNumArray = Arrays.copyOf(diningLounge, diningLounge.length);
+	    	else if(route.equalsIgnoreCase("diningHall"))exitNumArray = Arrays.copyOf(diningHall, diningHall.length);
+	    	else if(route.equalsIgnoreCase("diningBallBillConsLounge"))exitNumArray = Arrays.copyOf(diningBallBillConsLounge, diningBallBillConsLounge.length);
+	    	else if(route.equalsIgnoreCase("diningBallKitStudyLib"))exitNumArray = Arrays.copyOf(diningBallKitStudyLib, diningBallKitStudyLib.length);
+	    	else if(route.equalsIgnoreCase("diningKitStudy"))exitNumArray = Arrays.copyOf(diningKitStudy, diningKitStudy.length);
+	    	else if(route.equalsIgnoreCase("diningLoungeConsBillLib"))exitNumArray = Arrays.copyOf(diningLoungeConsBillLib, diningLoungeConsBillLib.length);
+	    	else if(route.equalsIgnoreCase("kitBallBillLib"))exitNumArray = Arrays.copyOf(kitBallBillLib, kitBallBillLib.length);
+	    	else if(route.equalsIgnoreCase("kitBallDiningLounge"))exitNumArray = Arrays.copyOf(kitBallDiningLounge, kitBallDiningLounge.length);
+	    	else if(route.equalsIgnoreCase("kitBallConsLounge"))exitNumArray = Arrays.copyOf(kitBallConsLounge, kitBallConsLounge.length);
+	    	else if(route.equalsIgnoreCase("kitStudyLib"))exitNumArray = Arrays.copyOf(kitStudyLib, kitStudyLib.length);
+	    	else if(route.equalsIgnoreCase("kitBallDining"))exitNumArray = Arrays.copyOf(kitBallDining, kitBallDining.length);
+	    	else if(route.equalsIgnoreCase("kitStudy"))exitNumArray = Arrays.copyOf(kitStudy, kitStudy.length);
+	    	else if(route.equalsIgnoreCase("kitDining"))exitNumArray = Arrays.copyOf(kitDining, kitDining.length);
+	    	else if(route.equalsIgnoreCase("kitDiningLounge"))exitNumArray = Arrays.copyOf(kitDiningLounge, kitDiningLounge.length);
+	    	else if(route.equalsIgnoreCase("ballBillLibStudy"))exitNumArray = Arrays.copyOf(ballBillLibStudy, ballBillLibStudy.length);
+	    	else if(route.equalsIgnoreCase("ballConsBillLibStudy"))exitNumArray = Arrays.copyOf(ballConsBillLibStudy, ballConsBillLibStudy.length);
+	    	else if(route.equalsIgnoreCase("ballConsLoungeDining"))exitNumArray = Arrays.copyOf(ballConsLoungeDining, ballConsLoungeDining.length);
+	    	else if(route.equalsIgnoreCase("ballKitStudyLib"))exitNumArray = Arrays.copyOf(ballKitStudyLib, ballKitStudyLib.length);
+	    	else if(route.equalsIgnoreCase("ballKitStudy"))exitNumArray = Arrays.copyOf(ballKitStudy, ballKitStudy.length);
+	    	else if(route.equalsIgnoreCase("ballConsLounge"))exitNumArray = Arrays.copyOf(ballConsLounge, ballConsLounge.length);
+	    	else if(route.equalsIgnoreCase("ballDiningLounge"))exitNumArray = Arrays.copyOf(ballDiningLounge, ballDiningLounge.length);
+	    	else if(route.equalsIgnoreCase("ballBillLib"))exitNumArray = Arrays.copyOf(ballBillLib, ballBillLib.length);
+	    	else if(route.equalsIgnoreCase("ballDining"))exitNumArray = Arrays.copyOf(ballDining, ballDining.length);
+	    	else if(route.equalsIgnoreCase("consBallBillLibStudy"))exitNumArray = Arrays.copyOf(consBallBillLibStudy, consBallBillLibStudy.length);
+	    	else if(route.equalsIgnoreCase("consBallKitStudyLib"))exitNumArray = Arrays.copyOf(consBallKitStudyLib, consBallKitStudyLib.length);
+	    	else if(route.equalsIgnoreCase("consBallDiningLounge"))exitNumArray = Arrays.copyOf(consBallDiningLounge, consBallDiningLounge.length);
+	    	else if(route.equalsIgnoreCase("consBillLibStudy"))exitNumArray = Arrays.copyOf(consBillLibStudy, consBillLibStudy.length);
+	    	else if(route.equalsIgnoreCase("consBallBillLib"))exitNumArray = Arrays.copyOf(consBallBillLib, consBallBillLib.length);
+	    	else if(route.equalsIgnoreCase("consBallKitStudy"))exitNumArray = Arrays.copyOf(consBallKitStudy, consBallKitStudy.length);
+	    	else if(route.equalsIgnoreCase("consBillLib"))exitNumArray = Arrays.copyOf(consBillLib, consBillLib.length);
+	    	else if(route.equalsIgnoreCase("consLoungeDining"))exitNumArray = Arrays.copyOf(consLoungeDining, consLoungeDining.length);
+	    	else if(route.equalsIgnoreCase("consBallDining"))exitNumArray = Arrays.copyOf(consBallDining, consBallDining.length);
+	    	else if(route.equalsIgnoreCase("billBallConsLoungeDining"))exitNumArray = Arrays.copyOf(billBallConsLoungeDining, billBallConsLoungeDining.length);
+	    	else if(route.equalsIgnoreCase("billBallKitStudyLib"))exitNumArray = Arrays.copyOf(billBallKitStudyLib, billBallKitStudyLib.length);
+	    	else if(route.equalsIgnoreCase("billConsLoungeDining"))exitNumArray = Arrays.copyOf(billConsLoungeDining, billConsLoungeDining.length);
+	    	else if(route.equalsIgnoreCase("billBallKitStudy"))exitNumArray = Arrays.copyOf(billBallKitStudy, billBallKitStudy.length);
+	    	else if(route.equalsIgnoreCase("billBallDiningLounge"))exitNumArray = Arrays.copyOf(billBallDiningLounge, billBallDiningLounge.length);
+	    	else if(route.equalsIgnoreCase("billLibStudy"))exitNumArray = Arrays.copyOf(billLibStudy, billLibStudy.length);
+	    	else if(route.equalsIgnoreCase("billBallDining"))exitNumArray = Arrays.copyOf(billBallDining, billBallDining.length);
+	    	else if(route.equalsIgnoreCase("billConsLounge"))exitNumArray = Arrays.copyOf(billConsLounge, billConsLounge.length);
+	    	else if(route.equalsIgnoreCase("billLib"))exitNumArray = Arrays.copyOf(billLib, billLib.length);
+	    	else if(route.equalsIgnoreCase("libBillBallDiningLounge"))exitNumArray = Arrays.copyOf(libBillBallDiningLounge, libBillBallDiningLounge.length);
+	    	else if(route.equalsIgnoreCase("libStudyKitBallDining"))exitNumArray = Arrays.copyOf(libStudyKitBallDining, libStudyKitBallDining.length);
+	    	else if(route.equalsIgnoreCase("libBillConsLoungeDining"))exitNumArray = Arrays.copyOf(libBillConsLoungeDining, libBillConsLoungeDining.length);
+	    	else if(route.equalsIgnoreCase("libBillBallDining"))exitNumArray = Arrays.copyOf(libBillBallDining, libBillBallDining.length);
+	    	else if(route.equalsIgnoreCase("libBillConsLounge"))exitNumArray = Arrays.copyOf(libBillConsLounge, libBillConsLounge.length);
+	    	else if(route.equalsIgnoreCase("libStudy"))exitNumArray = Arrays.copyOf(libStudy, libStudy.length);
+	    	else if(route.equalsIgnoreCase("studyLibBillConsLounge"))exitNumArray = Arrays.copyOf(studyLibBillConsLounge, studyLibBillConsLounge.length);
+	    	else if(route.equalsIgnoreCase("studyLibBillBallDining"))exitNumArray = Arrays.copyOf(studyLibBillBallDining, studyLibBillBallDining.length);
+	    	else if(route.equalsIgnoreCase("studyKitBallDiningLounge"))exitNumArray = Arrays.copyOf(studyKitBallDiningLounge, studyKitBallDiningLounge.length);
+	    	else if(route.equalsIgnoreCase("studyKitBallBillLib"))exitNumArray = Arrays.copyOf(studyKitBallBillLib, studyKitBallBillLib.length);
+	    	else if(route.equalsIgnoreCase("studyKitBallConsLounge"))exitNumArray = Arrays.copyOf(studyKitBallConsLounge, studyKitBallConsLounge.length);
+	    	else if(route.equalsIgnoreCase("studyKitBallDining"))exitNumArray = Arrays.copyOf(studyKitBallDining, studyKitBallDining.length);
+	    	else if(route.equalsIgnoreCase("studyKitDining"))exitNumArray = Arrays.copyOf(studyKitDining, studyKitDining.length);
+	    	else if(route.equalsIgnoreCase("studyLib"))exitNumArray = Arrays.copyOf(studyLib, studyLib.length);
+	    	else if(route.equalsIgnoreCase("loungeDiningBallBillLib"))exitNumArray = Arrays.copyOf(loungeDiningBallBillLib, loungeDiningBallBillLib.length);
+	    	else if(route.equalsIgnoreCase("loungeConsBillBallDining"))exitNumArray = Arrays.copyOf(loungeConsBillBallDining, loungeConsBillBallDining.length);
+	    	else if(route.equalsIgnoreCase("loungeConsBallDining"))exitNumArray = Arrays.copyOf(loungeConsBallDining, loungeConsBallDining.length);
+	    	else if(route.equalsIgnoreCase("loungeDining"))exitNumArray = Arrays.copyOf(loungeDining, loungeDining.length);
+	    	else if(route.equalsIgnoreCase("loungeConsBallKitStudy"))exitNumArray = Arrays.copyOf(loungeConsBallKitStudy, loungeConsBallKitStudy.length);
+	    	else if(route.equalsIgnoreCase("loungeDiningKitStudy"))exitNumArray = Arrays.copyOf(loungeDiningKitStudy, loungeDiningKitStudy.length);
+	    	else if(route.equalsIgnoreCase("consLounge"))exitNumArray = Arrays.copyOf(consLounge, consLounge.length);
+	    	else if(route.equalsIgnoreCase("lounge"))exitNumArray = Arrays.copyOf(lounge, lounge.length);
+	    	else if(route.equalsIgnoreCase("lib"))exitNumArray = Arrays.copyOf(lib, lib.length);
+	    	else if(route.equalsIgnoreCase("loungeConsBillLib"))exitNumArray = Arrays.copyOf(loungeConsBillLib, loungeConsBillLib.length);
+
+	    	return exitNumArray;
+	    }
 
 }
