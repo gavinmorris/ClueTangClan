@@ -1,4 +1,5 @@
 /Board.class
+/BoardImage/
 /BoardStructure.class
 /Card.class
 /CardImages/
@@ -10,9 +11,9 @@
 /NotesImages/
 /PanelsInJFrame$1.class
 /PanelsInJFrame.class
-/TokenImages/
-/WeaponImages/
 /SendMessageButtonListener.class
 /TextualCommand.class
 /Token.class
+/TokenImages/
+/WeaponImages/
 /Weapon.class

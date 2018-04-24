@@ -54,7 +54,7 @@ public class Room {
         squaresOccupied[squareNumber] = true;
         return position;
     }
-
+    
     void removeItem(Coordinates position) {
         int squareNumber = (position.getRow()-tokenArea.getRow())*ITEM_AREA_WIDTH+position.getCol()-tokenArea.getCol();
         squaresOccupied[squareNumber] = false;

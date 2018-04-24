@@ -9,7 +9,6 @@ import java.util.Collections;
 
 public class Cluedo {
 
-
     private static final String[] ALL_BOT_NAMES = {"Bot"};
     private static final int NUM_PLAYERS = 3;
     private static final int DELAY = 10000;  // in milliseconds
