@@ -18,6 +18,7 @@ public class ClueTangClan implements BotAPI {
 	private int notesCounter = 1;
 	private int previousLogLength = 0;
 	public int[] shownCards = new int[numCards];
+	public boolean gameStart = true;
 
 	public String[] characterNames = { "Green", "Mustard", "Peacock", "Plum", "Scarlett", "White" };
 	public String[] weaponNames = { "Candlestick", "Dagger", "Leadpipe", "Pistol", "Rope", "Wrench" };
@@ -28,10 +29,10 @@ public class ClueTangClan implements BotAPI {
 	public double[][] weaponMatrix = new double[4][6];
 	public double[][] roomMatrix = new double[4][9];
 
-	int knownCharactersCount=0;
-	int knownWeaponsCount=0;
-	int knownRoomsCount=0;
-	
+	int knownCharactersCount = 0;
+	int knownWeaponsCount = 0;
+	int knownRoomsCount = 0;
+
 	private boolean weKnowTheSuspect = false;
 	private boolean weKnowTheWeapon = false;
 	private boolean weKnowTheRoom = false;
@@ -73,24 +74,6 @@ public class ClueTangClan implements BotAPI {
 		this.log = log;
 		this.deck = deck;
 
-		playerNames = playersInfo.getPlayersNames();
-
-		for (int i = 0; i < numPlayers; i++) {
-			notes.add(new ArrayList<ArrayList<Character>>());
-		}
-		for (int i = 0; i < numCards; i++) {
-			for (int j = 0; j < numPlayers; j++) {
-				notes.get(j).add(new ArrayList<Character>());
-				notes.get(j).get(i).add('0');
-			}
-		}
-
-		markOffMyCardsOnNotes();
-
-		for (int i = 0; i < numCards; i++) {
-			shownCards[i] = 0;
-		}
-
 		if (player.getToken().getName() == "Green") {
 			size = twoToBallRoom.length;
 		} else if (player.getToken().getName() == "Peacock") {
@@ -111,21 +94,35 @@ public class ClueTangClan implements BotAPI {
 	}
 
 	public String getCommand() {
-		boolean gameStart = true;
-		
-		if(gameStart) {
-			//Calling setup functions since numPlayers wont be initialised properly since 
+		if (gameStart) {
+			// Calling setup functions since numPlayers wont be initialised properly since
 			numPlayers = playersInfo.numPlayers();
-			System.out.println(numPlayers);
+
+			playerNames = playersInfo.getPlayersNames();
+
+			for (int i = 0; i < numPlayers; i++) {
+				notes.add(new ArrayList<ArrayList<Character>>());
+			}
+
+			for (int i = 0; i < numCards; i++) {
+				for (int j = 0; j < numPlayers; j++) {
+					notes.get(j).add(new ArrayList<Character>());
+					notes.get(j).get(i).add('0');
+				}
+			}
+
+			markOffMyCardsOnNotes();
+
+			for (int i = 0; i < numCards; i++) {
+				shownCards[i] = 0;
+			}
+
 			EnvelopeCalc();
-			setEnvelope();
-			setCharacters();
-			setWeapons();
-			setRooms();
+			setMatrix();
 			PrintMatrix();
-			gameStart=false;
+			gameStart = false;
 		}
-		
+
 		checkGeneralLogAndUpdateNotes();
 
 		checkIfWeKnowTheSuspect();
@@ -141,7 +138,7 @@ public class ClueTangClan implements BotAPI {
 			guessingTime++;
 
 		if (guessingTime >= 2) {
-			//root one to basement
+			// root one to basement
 		}
 
 		setSize();
@@ -178,7 +175,7 @@ public class ClueTangClan implements BotAPI {
 					return "roll";
 				}
 			} else
-				
+
 			if (player.getToken().isInRoom()) {
 				movesTaken = 0;
 			}
@@ -368,7 +365,6 @@ public class ClueTangClan implements BotAPI {
 			noOfCards++;
 			Card temp = matchingCards.next();
 			cards.add(temp);
-			System.out.println(temp);
 		}
 
 		String returnedCard = "";
@@ -409,10 +405,8 @@ public class ClueTangClan implements BotAPI {
 			logLength++;
 			String temp = response.next();
 			messages.add(temp);
-			System.out.println(temp);
 		}
 
-		System.out.println(logLength);
 		String[] logQuestion = messages.get(logLength - 2).toString().split(" ");
 		String[] logAnswer = messages.get(logLength - 1).toString().split(" ");
 		int logQuestionLength = logQuestion.length;
@@ -493,12 +487,10 @@ public class ClueTangClan implements BotAPI {
 			logLength++;
 			String temp = log.next();
 			messages.add(temp);
-			System.out.println(temp);
 		}
 		int currentLogLength = logLength;
 
 		while (logLength > 2) {
-			System.out.println(logLength);
 			String[] logQuestion = messages.get(logLength - 2).toString().split(" ");
 			String[] logAnswer = messages.get(logLength - 1).toString().split(" ");
 			int logQuestionLength = logQuestion.length;
@@ -590,8 +582,7 @@ public class ClueTangClan implements BotAPI {
 			}
 			if (playerNames[j].equals(playerName)) {
 				notes.get(j).get(cardNum).add('y');
-				//TODO 0s and 1s
-				System.out.println(notes.get(j).get(cardNum).get(0));
+				// TODO 0s and 1s
 			} else {
 				notes.get(j).get(cardNum).add('x');
 			}
@@ -635,9 +626,7 @@ public class ClueTangClan implements BotAPI {
 				} else if (notes.get(j).get(roomNum).get(0) == 'x' || notes.get(j).get(roomNum).get(0) == 'y') {
 					// -----------add in propability code--------------
 				} else {
-					System.out.println("wahoo " + notes.get(j).get(roomNum).size());
 					notes.get(j).get(roomNum).add((char) (notesCounter + '0'));
-					System.out.println("wahoo " + notes.get(j).get(roomNum).size());
 				}
 			}
 		}
@@ -675,6 +664,7 @@ public class ClueTangClan implements BotAPI {
 				characterMatrix[1][i] = 0;
 			}
 		}
+
 		for (int i = 0; i < 6; i++) {
 			if (player.hasCard(weaponNames[i])) {
 				markOffCardOnNotesForAllPlayers(i, getName());
@@ -1501,12 +1491,11 @@ public class ClueTangClan implements BotAPI {
 
 		return exitNumArray;
 	}
-	
-	
+
 	public double PossCalc() {
 		return EnvelopeCalc();
 	}
-	
+
 	public double EnvelopeCalc() {
 		int charCalc;
 		int weaponCalc;
@@ -1534,7 +1523,7 @@ public class ClueTangClan implements BotAPI {
 	}
 
 	public double PlayerCalc(int i) {
-		//TODO
+		// TODO
 		return 0;// factorial((21-knownWeaponsCount-knownCharactersCount-knownRoomsCount) -
 					// player[i].knownNotHave)/(numPlayers-1);
 	}
@@ -1543,48 +1532,55 @@ public class ClueTangClan implements BotAPI {
 
 	}
 
-	//TODO
+	// TODO
 	// Add probability code to jems notes code
 	// Update weapon/character/room known cards every time slot is set to y
 
-	public void setEnvelope() {
+	public void setMatrix() {
+		System.out.println("Char: " + knownCharactersCount);
+		System.out.println("Weapon: " + knownWeaponsCount);
+		System.out.println("Room: " + knownRoomsCount);
+
 		for (int j = 0; j < 6; j++) {
-			characterMatrix[0][j] = 1 / (6 - knownCharactersCount);
-			weaponMatrix[0][j] = 1 / (6 - knownWeaponsCount);
+			if(characterMatrix[1][j] == 0) {
+				characterMatrix[0][j] = (double) 1 / (6 - knownCharactersCount);
+				setCharacters(j);
+			}
+			if(weaponMatrix[1][j] == 0) {
+				weaponMatrix[0][j] = (double) 1 / (6 - knownWeaponsCount);
+				setWeapons(j);
+			}
 		}
 
 		for (int j = 0; j < 9; j++) {
-			roomMatrix[0][j] = 1 / (9 - knownRoomsCount);
-		}
-	}
-
-	public void setCharacters() {
-		for (int i = 2; i < numPlayers + 1; i++) {
-			for (int j = 0; j < 6; j++) {
-				characterMatrix[i][j] = (6 - knownCharactersCount - 1) / ((6 - knownCharactersCount) * (numPlayers - 1));
+			if(roomMatrix[1][j] == 0) {
+				roomMatrix[0][j] = (double) 1 / (9 - knownRoomsCount);
+				setRooms(j);
 			}
 		}
 	}
 
-	public void setWeapons() {
+	public void setCharacters(int j) {
 		for (int i = 2; i < numPlayers + 1; i++) {
-			for (int j = 0; j < 6; j++) {
-				weaponMatrix[i][j] = (6 - knownWeaponsCount - 1) / ((6 - knownWeaponsCount) * (numPlayers - 1));
-			}
+			characterMatrix[i][j] = (double) (6 - knownCharactersCount - 1) / ((6 - knownCharactersCount) * (numPlayers - 1));
 		}
 	}
 
-	public void setRooms() {
+	public void setWeapons(int j) {
 		for (int i = 2; i < numPlayers + 1; i++) {
-			for (int j = 0; j < 9; j++) {
-				roomMatrix[i][j] = (knownRoomsCount - 1) / ((9 - knownRoomsCount) * (numPlayers - 1));
-			}
+			weaponMatrix[i][j] = (double) (6 - knownWeaponsCount - 1) / ((6 - knownWeaponsCount) * (numPlayers - 1));
 		}
 	}
-	
+
+	public void setRooms(int j) {
+		for (int i = 2; i < numPlayers + 1; i++) {
+			roomMatrix[i][j] = (double) (9 - knownRoomsCount - 1) / ((9 - knownRoomsCount) * (numPlayers - 1));
+		}
+	}
+
 	public void PrintMatrix() {
 		System.out.println("Characters");
-		
+
 		for (int i = 0; i < 6; i++) {
 			for (int j = 0; j < numPlayers + 1; j++) {
 				System.out.print(characterMatrix[j][i] + ", ");
@@ -1593,7 +1589,7 @@ public class ClueTangClan implements BotAPI {
 		}
 
 		System.out.println("Weapons");
-		
+
 		for (int i = 0; i < 6; i++) {
 			for (int j = 0; j < numPlayers + 1; j++) {
 				System.out.print(weaponMatrix[j][i] + ", ");
@@ -1602,7 +1598,7 @@ public class ClueTangClan implements BotAPI {
 		}
 
 		System.out.println("Rooms");
-		
+
 		for (int i = 0; i < 9; i++) {
 			for (int j = 0; j < numPlayers + 1; j++) {
 				System.out.print(roomMatrix[j][i] + ", ");

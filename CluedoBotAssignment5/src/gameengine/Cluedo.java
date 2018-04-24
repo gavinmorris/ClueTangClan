@@ -9,9 +9,10 @@ import java.util.Collections;
 
 public class Cluedo {
 
+
     private static final String[] ALL_BOT_NAMES = {"Bot"};
     private static final int NUM_PLAYERS = 3;
-    private static final int DELAY = 10000;  // in milliseconds
+    private static final int DELAY = 1000;  // in milliseconds
 
     private final Tokens tokens  = new Tokens();
     private final Players players = new Players();
@@ -36,7 +37,7 @@ public class Cluedo {
         ArrayList<String> suspectNames = new ArrayList<>(Arrays.asList(Names.SUSPECT_NAMES));
         Collections.shuffle(suspectNames);
         if (args.length<NUM_PLAYERS) {
-            botNames[0] = "Bot1";
+            botNames[0] = "ClueTangClan";
             botNames[1] = "Bot2";
             botNames[2] = "Bot3";
         } else {
