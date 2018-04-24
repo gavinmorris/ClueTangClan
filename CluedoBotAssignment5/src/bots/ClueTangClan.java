@@ -181,7 +181,11 @@ public class ClueTangClan implements BotAPI {
 			}
 
 			return "roll";
-		} else {
+		} 
+		else if(player.getToken().isInRoom()) {
+			return "question";
+		}
+		else {
 			roll = true;
 
 			return "done";
@@ -334,18 +338,36 @@ public class ClueTangClan implements BotAPI {
 	}
 
 	public String getSuspect() {
-		// Add your code here
-		return Names.SUSPECT_NAMES[0];
+		//if we are in basement return suspect
+		if(player.getToken().getRoom().toString().equalsIgnoreCase("Cellar")) {
+			return suspect;
+		}
+		//else....
+		else {
+			return "Green";
+		}
 	}
 
 	public String getWeapon() {
-		// Add your code here
-		return Names.WEAPON_NAMES[0];
+		//if we are in basement return suspect
+		if(player.getToken().getRoom().toString().equalsIgnoreCase("Cellar")) {
+			return weapon;
+		}
+		//else....
+		else {
+			return "Dagger";
+		}
 	}
 
 	public String getRoom() {
-		// Add your code here
-		return Names.ROOM_NAMES[0];
+		//if we are in basement return suspect
+		if(player.getToken().getRoom().toString().equalsIgnoreCase("Cellar")) {
+			return room;
+		}
+		//else....
+		else {
+			return player.getToken().getRoom().toString();
+		}
 	}
 
 	public String getDoor() {
