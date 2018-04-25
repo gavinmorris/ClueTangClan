@@ -665,7 +665,7 @@ public class ClueTangClan implements BotAPI {
 					notes.get(j).get(weaponNum).add((char) (notesCounter + '0'));
 					list[iterate++] = weaponNum;
 				} else if (notes.get(j).get(weaponNum).get(0) == 'x' || notes.get(j).get(weaponNum).get(0) == 'y') {
-					UpdateMatrix(j, weaponNum, (probabilityMatrix[j][weaponNum])*(4/3));
+
 				} else {
 					notes.get(j).get(weaponNum).add((char) (notesCounter + '0'));
 					list[iterate++] = weaponNum;
@@ -675,7 +675,7 @@ public class ClueTangClan implements BotAPI {
 					notes.get(j).get(roomNum).add((char) (notesCounter + '0'));
 					list[iterate++] = roomNum;
 				} else if (notes.get(j).get(roomNum).get(0) == 'x' || notes.get(j).get(roomNum).get(0) == 'y') {
-					UpdateMatrix(j, weaponNum, (probabilityMatrix[j][weaponNum])*(4/3));
+
 				} else {
 					notes.get(j).get(roomNum).add((char) (notesCounter + '0'));
 					list[iterate++] = roomNum;
