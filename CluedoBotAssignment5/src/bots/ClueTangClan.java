@@ -23,7 +23,7 @@ public class ClueTangClan implements BotAPI {
 	public boolean question = true;
 
 	public String[] cardNames = { "Green", "Mustard", "Peacock", "Plum", "Scarlett", "White", "Candlestick", "Dagger",
-			"Leadpipe", "Pistol", "Rope", "Wrench", "Ballroom", "Billiard Room", "Conservatory", "Dining Room", "Hall",
+			"Lead Pipe", "Pistol", "Rope", "Wrench", "Ballroom", "Billiard Room", "Conservatory", "Dining Room", "Hall",
 			"Kitchen", "Library", "Lounge", "Study" };
 
 	public double[][] probabilityMatrix = new double[4][21];
@@ -111,7 +111,7 @@ public class ClueTangClan implements BotAPI {
 	public String getCommand() {
 		if (gameStart) {
 			// Calling setup functions in the getCommand
-			// since numPlayers wont be initialised properly in the constructor
+			// since numPlayers wont be initialized properly in the constructor
 			numPlayers = playersInfo.numPlayers();
 
 			playerNames = playersInfo.getPlayersNames();
@@ -359,23 +359,9 @@ public class ClueTangClan implements BotAPI {
 			return suspect;
 		}
 		else {
-			if(weKnowTheSuspect) {
-				if(heldCharactersCount > 0) {
-					for(int i=0;i<6;i++) {
-						if(probabilityMatrix[1][i] == 1) {
-							return getCardName(i);
-						}
-					}
-				}
-				else {
-					return suspect;
-				}
-			}
-			else {
-				return GetHighest(1);
-			}
+			Guess();
+			return guess[0];
 		}
-		return "Green";
 	}
 
 	public String getWeapon() {
@@ -384,23 +370,8 @@ public class ClueTangClan implements BotAPI {
 			return weapon;
 		}
 		else {
-			if(weKnowTheWeapon) {
-				if(heldWeaponsCount > 0) {
-					for(int i=6;i<12;i++) {
-						if(probabilityMatrix[1][i] == 1) {
-							return getCardName(i);
-						}
-					}
-				}
-				else {
-					return weapon;
-				}
-			}
-			else {
-				return GetHighest(2);
-			}
+			return guess[1];
 		}
-		return "Dagger";
 	}
 
 	public String getRoom() {
@@ -674,31 +645,49 @@ public class ClueTangClan implements BotAPI {
 
 	public void markOffPotentialCardsOnNotesForOnePlayer(int suspectNum, int weaponNum, int roomNum,
 			String playerName) {
+		int[] list = new int[3];
+		int iterate=0;
+		
 		for (int j = 0; j < numPlayers; j++) {
 			if (playerNames[j].equals(playerName)) {
 				if (notes.get(j).get(suspectNum).get(0) == '0') {
 					notes.get(j).get(suspectNum).remove(0);
 					notes.get(j).get(suspectNum).add((char) (notesCounter + '0'));
+					list[iterate++] = suspectNum;
 				} else if (notes.get(j).get(suspectNum).get(0) == 'x' || notes.get(j).get(suspectNum).get(0) == 'y') {
-					// -----------add in propability code--------------
+					
 				} else {
 					notes.get(j).get(suspectNum).add((char) (notesCounter + '0'));
+					list[iterate++] = suspectNum;
 				}
 				if (notes.get(j).get(weaponNum).get(0) == '0') {
 					notes.get(j).get(weaponNum).remove(0);
 					notes.get(j).get(weaponNum).add((char) (notesCounter + '0'));
+					list[iterate++] = weaponNum;
 				} else if (notes.get(j).get(weaponNum).get(0) == 'x' || notes.get(j).get(weaponNum).get(0) == 'y') {
-					// -----------add in propability code--------------
+					UpdateMatrix(j, weaponNum, (probabilityMatrix[j][weaponNum])*(4/3));
 				} else {
 					notes.get(j).get(weaponNum).add((char) (notesCounter + '0'));
+					list[iterate++] = weaponNum;
 				}
 				if (notes.get(j).get(roomNum).get(0) == '0') {
 					notes.get(j).get(roomNum).remove(0);
 					notes.get(j).get(roomNum).add((char) (notesCounter + '0'));
+					list[iterate++] = roomNum;
 				} else if (notes.get(j).get(roomNum).get(0) == 'x' || notes.get(j).get(roomNum).get(0) == 'y') {
-					// -----------add in propability code--------------
+					UpdateMatrix(j, weaponNum, (probabilityMatrix[j][weaponNum])*(4/3));
 				} else {
 					notes.get(j).get(roomNum).add((char) (notesCounter + '0'));
+					list[iterate++] = roomNum;
+				}
+				
+				if(iterate==1) {
+					UpdateMatrix(j, list[0], 1);
+				}
+				else {
+					for(int i=0;i<iterate;i++) {
+						UpdateMatrix(j, list[i], (probabilityMatrix[j][list[i]])*(4/(iterate-1)));
+					}
 				}
 			}
 		}
@@ -1548,6 +1537,7 @@ public class ClueTangClan implements BotAPI {
 		int iterate = 0;
 
 		if (gameStart) {
+		} else if(oldElement == newElement){
 		} else {
 			rippleY(x, y, newElement);
 
@@ -1639,10 +1629,103 @@ public class ClueTangClan implements BotAPI {
 		}
 	}
 
+	public void Guess() {
+		if(player.hasCard(player.getToken().getRoom().toString())) {
+			//We have the room card so guess
+			if(heldWeaponsCount != 0) {
+				guess[0] = GetHighest(1);
+				for(int i=6;i<12;i++) {
+					if(probabilityMatrix[1][i] == 1) {
+						guess[1] = getCardName(i);
+					}
+				}
+			}
+			else if(heldCharactersCount != 0) {
+				guess[1] = GetHighest(2);
+				for(int i=0;i<6;i++) {
+					if(probabilityMatrix[1][i] == 1) {
+						guess[0] = getCardName(i);
+					}
+				}
+			}
+			else if(weKnowTheWeapon){
+				guess[1] = weapon;
+				guess[0] = GetHighest(1);
+			}
+			else if(weKnowTheSuspect) {
+				guess[0] = suspect;
+				guess[1] = GetHighest(2);
+			}
+			else {
+				guess[0] = GetHighest(1);
+				guess[1] = GetHighest(2);
+			}
+		}
+		else {
+			if(heldCharactersCount != 0 && heldWeaponsCount != 0) {
+				for(int i=0;i<6;i++) {
+					if(probabilityMatrix[1][i] == 1) {
+						guess[0] = getCardName(i);
+					}
+				}
+
+				for(int i=6;i<12;i++) {
+					if(probabilityMatrix[1][i] == 1) {
+						guess[1] = getCardName(i);
+					}
+				}
+			}
+			else if(heldCharactersCount != 0 && weKnowTheWeapon) {
+				for(int i=0;i<6;i++) {
+					if(probabilityMatrix[1][i] == 1) {
+						guess[0] = getCardName(i);
+					}
+				}
+				guess[0] = weapon;
+			}
+			else if(heldWeaponsCount != 0 && weKnowTheSuspect) {
+				for(int i=6;i<12;i++) {
+					if(probabilityMatrix[1][i] == 1) {
+						guess[1] = getCardName(i);
+					}
+				}
+				guess[0] = suspect;
+			}
+			else if(heldCharactersCount != 0){
+				for(int i=0;i<6;i++) {
+					if(probabilityMatrix[1][i] == 1) {
+						guess[0] = getCardName(i);
+					}
+				}
+				guess[1] = GetHighest(2);
+			}
+			else if(heldWeaponsCount != 0){
+				for(int i=6;i<12;i++) {
+					if(probabilityMatrix[1][i] == 1) {
+						guess[1] = getCardName(i);
+					}
+				}
+				guess[0] = GetHighest(1);
+			}
+			else if(weKnowTheWeapon){
+				guess[1] = weapon;
+				guess[0] = GetHighest(1);
+			}
+			else if(weKnowTheSuspect) {
+				guess[0] = suspect;
+				guess[1] = GetHighest(2);
+			}
+			else {
+				guess[0] = GetHighest(1);
+				guess[1] = GetHighest(2);
+			}
+		}
+	}
+	
 	public String GetHighest(int i) {
 		double store = 0;
 		int num = 0;
-
+		
 		if (i == 1) {
 			for (int l = 0; l < 6; l++) {
 				if (probabilityMatrix[0][l] > store) {
