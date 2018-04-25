@@ -396,35 +396,47 @@ public class ClueTangClan implements BotAPI {
 			noOfCards++;
 			Card temp = matchingCards.next();
 			cards.add(temp);
+			System.out.println("wahoo " + temp.toString() + " " + noOfCards);
 		}
 
 		String returnedCard = "";
-		if (noOfCards < 3) {
+		if (noOfCards == 2) {
 			if (isOurTokenCard(cards.get(0).toString(), cards.get(1).toString())) {
 				returnedCard = player.getToken().getName();
+				System.out.println("1 " + returnedCard);
 			} else if (cardHasBeenShown(cards.get(0).toString(), cards.get(1).toString())) {
 				returnedCard = shownCard(cards.get(0).toString(), cards.get(1).toString());
+				System.out.println("2 " + returnedCard);
 			} else if (cardIsWeapon(cards.get(0).toString(), cards.get(1).toString())) {
 				returnedCard = weaponCard(cards.get(0).toString(), cards.get(1).toString());
+				System.out.println("3 " + returnedCard);
 			} else if (cardIsSuspect(cards.get(0).toString(), cards.get(1).toString())) {
 				returnedCard = suspectCard(cards.get(0).toString(), cards.get(1).toString());
+				System.out.println("4 " + returnedCard);
 			} else {
 				returnedCard = roomCard(cards.get(0).toString(), cards.get(1).toString());
+				System.out.println("5 " + returnedCard);
 			}
 		} else {
 			if (isOurTokenCard(cards.get(0).toString(), cards.get(1).toString(), cards.get(2).toString())) {
 				returnedCard = player.getToken().getName();
+				System.out.println("6 " + returnedCard);
 			} else if (cardHasBeenShown(cards.get(0).toString(), cards.get(1).toString(), cards.get(2).toString())) {
 				returnedCard = shownCard(cards.get(0).toString(), cards.get(1).toString(), cards.get(2).toString());
+				System.out.println("7 " + returnedCard);
 			} else if (cardIsWeapon(cards.get(0).toString(), cards.get(1).toString(), cards.get(2).toString())) {
 				returnedCard = weaponCard(cards.get(0).toString(), cards.get(1).toString(), cards.get(2).toString());
+				System.out.println("8 " + returnedCard);
 			} else if (cardIsSuspect(cards.get(0).toString(), cards.get(1).toString(), cards.get(2).toString())) {
 				returnedCard = suspectCard(cards.get(0).toString(), cards.get(1).toString(), cards.get(2).toString());
+				System.out.println("9 " + returnedCard);
 			} else {
 				returnedCard = roomCard(cards.get(0).toString(), cards.get(1).toString(), cards.get(2).toString());
+				System.out.println("10 " + returnedCard);
 			}
 		}
 		shownCards[getCardNum(returnedCard)] = 1;
+		System.out.println("yyooooo " + returnedCard + " " + getCardNum(returnedCard));
 		return returnedCard;
 	}
 public void notifyResponse(Log response) {
@@ -795,7 +807,7 @@ public void notifyResponse(Log response) {
 
 	// returning a card when we are queried functions
 
-	public boolean isOurTokenCard(String a, String b) {
+		public boolean isOurTokenCard(String a, String b) {
 		return isOurTokenCard(a, b, "");
 	}
 
@@ -839,17 +851,17 @@ public void notifyResponse(Log response) {
 		String result = "";
 		for (int i = 0; i < numCards; i++) {
 			if (c.equalsIgnoreCase(getCardName(i)) && shownCards[i] == 1) {
-				result = getCardName(shownCards[i]);
+				result = getCardName(i);
 			}
 		}
 		for (int i = 0; i < numCards; i++) {
 			if (a.equalsIgnoreCase(getCardName(i)) && shownCards[i] == 1) {
-				result = getCardName(shownCards[i]);
+				result = getCardName(i);
 			}
 		}
 		for (int i = 0; i < numCards; i++) {
 			if (b.equalsIgnoreCase(getCardName(i)) && shownCards[i] == 1) {
-				result = getCardName(shownCards[i]);
+				result = getCardName(i);
 			}
 		}
 		return result;
@@ -862,17 +874,17 @@ public void notifyResponse(Log response) {
 	public boolean cardIsWeapon(String a, String b, String c) {
 		boolean result = false;
 		for (int i = numSuspects; i < numSuspects + numWeapons; i++) {
-			if (c.equalsIgnoreCase(getCardName(i)) && shownCards[i] == 1) {
+			if (c.equalsIgnoreCase(getCardName(i))) {
 				result = true;
 			}
 		}
 		for (int i = numSuspects; i < numSuspects + numWeapons; i++) {
-			if (a.equalsIgnoreCase(getCardName(i)) && shownCards[i] == 1) {
+			if (a.equalsIgnoreCase(getCardName(i))) {
 				result = true;
 			}
 		}
 		for (int i = numSuspects; i < numSuspects + numWeapons; i++) {
-			if (b.equalsIgnoreCase(getCardName(i)) && shownCards[i] == 1) {
+			if (b.equalsIgnoreCase(getCardName(i))) {
 				result = true;
 			}
 		}
@@ -886,18 +898,18 @@ public void notifyResponse(Log response) {
 	public String weaponCard(String a, String b, String c) {
 		String result = "";
 		for (int i = numSuspects; i < numSuspects + numWeapons; i++) {
-			if (c.equalsIgnoreCase(getCardName(i)) && shownCards[i] == 1) {
-				result = getCardName(shownCards[i]);
+			if (c.equalsIgnoreCase(getCardName(i))) {
+				result = getCardName(i);
 			}
 		}
 		for (int i = numSuspects; i < numSuspects + numWeapons; i++) {
-			if (a.equalsIgnoreCase(getCardName(i)) && shownCards[i] == 1) {
-				result = getCardName(shownCards[i]);
+			if (a.equalsIgnoreCase(getCardName(i))) {
+				result = getCardName(i);
 			}
 		}
 		for (int i = numSuspects; i < numSuspects + numWeapons; i++) {
-			if (b.equalsIgnoreCase(getCardName(i)) && shownCards[i] == 1) {
-				result = getCardName(shownCards[i]);
+			if (b.equalsIgnoreCase(getCardName(i))) {
+				result = getCardName(i);
 			}
 		}
 		return result;
@@ -910,17 +922,17 @@ public void notifyResponse(Log response) {
 	public boolean cardIsSuspect(String a, String b, String c) {
 		boolean result = false;
 		for (int i = 0; i < numSuspects; i++) {
-			if (c.equalsIgnoreCase(getCardName(i)) && shownCards[i] == 1) {
+			if (c.equalsIgnoreCase(getCardName(i))) {
 				result = true;
 			}
 		}
 		for (int i = 0; i < numSuspects; i++) {
-			if (a.equalsIgnoreCase(getCardName(i)) && shownCards[i] == 1) {
+			if (a.equalsIgnoreCase(getCardName(i))) {
 				result = true;
 			}
 		}
 		for (int i = 0; i < numSuspects; i++) {
-			if (b.equalsIgnoreCase(getCardName(i)) && shownCards[i] == 1) {
+			if (b.equalsIgnoreCase(getCardName(i))) {
 				result = true;
 			}
 		}
@@ -934,18 +946,18 @@ public void notifyResponse(Log response) {
 	public String suspectCard(String a, String b, String c) {
 		String result = "";
 		for (int i = 0; i < numSuspects; i++) {
-			if (c.equalsIgnoreCase(getCardName(i)) && shownCards[i] == 1) {
-				result = getCardName(shownCards[i]);
+			if (c.equalsIgnoreCase(getCardName(i))) {
+				result = getCardName(i);
 			}
 		}
 		for (int i = 0; i < numSuspects; i++) {
-			if (a.equalsIgnoreCase(getCardName(i)) && shownCards[i] == 1) {
-				result = getCardName(shownCards[i]);
+			if (a.equalsIgnoreCase(getCardName(i))) {
+				result = getCardName(i);
 			}
 		}
 		for (int i = 0; i < numSuspects; i++) {
-			if (b.equalsIgnoreCase(getCardName(i)) && shownCards[i] == 1) {
-				result = getCardName(shownCards[i]);
+			if (b.equalsIgnoreCase(getCardName(i))) {
+				result = getCardName(i);
 			}
 		}
 		return result;
@@ -958,17 +970,17 @@ public void notifyResponse(Log response) {
 	public boolean cardIsRoom(String a, String b, String c) {
 		boolean result = false;
 		for (int i = numSuspects + numWeapons; i < numSuspects + numWeapons + numRooms; i++) {
-			if (c.equalsIgnoreCase(getCardName(i)) && shownCards[i] == 1) {
+			if (c.equalsIgnoreCase(getCardName(i))) {
 				result = true;
 			}
 		}
 		for (int i = numSuspects + numWeapons; i < numSuspects + numWeapons + numRooms; i++) {
-			if (a.equalsIgnoreCase(getCardName(i)) && shownCards[i] == 1) {
+			if (a.equalsIgnoreCase(getCardName(i))) {
 				result = true;
 			}
 		}
 		for (int i = numSuspects + numWeapons; i < numSuspects + numWeapons + numRooms; i++) {
-			if (b.equalsIgnoreCase(getCardName(i)) && shownCards[i] == 1) {
+			if (b.equalsIgnoreCase(getCardName(i))) {
 				result = true;
 			}
 		}
@@ -982,22 +994,23 @@ public void notifyResponse(Log response) {
 	public String roomCard(String a, String b, String c) {
 		String result = "";
 		for (int i = numSuspects + numWeapons; i < numSuspects + numWeapons + numRooms; i++) {
-			if (c.equalsIgnoreCase(getCardName(i)) && shownCards[i] == 1) {
-				result = getCardName(shownCards[i]);
+			if (c.equalsIgnoreCase(getCardName(i))) {
+				result = getCardName(i);
 			}
 		}
 		for (int i = numSuspects + numWeapons; i < numSuspects + numWeapons + numRooms; i++) {
-			if (a.equalsIgnoreCase(getCardName(i)) && shownCards[i] == 1) {
-				result = getCardName(shownCards[i]);
+			if (a.equalsIgnoreCase(getCardName(i))) {
+				result = getCardName(i);
 			}
 		}
 		for (int i = numSuspects + numWeapons; i < numSuspects + numWeapons + numRooms; i++) {
-			if (b.equalsIgnoreCase(getCardName(i)) && shownCards[i] == 1) {
-				result = getCardName(shownCards[i]);
+			if (b.equalsIgnoreCase(getCardName(i))) {
+				result = getCardName(i);
 			}
 		}
 		return result;
 	}
+
 
 	public int getCardNum(String cardName) {
 		for (int i = 0; i < 21; i++) {
