@@ -21,22 +21,15 @@ public class ClueTangClan implements BotAPI {
 	public int[] holdingCards = new int[6];
 	public boolean gameStart = true;
 	public boolean question = true;
+	public boolean accuse = true;
 
+	public boolean geth = true;
+	
 	public String[] cardNames = { "Green", "Mustard", "Peacock", "Plum", "Scarlett", "White", "Candlestick", "Dagger",
 			"Lead Pipe", "Pistol", "Rope", "Wrench", "Ballroom", "Billiard Room", "Conservatory", "Dining Room", "Hall",
 			"Kitchen", "Library", "Lounge", "Study" };
 
 	public double[][] probabilityMatrix = new double[4][21];
-
-	public ArrayList<String[]> Ballroom = new ArrayList<String[]>();
-	public ArrayList<String[]> Billiard = new ArrayList<String[]>();
-	public ArrayList<String[]> Conservatory = new ArrayList<String[]>();
-	public ArrayList<String[]> Dining = new ArrayList<String[]>();
-	public ArrayList<String[]> Hall = new ArrayList<String[]>();
-	public ArrayList<String[]> Kitchen = new ArrayList<String[]>();
-	public ArrayList<String[]> Library = new ArrayList<String[]>();
-	public ArrayList<String[]> Lounge = new ArrayList<String[]>();
-	public ArrayList<String[]> Study = new ArrayList<String[]>();
 
 	int knownCharactersCount = 0;
 	int knownWeaponsCount = 0;
@@ -45,10 +38,13 @@ public class ClueTangClan implements BotAPI {
 	int heldWeaponsCount = 0;
 	int heldRoomsCount = 0;
 
+	double Threshold = 0.6;
+
 	private boolean weKnowTheSuspect = false;
 	private boolean weKnowTheWeapon = false;
 	private boolean weKnowTheRoom = false;
 	public String[] guess = new String[3];
+	public double[] currentProbability = new double[3];
 	private String suspect = "";
 	private String weapon = "";
 	private String room = "";
@@ -58,14 +54,12 @@ public class ClueTangClan implements BotAPI {
 	private boolean roll = true;
 	private int exitNumIterator = 0;
 	private boolean inRoom = false;
+	private int roomsLeft = 5;
+	public boolean confident = false;
 
-	// hardcoded for test it should be set to pickARoute
-	private String route = "loungeDiningBallBillLib";
+	private String route = null;
 	private String exitNum[] = null;
 
-	private String pickARoute() {
-		return "";
-	}
 	// The public API of Bot must not change
 	// This is ONLY class that you can edit in the program
 	// Rename Bot to the name of your team. Use camel case.
@@ -86,8 +80,6 @@ public class ClueTangClan implements BotAPI {
 		this.dice = dice;
 		this.log = log;
 		this.deck = deck;
-
-		setPaths();
 
 		if (player.getToken().getName() == "Green") {
 			size = twoToBallRoom.length;
@@ -134,12 +126,10 @@ public class ClueTangClan implements BotAPI {
 			}
 
 			setMatrix();
-			PrintMatrix();
+			// PrintMatrix();
 			gameStart = false;
 		}
-
-		// TODO Check if we have 3 murder calcs above 70, if we do make accusation
-
+		
 		checkGeneralLogAndUpdateNotes();
 
 		checkIfWeKnowTheSuspect();
@@ -163,35 +153,38 @@ public class ClueTangClan implements BotAPI {
 		if (roll) {
 			roll = false;
 
-			boolean loungecons = route.toLowerCase().indexOf("loungecons") != -1 ? true : false;
-			boolean conslounge = route.toLowerCase().indexOf("conslounge") != -1 ? true : false;
-			boolean kitstudy = route.toLowerCase().indexOf("kitstudy") != -1 ? true : false;
-			boolean studykit = route.toLowerCase().indexOf("studykit") != -1 ? true : false;
-
-			if (player.getToken().isInRoom()) {
-				if (loungecons && player.getToken().getRoom().toString().equalsIgnoreCase("lounge")) {
-					return "passage";
-				}
-
-				else if (conslounge && player.getToken().getRoom().toString().equalsIgnoreCase("conservatory")) {
-					return "passage";
-				}
-
-				else if (kitstudy && player.getToken().getRoom().toString().equalsIgnoreCase("kitchen")) {
-					return "passage";
-				}
-
-				else if (studykit && player.getToken().getRoom().toString().equalsIgnoreCase("study")) {
-					return "passage";
-				} else {
-
-					if (player.getToken().isInRoom()) {
-						movesTaken = 0;
+			if (weNeedThis > 0) {
+				boolean loungecons = route.toLowerCase().indexOf("loungecons") != -1 ? true : false;
+				boolean conslounge = route.toLowerCase().indexOf("conslounge") != -1 ? true : false;
+				boolean kitstudy = route.toLowerCase().indexOf("kitstudy") != -1 ? true : false;
+				boolean studykit = route.toLowerCase().indexOf("studykit") != -1 ? true : false;
+			
+				if (player.getToken().isInRoom()) {
+					if (loungecons && player.getToken().getRoom().toString().equalsIgnoreCase("lounge")) {
+						return "passage";
 					}
 
+					else if (conslounge && player.getToken().getRoom().toString().equalsIgnoreCase("conservatory")) {
+						return "passage";
+					}
+
+					else if (kitstudy && player.getToken().getRoom().toString().equalsIgnoreCase("kitchen")) {
+						return "passage";
+					}
+
+					else if (studykit && player.getToken().getRoom().toString().equalsIgnoreCase("study")) {
+						return "passage";
+					} else {
+
+						if (player.getToken().isInRoom()) {
+							movesTaken = 0;
+						}
+					}
 					return "roll";
 				}
-			} else
+			} else {
+				return "roll";
+			}
 
 			if (player.getToken().isInRoom()) {
 				movesTaken = 0;
@@ -200,6 +193,13 @@ public class ClueTangClan implements BotAPI {
 			return "roll";
 		} else if (player.getToken().isInRoom() && question) {
 			question = false;
+
+			if (geth) {
+				route = pickARoute();
+				geth = false;
+			}
+			weNeedThis++;
+			
 			return "question";
 		} else {
 			roll = true;
@@ -318,15 +318,9 @@ public class ClueTangClan implements BotAPI {
 					movesTaken++;
 				}
 			} else if (player.getToken().getRoom().toString().equalsIgnoreCase("Hall")) {
-				if (exitNum[exitNumIterator].equals("1")) {
-					move = hallToBasement[movesTaken];
-					movesTaken++;
-				}
-
-				else if (exitNum[exitNumIterator].equals("2")) {
-					move = hallToStudy[movesTaken];
-					movesTaken++;
-				}
+				exitNumIterator=1;
+				move = hallToBasement[movesTaken];
+				movesTaken++;
 			}
 		} else {
 			if (player.getToken().getName() == "Green") {
@@ -356,9 +350,8 @@ public class ClueTangClan implements BotAPI {
 	public String getSuspect() {
 		// if we are in basement return suspect
 		if (player.getToken().getRoom().toString().equalsIgnoreCase("Cellar")) {
-			return suspect;
-		}
-		else {
+			return GetHighest(1);
+		} else {
 			Guess();
 			return guess[0];
 		}
@@ -367,25 +360,30 @@ public class ClueTangClan implements BotAPI {
 	public String getWeapon() {
 		// if we are in basement return suspect
 		if (player.getToken().getRoom().toString().equalsIgnoreCase("Cellar")) {
-			return weapon;
-		}
-		else {
+			return GetHighest(2);
+		} else {
 			return guess[1];
 		}
 	}
 
 	public String getRoom() {
-		//Only gets called when in cellar
-		return room;
+		// Only gets called when in cellar
+		return GetHighest(3);
 	}
 
 	public String getDoor() {
 		if (weNeedThis > 0) {
 			exitNumIterator++;
 		}
+		
+		if(player.getToken().getRoom().toString().equalsIgnoreCase("Hall")) {
+			return "1";
+		}else {
 		movesTaken = 0;
 		weNeedThis++;
-		return exitNum[exitNumIterator];
+		return exitNum[exitNumIterator];}
+		
+		
 	}
 
 	public String getCard(Cards matchingCards) {
@@ -396,7 +394,6 @@ public class ClueTangClan implements BotAPI {
 			noOfCards++;
 			Card temp = matchingCards.next();
 			cards.add(temp);
-			System.out.println("wahoo " + temp.toString() + " " + noOfCards);
 		}
 
 		String returnedCard = "";
@@ -436,10 +433,10 @@ public class ClueTangClan implements BotAPI {
 			}
 		}
 		shownCards[getCardNum(returnedCard)] = 1;
-		System.out.println("yyooooo " + returnedCard + " " + getCardNum(returnedCard));
 		return returnedCard;
 	}
-public void notifyResponse(Log response) {
+
+	public void notifyResponse(Log response) {
 		Iterator<String> iterator = response.iterator();
 		ArrayList<String> messages = new ArrayList<String>();
 		int logLength = 0;
@@ -476,22 +473,18 @@ public void notifyResponse(Log response) {
 			cardNum = logAnswerLength - 1;
 			cardName = removeFullStop(logAnswer[cardNum].toString());
 			queriedPlayerNum = logAnswerLength - 6;
-		} 
-		else if(logAnswer[logAnswerLength - 3].equalsIgnoreCase("card:")) {
+		} else if (logAnswer[logAnswerLength - 3].equalsIgnoreCase("card:")) {
 			if (logAnswer[logAnswerLength - 2].equalsIgnoreCase("Lead")) {
 				cardName = "Lead Pipe";
 				queriedPlayerNum = logAnswerLength - 7;
-			} 
-			else if (logAnswer[logAnswerLength - 2].equalsIgnoreCase("Dining")) {
+			} else if (logAnswer[logAnswerLength - 2].equalsIgnoreCase("Dining")) {
 				cardName = "Dining Room";
 				queriedPlayerNum = logAnswerLength - 7;
-			} 
-			else if (logAnswer[logAnswerLength - 2].equalsIgnoreCase("Billiard")) {
+			} else if (logAnswer[logAnswerLength - 2].equalsIgnoreCase("Billiard")) {
 				cardName = "Billiard Room";
 				queriedPlayerNum = logAnswerLength - 7;
 			}
-		}
-		else {
+		} else {
 			queriedPlayerNum = logAnswerLength - 7;
 		}
 		queriedPlayerName = logAnswer[queriedPlayerNum].toString();
@@ -673,8 +666,8 @@ public void notifyResponse(Log response) {
 	public void markOffPotentialCardsOnNotesForOnePlayer(int suspectNum, int weaponNum, int roomNum,
 			String playerName) {
 		int[] list = new int[3];
-		int iterate=0;
-		
+		int iterate = 0;
+
 		for (int j = 0; j < numPlayers; j++) {
 			if (playerNames[j].equals(playerName)) {
 				if (notes.get(j).get(suspectNum).get(0) == '0') {
@@ -682,7 +675,7 @@ public void notifyResponse(Log response) {
 					notes.get(j).get(suspectNum).add((char) (notesCounter + '0'));
 					list[iterate++] = suspectNum;
 				} else if (notes.get(j).get(suspectNum).get(0) == 'x' || notes.get(j).get(suspectNum).get(0) == 'y') {
-					
+
 				} else {
 					notes.get(j).get(suspectNum).add((char) (notesCounter + '0'));
 					list[iterate++] = suspectNum;
@@ -707,13 +700,12 @@ public void notifyResponse(Log response) {
 					notes.get(j).get(roomNum).add((char) (notesCounter + '0'));
 					list[iterate++] = roomNum;
 				}
-				
-				if(iterate==1) {
+
+				if (iterate == 1) {
 					UpdateMatrix(j, list[0], 1);
-				}
-				else {
-					for(int i=0;i<iterate;i++) {
-						UpdateMatrix(j, list[i], (probabilityMatrix[j][list[i]])*(4/(iterate-1)));
+				} else {
+					for (int i = 0; i < iterate; i++) {
+						UpdateMatrix(j, list[i], (probabilityMatrix[j][list[i]]) * (4 / (iterate - 1)));
 					}
 				}
 			}
@@ -764,8 +756,6 @@ public void notifyResponse(Log response) {
 						counter++;
 				}
 				if (counter == numPlayers) {
-					// TODO we found the suspect
-					// updateMatrix(0, i, 5);
 					suspect = getCardName(i);
 					weKnowTheSuspect = true;
 				}
@@ -807,7 +797,7 @@ public void notifyResponse(Log response) {
 
 	// returning a card when we are queried functions
 
-		public boolean isOurTokenCard(String a, String b) {
+	public boolean isOurTokenCard(String a, String b) {
 		return isOurTokenCard(a, b, "");
 	}
 
@@ -1011,7 +1001,6 @@ public void notifyResponse(Log response) {
 		return result;
 	}
 
-
 	public int getCardNum(String cardName) {
 		for (int i = 0; i < 21; i++) {
 			if (cardName.equalsIgnoreCase(cardNames[i])) {
@@ -1040,40 +1029,37 @@ public void notifyResponse(Log response) {
 
 	@Override
 	public String getVersion() {
-		// TODO Auto-generated method stub
-		return null;
+		return "6.3.1";
 	}
 
 	@Override
 	public void notifyPlayerName(String playerName) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void notifyTurnOver(String playerName, String position) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void notifyQuery(String playerName, String query) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void notifyReply(String playerName, boolean cardShown) {
-		// TODO Auto-generated method stub
 	}
 
 	private void setSize() {
 		if (movesTaken == size) {
 			movesTaken = 0;
 		}
-		exitNum = setExitNum();
+		if (weNeedThis > 0) {
+			exitNum = setExitNum();
+		}
 
-		if (player.getToken().isInRoom()) {
+		if (player.getToken().isInRoom() && weNeedThis > 0) {
 			inRoom = true;
 			if (player.getToken().getRoom().toString().equalsIgnoreCase("Lounge")) {
 				if (route.toLowerCase().endsWith("lounge")) {
@@ -1164,7 +1150,7 @@ public void notifyResponse(Log response) {
 				}
 
 				else if (exitNum[exitNumIterator].equals("2")) {
-					size = hallToStudy.length;
+					size = hallToBasement.length;
 				}
 			}
 		}
@@ -1210,7 +1196,7 @@ public void notifyResponse(Log response) {
 	String hallToLibrary[] = { "u", "r", "r", "r", "u", "r", "r" };
 	String hallToDiningRoom[] = { "u", "l", "l", "l", "l", "l", "u", "u" };
 	String hallToLounge[] = { "u", "l", "l", "l", "l", "l", "d", "d" };
-	String hallToBasement[] = { "u", "u" };
+	String hallToBasement[] = { "u","r" ,"u" };
 
 	// exit 2
 	String hallToStudy[] = { "r", "r", "r", "d" };
@@ -1247,39 +1233,117 @@ public void notifyResponse(Log response) {
 
 	// ------Exit patterns for getDoor()--------
 
-	// "Ballroom", "Billiard Room", "Conservatory", "Dining Room", "Hall",
-	// "Kitchen", "Library", "Lounge", "Study"
+	Object[][] ballRoomRoutes = {
+			{ "Ballroom", 5, "ballConsBillLibStudy" },
+			{ "Ballroom", 4, "ballBillLibStudy" },
+			{ "Ballroom", 4, "ballConsLoungeDining" },
+			{ "Ballroom", 4, "ballBillLibStudy" },
+			{ "Ballroom", 3, "ballKitStudy" },
+			{ "Ballroom", 3, "ballBillLib" },
+			{ "Ballroom", 3, "ballDiningLounge" },
+			{ "Ballroom", 2, "ballDining" }, };
+	Object[][] billiardRoomRoutes = {
+			{ "Billiard Room", 5, "billBallConsLoungeDining" },
+			{ "Billiard Room", 4, "billConsLoungeDining" },
+			{ "Billiard Room", 5, "billBallKitStudyLib" },
+			{ "Billiard Room", 4, "billBallKitStudy" },
+			{ "Billiard Room", 4, "billBallDiningLounge" },
+			{ "Billiard Room", 3, "billLibStudy" },
+			{ "Billiard Room", 3, "billBallDining" },
+			{ "Billiard Room", 5, "billLib" }, };
+	Object[][] conservatoryRoutes = {
+			{ "Conservatory", 5, "consBallBillLibStudy" },
+			{ "Conservatory", 5, "consBallKitStudyLib" },
+			{ "Conservatory", 4, "consBallDiningLounge" },
+			{ "Conservatory", 4, "consBillLibStudy" },
+			{ "Conservatory", 4, "consBallKitStudy" },
+			{ "Conservatory", 3, "consLoungeDining" },
+			{ "Conservatory", 3, "consBallBillLibStudy" },
+			{ "Conservatory", 3, "consBallDining" },
+			{ "Conservatory", 2, "consLounge" }, };
+	Object[][] diningRoomRoutes = {
+			{ "Dining Room", 4, "diningBallBillLib" },
+			{ "Dining Room", 4, "diningBallConsLounge" },
+			{ "Dining Room", 4, "diningBallKitStudy" },
+			{ "Dining Room", 5, "diningBallBillLibStudy" },
+			{ "Dining Room", 2, "dining" },
+			{ "Dining Room", 5, "diningBallBillConsLounge" },
+			{ "Dining Room", 5, "diningBallKitStudyLib" },
+			{ "Dining Room", 3, "diningKitStudy" }, 
+			{ "Dining Room", 5, "diningLoungeConsBillLib" }, };
+	Object[][] kitchenRoutes = { { "Kitchen", 4, "kitBallBillLib" },
+			{ "Kitchen", 4, "kitBallDiningLounge" },
+			{ "Kitchen", 4, "kitBallConsLounge" },
+			{ "Kitchen", 3, "kitStudyLib" },
+			{ "Kitchen", 3, "kitBallDining" },
+			{ "Kitchen", 4, "kitDining" },
+			{ "Kitchen", 3, "kitDiningLounge" }, };
+	Object[][] libraryRoutes = {
+			{ "Library", 5, "libBillBallDiningLounge" },
+			{ "Library", 5, "libStudyKitBallDining" },
+			{ "Library", 5, "libBillConsLoungeDining" },
+			{ "Library", 4, "libBillBallDining" },
+			{ "Library", 4, "libBillConsLounge" },
+			{ "Library", 2, "lib" }, };
+	Object[][] loungeRoutes = {
+			{ "Lounge", 5, "loungeDiningBallBillLib" },
+			{ "Lounge", 5, "loungeConsBillBallDining" },
+			{ "Lounge", 4, "loungeConsBallDining" },
+			{ "Lounge", 2, "loungeDining" },
+			{ "Lounge", 5, "loungeConsBallKitStudy" },
+			{ "Lounge", 4, "loungeDiningKitStudy" },
+			{ "Lounge", 1, "lounge" },
+			{ "Lounge", 4, "loungeConsBillLib" }, };
+	Object[][] studyRoutes = {
+			{ "Study", 5, "studyLibBillConsLounge" },
+			{ "Study", 5, "studyLibBillBallDining" },
+			{ "Study", 5, "studyKitBallDiningLounge" },
+			{ "Study", 4, "studyKitBallBillLib" },
+			{ "Study", 5, "studyKitBallConsLounge" },
+			{ "Study", 4, "studyKitBallDining" },
+			{ "Study", 3, "studyKitDining" },
+			{ "Study", 2, "studyLib" }, };
+	Object[][] hallRoutes = {
+			{ "Hall", 1, "hallToBasement" }};
 
-	public void setPaths() {
-		Ballroom.add(ballConsBillLibStudy);
-		Ballroom.add(ballBillLibStudy);
-		Ballroom.add(ballConsLoungeDining);
-		Ballroom.add(ballKitStudyLib);
-		Ballroom.add(ballKitStudy);
-		Ballroom.add(ballConsLounge);
-		Ballroom.add(ballDiningLounge);
-		Ballroom.add(ballBillLib);
-		Ballroom.add(ballDining);
+	// kitchen
+	String kitBallBillLib[] = { "3", "2", "1", "1" };
+	String kitBallDiningLounge[] = { "2", "1", "1" };
+	String kitBallConsLounge[] = { "4", "1" };// passage
+	String kitStudyLib[] = { "1" };// passage
+	String kitBallDining[] = { "2", "1", "1" };
+	String kitStudy[] = { "1" };// passage
+	String kitDining[] = { "1", "1" };
+	String kitDiningLounge[] = { "1", "1" };
 
-		Billiard.add(billBallConsLoungeDining);
-		Billiard.add(billBallKitStudyLib);
-		Billiard.add(billConsLoungeDining);
-		Billiard.add(billBallKitStudy);
-		Billiard.add(billBallConsLoungeDining);
-		Billiard.add(billBallConsLoungeDining);
-		Billiard.add(billBallConsLoungeDining);
-		Billiard.add(billBallConsLoungeDining);
-		Billiard.add(billBallConsLoungeDining);
+	// library
+	String libBillBallDiningLounge[] = { "2", "1", "2", "1", "1" };
+	String libStudyKitBallDining[] = { "1", "2", "1", "1" };// passage
+	String libBillConsLoungeDining[] = { "2", "1", "1", "1" };// passage
+	String libBillBallDining[] = { "2", "1", "2", "1" };
+	String libBillConsLounge[] = { "2", "1", "1" };// passage
+	String libStudy[] = { "1", "1" };
+	String lib[] = { "1" };
 
-		// Conservatory
-		// Dining
-		// Hall
-		// Kitchen
-		// Library
-		// Lounge
-		// Study
-	}
+	// Lounge
+	String loungeDiningBallBillLib[] = { "2", "3", "2", "1", "1" };
+	String loungeConsBillBallDining[] = { "1", "2", "1", "1" };// passage
+	String loungeConsBallDining[] = { "2", "1", "1" };// passage
+	String loungeDining[] = { "1", "1" };
+	String loungeConsBallKitStudy[] = { "1", "1" }; // passage
+	String loungeDiningKitStudy[] = { "2", "1" }; // passage
+	String lounge[] = { "1" };
+	String loungeConsBillLib[] = { "2", "1", "1" };
 
+	// study
+	String studyLibBillConsLounge[] = { "2", "1", "1" }; // passage
+	String studyLibBillBallDining[] = { "2", "1", "2", "1", "1" };
+	String studyKitBallDiningLounge[] = { "2", "1", "1" }; // passage
+	String studyKitBallBillLib[] = { "3", "2", "1", "1" }; // passage
+	String studyKitBallConsLounge[] = { "4", "1" }; // passage
+	String studyKitBallDining[] = { "2", "1", "1" }; // passage
+	String studyKitDining[] = { "1", "1" }; // passage
+	String studyLib[] = { "1", "1" };
 	// ballroom
 	String ballConsBillLibStudy[] = { "4", "2", "1", "1" };
 	String ballBillLibStudy[] = { "3", "2", "1", "1" };
@@ -1320,51 +1384,15 @@ public void notifyResponse(Log response) {
 	String diningBallKitchenStudy[] = { "2", "1" };// passage
 	String diningBallBillLibStudy[] = { "2", "3", "2", "1", "1" };
 	String diningLounge[] = { "2", "1" };
-	String diningHall[] = { "1", "1" };
+	String dining[] = { "1", "1" };
 	String diningBallBillConsLounge[] = { "2", "3", "2", "1", "1", "1" };// passage
 	String diningBallKitStudyLib[] = { "2", "1", "1", "1" };// passage
 	String diningKitStudy[] = { "2", "1" };// passage
 	String diningLoungeConsBillLib[] = { "1", "2", "1", "1" };// passage
+	
 
-	// kitchen
-	String kitBallBillLib[] = { "3", "2", "1", "1" };
-	String kitBallDiningLounge[] = { "2", "1", "1" };
-	String kitBallConsLounge[] = { "4", "1" };// passage
-	String kitStudyLib[] = { "1" };// passage
-	String kitBallDining[] = { "2", "1", "1" };
-	String kitStudy[] = { "1" };// passage
-	String kitDining[] = { "1", "1" };
-	String kitDiningLounge[] = { "1", "1" };
-
-	// library
-	String libBillBallDiningLounge[] = { "2", "1", "2", "1", "1" };
-	String libStudyKitBallDining[] = { "1", "2", "1", "1" };// passage
-	String libBillConsLoungeDining[] = { "2", "1", "1", "1" };// passage
-	String libBillBallDining[] = { "2", "1", "2", "1" };
-	String libBillConsLounge[] = { "2", "1", "1" };// passage
-	String libStudy[] = { "1", "1" };
-	String lib[] = { "1" };
-
-	// Lounge
-	String loungeDiningBallBillLib[] = { "2", "3", "2", "1", "1" };
-	String loungeConsBillBallDining[] = { "1", "2", "1", "1" };// passage
-	String loungeConsBallDining[] = { "2", "1", "1" };// passage
-	String loungeDining[] = { "1", "1" };
-	String loungeConsBallKitStudy[] = { "1", "1" }; // passage
-	String loungeDiningKitStudy[] = { "2", "1" }; // passage
-	String lounge[] = { "1" };
-	String loungeConsBillLib[] = { "2", "1", "1" };
-
-	// study
-	String studyLibBillConsLounge[] = { "2", "1", "1" }; // passage
-	String studyLibBillBallDining[] = { "2", "1", "2", "1", "1" };
-	String studyKitBallDiningLounge[] = { "2", "1", "1" }; // passage
-	String studyKitBallBillLib[] = { "3", "2", "1", "1" }; // passage
-	String studyKitBallConsLounge[] = { "4", "1" }; // passage
-	String studyKitBallDining[] = { "2", "1", "1" }; // passage
-	String studyKitDining[] = { "1", "1" }; // passage
-	String studyLib[] = { "1", "1" };
-
+	String hall[] = {"1"};
+	
 	private String[] setExitNum() {
 		String exitNumArray[] = null;
 		if (route.equalsIgnoreCase("diningBallConsLounge"))
@@ -1377,8 +1405,8 @@ public void notifyResponse(Log response) {
 			exitNumArray = Arrays.copyOf(diningBallBillLibStudy, diningBallBillLibStudy.length);
 		else if (route.equalsIgnoreCase("diningLounge"))
 			exitNumArray = Arrays.copyOf(diningLounge, diningLounge.length);
-		else if (route.equalsIgnoreCase("diningHall"))
-			exitNumArray = Arrays.copyOf(diningHall, diningHall.length);
+		else if (route.equalsIgnoreCase("dining"))
+			exitNumArray = Arrays.copyOf(dining, dining.length);
 		else if (route.equalsIgnoreCase("diningBallBillConsLounge"))
 			exitNumArray = Arrays.copyOf(diningBallBillConsLounge, diningBallBillConsLounge.length);
 		else if (route.equalsIgnoreCase("diningBallKitStudyLib"))
@@ -1509,8 +1537,31 @@ public void notifyResponse(Log response) {
 		return exitNumArray;
 	}
 
-	// TODO
-	// Add probability code to jems notes code
+	public String pickARoute() {
+		String selectedRoute = null;
+
+		if (player.getToken().getRoom().toString().equalsIgnoreCase("Ballroom")) {
+			selectedRoute = "ballKitStudy";
+		} else if (player.getToken().getRoom().toString().equalsIgnoreCase("Billiard room")) {
+			selectedRoute = "billLibStudy";
+		} else if (player.getToken().getRoom().toString().equalsIgnoreCase("Conservatory")) {
+			selectedRoute = "consLoungeDining";
+		} else if (player.getToken().getRoom().toString().equalsIgnoreCase("Kitchen")) {
+			selectedRoute = "kitBallDining";
+		} else if (player.getToken().getRoom().toString().equalsIgnoreCase("Library")) {
+			selectedRoute = "libBillBallDining";
+
+		} else if (player.getToken().getRoom().toString().equalsIgnoreCase("Lounge")) {
+			selectedRoute = "loungeConsBillLib";
+		} else if (player.getToken().getRoom().toString().equalsIgnoreCase("Study")) {
+			selectedRoute = "studyKitDining";
+		}else if (player.getToken().getRoom().toString().equalsIgnoreCase("Dining Room")) {
+			selectedRoute = "diningKitStudy";
+		}else if (player.getToken().getRoom().toString().equalsIgnoreCase("Hall")) {
+			selectedRoute = "hall";
+		}
+		return selectedRoute;
+	}
 
 	public void setMatrix() {
 		System.out.println("Char: " + knownCharactersCount);
@@ -1565,11 +1616,11 @@ public void notifyResponse(Log response) {
 		int iterate = 0;
 
 		if (gameStart) {
-		} else if(oldElement == newElement){
+		} else if (oldElement == newElement) {
 		} else {
 			rippleY(x, y, newElement);
 
-			for (int i = 0; i < numPlayers + 1;) {
+			for (int i = 0; i < numPlayers + 1;i++) {
 				if (probabilityMatrix[i][y] != 0) {
 					store[iterate++] = i;
 				}
@@ -1613,8 +1664,8 @@ public void notifyResponse(Log response) {
 		}
 
 		// Set the new element
-		probabilityMatrix[x][y] = newElement;
-
+		probabilityMatrix[x][y] = (double) newElement;
+		
 		// Updating the y
 		base = 0;
 		iterate = 0;
@@ -1658,107 +1709,96 @@ public void notifyResponse(Log response) {
 	}
 
 	public void Guess() {
-		if(player.hasCard(player.getToken().getRoom().toString())) {
-			//We have the room card so guess
-			if(heldWeaponsCount != 0) {
+		if (player.hasCard(player.getToken().getRoom().toString())) {
+			// We have the room card so guess
+			if (heldWeaponsCount != 0) {
 				guess[0] = GetHighest(1);
-				for(int i=6;i<12;i++) {
-					if(probabilityMatrix[1][i] == 1) {
+				for (int i = 6; i < 12; i++) {
+					if (probabilityMatrix[1][i] == 1) {
 						guess[1] = getCardName(i);
 					}
 				}
-			}
-			else if(heldCharactersCount != 0) {
+			} else if (heldCharactersCount != 0) {
 				guess[1] = GetHighest(2);
-				for(int i=0;i<6;i++) {
-					if(probabilityMatrix[1][i] == 1) {
+				for (int i = 0; i < 6; i++) {
+					if (probabilityMatrix[1][i] == 1) {
 						guess[0] = getCardName(i);
 					}
 				}
-			}
-			else if(weKnowTheWeapon){
+			} else if (weKnowTheWeapon) {
 				guess[1] = weapon;
 				guess[0] = GetHighest(1);
-			}
-			else if(weKnowTheSuspect) {
+			} else if (weKnowTheSuspect) {
 				guess[0] = suspect;
 				guess[1] = GetHighest(2);
-			}
-			else {
+			} else {
 				guess[0] = GetHighest(1);
 				guess[1] = GetHighest(2);
 			}
-		}
-		else {
-			if(heldCharactersCount != 0 && heldWeaponsCount != 0) {
-				for(int i=0;i<6;i++) {
-					if(probabilityMatrix[1][i] == 1) {
+		} else {
+			if (heldCharactersCount != 0 && heldWeaponsCount != 0) {
+				for (int i = 0; i < 6; i++) {
+					if (probabilityMatrix[1][i] == 1) {
 						guess[0] = getCardName(i);
 					}
 				}
 
-				for(int i=6;i<12;i++) {
-					if(probabilityMatrix[1][i] == 1) {
+				for (int i = 6; i < 12; i++) {
+					if (probabilityMatrix[1][i] == 1) {
 						guess[1] = getCardName(i);
 					}
 				}
-			}
-			else if(heldCharactersCount != 0 && weKnowTheWeapon) {
-				for(int i=0;i<6;i++) {
-					if(probabilityMatrix[1][i] == 1) {
+			} else if (heldCharactersCount != 0 && weKnowTheWeapon) {
+				for (int i = 0; i < 6; i++) {
+					if (probabilityMatrix[1][i] == 1) {
 						guess[0] = getCardName(i);
 					}
 				}
 				guess[0] = weapon;
-			}
-			else if(heldWeaponsCount != 0 && weKnowTheSuspect) {
-				for(int i=6;i<12;i++) {
-					if(probabilityMatrix[1][i] == 1) {
+			} else if (heldWeaponsCount != 0 && weKnowTheSuspect) {
+				for (int i = 6; i < 12; i++) {
+					if (probabilityMatrix[1][i] == 1) {
 						guess[1] = getCardName(i);
 					}
 				}
 				guess[0] = suspect;
-			}
-			else if(heldCharactersCount != 0){
-				for(int i=0;i<6;i++) {
-					if(probabilityMatrix[1][i] == 1) {
+			} else if (heldCharactersCount != 0) {
+				for (int i = 0; i < 6; i++) {
+					if (probabilityMatrix[1][i] == 1) {
 						guess[0] = getCardName(i);
 					}
 				}
 				guess[1] = GetHighest(2);
-			}
-			else if(heldWeaponsCount != 0){
-				for(int i=6;i<12;i++) {
-					if(probabilityMatrix[1][i] == 1) {
+			} else if (heldWeaponsCount != 0) {
+				for (int i = 6; i < 12; i++) {
+					if (probabilityMatrix[1][i] == 1) {
 						guess[1] = getCardName(i);
 					}
 				}
 				guess[0] = GetHighest(1);
-			}
-			else if(weKnowTheWeapon){
+			} else if (weKnowTheWeapon) {
 				guess[1] = weapon;
 				guess[0] = GetHighest(1);
-			}
-			else if(weKnowTheSuspect) {
+			} else if (weKnowTheSuspect) {
 				guess[0] = suspect;
 				guess[1] = GetHighest(2);
-			}
-			else {
+			} else {
 				guess[0] = GetHighest(1);
 				guess[1] = GetHighest(2);
 			}
 		}
 	}
-	
+
 	public String GetHighest(int i) {
 		double store = 0;
 		int num = 0;
-		
+
 		if (i == 1) {
 			for (int l = 0; l < 6; l++) {
 				if (probabilityMatrix[0][l] > store) {
 					store = probabilityMatrix[0][l];
 					num = l;
+					currentProbability[0] = probabilityMatrix[0][l];
 				}
 			}
 		} else if (i == 2) {
@@ -1766,6 +1806,7 @@ public void notifyResponse(Log response) {
 				if (probabilityMatrix[0][l] > store) {
 					store = probabilityMatrix[0][l];
 					num = l;
+					currentProbability[1] = probabilityMatrix[0][l];
 				}
 			}
 		} else {
@@ -1773,6 +1814,7 @@ public void notifyResponse(Log response) {
 				if (probabilityMatrix[0][l] > store) {
 					store = probabilityMatrix[0][l];
 					num = l;
+					currentProbability[2] = probabilityMatrix[0][l];
 				}
 			}
 		}
