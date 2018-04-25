@@ -427,8 +427,7 @@ public class ClueTangClan implements BotAPI {
 		shownCards[getCardNum(returnedCard)] = 1;
 		return returnedCard;
 	}
-
-	public void notifyResponse(Log response) {
+public void notifyResponse(Log response) {
 		Iterator<String> iterator = response.iterator();
 		ArrayList<String> messages = new ArrayList<String>();
 		int logLength = 0;
@@ -436,6 +435,7 @@ public class ClueTangClan implements BotAPI {
 			logLength++;
 			String temp = response.next();
 			messages.add(temp);
+			System.out.println(logLength + " " + temp);
 		}
 
 		String[] logQuestion = messages.get(logLength - 2).toString().split(" ");
@@ -444,7 +444,7 @@ public class ClueTangClan implements BotAPI {
 		int logAnswerLength = logAnswer.length;
 
 		String queriedPlayerName = "";
-		int queriedPlayerNum;
+		int queriedPlayerNum = 0;
 
 		String suspectName = "";
 		String weaponName = "";
@@ -461,13 +461,28 @@ public class ClueTangClan implements BotAPI {
 		// get card name name and num if there is one
 		// also get queried player name and num
 		if (logAnswer[logAnswerLength - 2].equalsIgnoreCase("card:")) {
-			cardNum = logLength - 1;
-			cardName = removeFullStop(logAnswer[cardNum]);
-			queriedPlayerNum = logAnswerLength - 5;
-		} else {
+			cardNum = logAnswerLength - 1;
+			cardName = removeFullStop(logAnswer[cardNum].toString());
 			queriedPlayerNum = logAnswerLength - 6;
+		} 
+		else if(logAnswer[logAnswerLength - 3].equalsIgnoreCase("card:")) {
+			if (logAnswer[logAnswerLength - 2].equalsIgnoreCase("Lead")) {
+				cardName = "Lead Pipe";
+				queriedPlayerNum = logAnswerLength - 7;
+			} 
+			else if (logAnswer[logAnswerLength - 2].equalsIgnoreCase("Dining")) {
+				cardName = "Dining Room";
+				queriedPlayerNum = logAnswerLength - 7;
+			} 
+			else if (logAnswer[logAnswerLength - 2].equalsIgnoreCase("Billiard")) {
+				cardName = "Billiard Room";
+				queriedPlayerNum = logAnswerLength - 7;
+			}
 		}
-		queriedPlayerName = logAnswer[queriedPlayerNum];
+		else {
+			queriedPlayerNum = logAnswerLength - 7;
+		}
+		queriedPlayerName = logAnswer[queriedPlayerNum].toString();
 
 		// get room name and num
 		if (logQuestion[logQuestionLength - 2].equalsIgnoreCase("Dining")) {
@@ -478,7 +493,7 @@ public class ClueTangClan implements BotAPI {
 			roomName = "Billiard Room";
 		} else {
 			roomNum = logQuestionLength - 1;
-			roomName = removeFullStop(logQuestion[roomNum]);
+			roomName = removeFullStop(logQuestion[roomNum].toString());
 		}
 
 		// get weapon name and num
@@ -487,12 +502,12 @@ public class ClueTangClan implements BotAPI {
 			weaponName = "Lead Pipe";
 		} else {
 			weaponNum = roomNum - 3;
-			weaponName = logQuestion[weaponNum];
+			weaponName = logQuestion[weaponNum].toString();
 		}
 
 		// get suspect name and num
 		suspectNum = weaponNum - 3;
-		suspectName = logQuestion[suspectNum];
+		suspectName = logQuestion[suspectNum].toString();
 
 		if (cardName != "") {
 			hasCard = true;
@@ -543,11 +558,11 @@ public class ClueTangClan implements BotAPI {
 
 			// get queried player name and num
 			if (logAnswer[logAnswerLength - 1].equalsIgnoreCase("cards.")) {
-				queriedPlayerNum = logAnswerLength - 6;
+				queriedPlayerNum = logAnswerLength - 7;
 			} else {
-				queriedPlayerNum = logAnswerLength - 4;
+				queriedPlayerNum = logAnswerLength - 5;
 			}
-			queriedPlayerName = logAnswer[queriedPlayerNum];
+			queriedPlayerName = logAnswer[queriedPlayerNum].toString();
 
 			if (!queriedPlayerName.equalsIgnoreCase(getName())) {
 
@@ -560,7 +575,7 @@ public class ClueTangClan implements BotAPI {
 					roomName = "Billiard Room";
 				} else {
 					roomNum = logQuestionLength - 1;
-					roomName = removeFullStop(logQuestion[roomNum]);
+					roomName = removeFullStop(logQuestion[roomNum].toString());
 				}
 
 				// get weapon name and num
@@ -569,15 +584,15 @@ public class ClueTangClan implements BotAPI {
 					weaponName = "Lead Pipe";
 				} else {
 					weaponNum = roomNum - 3;
-					weaponName = logQuestion[weaponNum];
+					weaponName = logQuestion[weaponNum].toString();
 				}
 
 				// get suspect name and num
 				suspectNum = weaponNum - 3;
-				suspectName = logQuestion[suspectNum];
+				suspectName = logQuestion[suspectNum].toString();
 
 				// get querying player name and num
-				queryingPlayerNum = suspectNum - 4;
+				queryingPlayerNum = suspectNum - 6;
 				queryingPlayerName = logQuestion[queryingPlayerNum];
 				if (queryingPlayerName.equalsIgnoreCase(getName())) {
 					break;
@@ -998,14 +1013,14 @@ public class ClueTangClan implements BotAPI {
 		return cardNames[cardNum];
 	}
 
-	public String removeFullStop(String room) {
-		char[] roomArr = room.toCharArray();
+	public String removeFullStop(String arr) {
+		char[] roomArr = arr.toCharArray();
 		char[] subArr = new char[roomArr.length - 1];
 
 		for (int i = 0; i < subArr.length; i++) {
 			subArr[i] = roomArr[i];
 		}
-		String returnString = subArr.toString();
+		String returnString = String.valueOf(subArr);
 
 		return returnString;
 	}
