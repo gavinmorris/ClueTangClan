@@ -1345,7 +1345,7 @@ public class ClueTangClan implements BotAPI {
 	String libBillBallDining[] = { "2", "1", "2", "1" };
 	String libBillConsLounge[] = { "2", "1", "1" };// passage
 	String libStudy[] = { "1", "1" };
-	String lib[] = { "1" };
+	String lib[] = { "1", "1" };
 
 	// Lounge
 	String loungeDiningBallBillLib[] = { "2", "3", "2", "1", "1" };
@@ -1354,7 +1354,7 @@ public class ClueTangClan implements BotAPI {
 	String loungeDining[] = { "1", "1" };
 	String loungeConsBallKitStudy[] = { "1", "1" }; // passage
 	String loungeDiningKitStudy[] = { "2", "1" }; // passage
-	String lounge[] = { "1" };
+	String lounge[] = { "1", "1" };
 	String loungeConsBillLib[] = { "2", "1", "1" };
 
 	// study
