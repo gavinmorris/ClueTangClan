@@ -1623,13 +1623,21 @@ public class ClueTangClan implements BotAPI {
 				}
 			}
 		} else if (player.getToken().getRoom().toString().equalsIgnoreCase("Kitchen")) {
+
+			boolean roomsLeftChanged = false;
+			
 			if(roomsLeft == 5) {
 				roomsLeft--;
+				roomsLeftChanged=true;
 			}
 			for (int i = 0; i < 7; i++) {
 				if (kitchenRoutes[i][1].equals(Integer.valueOf(roomsLeft))) {
 					selectedRoute = (String) kitchenRoutes[i][2];
 				}
+			}
+			
+			if(roomsLeftChanged) {
+				roomsLeft--;
 			}
 		} else if (player.getToken().getRoom().toString().equalsIgnoreCase("Library")) {
 
