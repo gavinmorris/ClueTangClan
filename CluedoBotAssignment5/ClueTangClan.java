@@ -7,7 +7,6 @@ import java.util.Iterator;
 import gameengine.*;
 
 public class ClueTangClan implements BotAPI {
-	private int strategy = 0;
 	private int numPlayers;
 	private final int numCards = 21;
 	private final int numSuspects = 6;
@@ -378,7 +377,8 @@ public class ClueTangClan implements BotAPI {
 	public String getSuspect() {
 		// if we are in basement return suspect
 		if (player.getToken().getRoom().toString().equalsIgnoreCase("Cellar")) {
-			return suspect;
+			if(weKnowTheSuspect) return suspect;
+			else return getHighest(1);
 		} else {
 			Guess();
 			return guess[0];
@@ -388,7 +388,8 @@ public class ClueTangClan implements BotAPI {
 	public String getWeapon() {
 		// if we are in basement return suspect
 		if (player.getToken().getRoom().toString().equalsIgnoreCase("Cellar")) {
-			return weapon;
+			if(weKnowTheWeapon) return weapon;
+			else return getHighest(2);
 		} else {
 			return guess[1];
 		}
@@ -396,7 +397,8 @@ public class ClueTangClan implements BotAPI {
 
 	public String getRoom() {
 		// Only gets called when in cellar
-		return room;
+		if(weKnowTheRoom) return room;
+		else return getHighest(3);
 	}
 
 	public String getDoor() {
@@ -1091,7 +1093,7 @@ public class ClueTangClan implements BotAPI {
 				}
 			} else if (player.getToken().getRoom().toString().equalsIgnoreCase("Dining Room")) {
 				if (exitNum[exitNumIterator].equals("1")) {
-					if (route.endsWith("Dining")) {
+					if (route.endsWith("Dining") || route.equalsIgnoreCase("dining")) {
 						size = diningRoomToHall.length;
 					} else {
 						size = diningRoomToLounge.length;
@@ -1343,7 +1345,7 @@ public class ClueTangClan implements BotAPI {
 	String libBillBallDining[] = { "2", "1", "2", "1" };
 	String libBillConsLounge[] = { "2", "1", "1" };// passage
 	String libStudy[] = { "1", "1" };
-	String lib[] = { "1" };
+	String lib[] = { "1", "1" };
 
 	// Lounge
 	String loungeDiningBallBillLib[] = { "2", "3", "2", "1", "1" };
@@ -1352,7 +1354,7 @@ public class ClueTangClan implements BotAPI {
 	String loungeDining[] = { "1", "1" };
 	String loungeConsBallKitStudy[] = { "1", "1" }; // passage
 	String loungeDiningKitStudy[] = { "2", "1" }; // passage
-	String lounge[] = { "1" };
+	String lounge[] = { "1", "1" };
 	String loungeConsBillLib[] = { "2", "1", "1" };
 
 	// study
@@ -1560,9 +1562,9 @@ public class ClueTangClan implements BotAPI {
 	}
 
 	public String pickARoute() {
-		GetHighest(1);
-		GetHighest(2);
-		GetHighest(3);
+		getHighest(1);
+		getHighest(2);
+		getHighest(3);
 
 		double store = 1;
 
@@ -1835,14 +1837,14 @@ public class ClueTangClan implements BotAPI {
 		if (player.hasCard(player.getToken().getRoom().toString())) {
 			// We have the room card so guess
 			if (heldWeaponsCount != 0) {
-				guess[0] = GetHighest(1);
+				guess[0] = getHighest(1);
 				for (int i = 6; i < 12; i++) {
 					if (probabilityMatrix[1][i] == 1) {
 						guess[1] = getCardName(i);
 					}
 				}
 			} else if (heldCharactersCount != 0) {
-				guess[1] = GetHighest(2);
+				guess[1] = getHighest(2);
 				for (int i = 0; i < 6; i++) {
 					if (probabilityMatrix[1][i] == 1) {
 						guess[0] = getCardName(i);
@@ -1850,13 +1852,13 @@ public class ClueTangClan implements BotAPI {
 				}
 			} else if (weKnowTheWeapon) {
 				guess[1] = weapon;
-				guess[0] = GetHighest(1);
+				guess[0] = getHighest(1);
 			} else if (weKnowTheSuspect) {
 				guess[0] = suspect;
-				guess[1] = GetHighest(2);
+				guess[1] = getHighest(2);
 			} else {
-				guess[0] = GetHighest(1);
-				guess[1] = GetHighest(2);
+				guess[0] = getHighest(1);
+				guess[1] = getHighest(2);
 			}
 		} else {
 			if (heldCharactersCount != 0 && heldWeaponsCount != 0) {
@@ -1891,28 +1893,28 @@ public class ClueTangClan implements BotAPI {
 						guess[0] = getCardName(i);
 					}
 				}
-				guess[1] = GetHighest(2);
+				guess[1] = getHighest(2);
 			} else if (heldWeaponsCount != 0) {
 				for (int i = 6; i < 12; i++) {
 					if (probabilityMatrix[1][i] == 1) {
 						guess[1] = getCardName(i);
 					}
 				}
-				guess[0] = GetHighest(1);
+				guess[0] = getHighest(1);
 			} else if (weKnowTheWeapon) {
 				guess[1] = weapon;
-				guess[0] = GetHighest(1);
+				guess[0] = getHighest(1);
 			} else if (weKnowTheSuspect) {
 				guess[0] = suspect;
-				guess[1] = GetHighest(2);
+				guess[1] = getHighest(2);
 			} else {
-				guess[0] = GetHighest(1);
-				guess[1] = GetHighest(2);
+				guess[0] = getHighest(1);
+				guess[1] = getHighest(2);
 			}
 		}
 	}
 
-	public String GetHighest(int i) {
+	public String getHighest(int i) {
 		double store = 0;
 		int num = 0;
 
