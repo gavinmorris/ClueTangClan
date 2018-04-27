@@ -44,7 +44,7 @@ public class ClueTangClan implements BotAPI {
 	int heldWeaponsCount = 0;
 	int heldRoomsCount = 0;
 
-	double Threshold = 0.6;
+	double Threshold = 0.7;
 
 	private boolean weKnowTheSuspect = false;
 	private boolean weKnowTheWeapon = false;
@@ -116,6 +116,16 @@ public class ClueTangClan implements BotAPI {
 			playerNames = playersInfo.getPlayersNames();
 
 			for (int i = 0; i < numPlayers; i++) {
+				if (playerNames[i].equals("ClueTangClan")) {
+					String temp;
+
+					temp = playerNames[0];
+					playerNames[0] = "ClueTangClan";
+					playerNames[i] = temp;
+				}
+			}
+			
+			for (int i = 0; i < numPlayers; i++) {
 				notes.add(new ArrayList<ArrayList<Character>>());
 			}
 
@@ -143,6 +153,8 @@ public class ClueTangClan implements BotAPI {
 		checkIfWeKnowTheWeapon();
 		checkIfWeKnowTheRoom();
 
+		PrintMatrix();
+		
 		int guessingTime = 0;
 		if (weKnowTheSuspect)
 			guessingTime++;
@@ -370,7 +382,6 @@ public class ClueTangClan implements BotAPI {
 				}
 			}
 		}
-		
 		return move;
 	}
 
@@ -657,7 +668,7 @@ public class ClueTangClan implements BotAPI {
 			}
 			if (playerNames[j].equals(playerName)) {
 				notes.get(j).get(cardNum).add('y');
-				UpdateMatrix(j, cardNum, 1);
+				UpdateMatrix(j+1, cardNum, 1);
 				if (cardNum < 6) {
 					knownCharactersCount++;
 					heldCharactersCount++;
@@ -670,7 +681,7 @@ public class ClueTangClan implements BotAPI {
 				}
 			} else {
 				notes.get(j).get(cardNum).add('x');
-				UpdateMatrix(j, cardNum, 0);
+				UpdateMatrix(j+1, cardNum, 0);
 			}
 		}
 	}
@@ -682,7 +693,7 @@ public class ClueTangClan implements BotAPI {
 					notes.get(j).get(cardNum).remove(k);
 				}
 				notes.get(j).get(cardNum).add('x');
-				UpdateMatrix(j, cardNum, 0);
+				UpdateMatrix(j+1, cardNum, 0);
 			}
 		}
 	}
@@ -726,10 +737,10 @@ public class ClueTangClan implements BotAPI {
 				}
 
 				if (iterate == 1) {
-					UpdateMatrix(j, list[0], 1);
+					UpdateMatrix(j+1, list[0], 1);
 				} else {
 					for (int i = 0; i < iterate; i++) {
-						UpdateMatrix(j, list[i], (probabilityMatrix[j][list[i]]) * (4 / (iterate - 1)));
+						UpdateMatrix(j+1, list[i], (probabilityMatrix[j][list[i]]) * (4 / (iterate - 1)));
 					}
 				}
 			}
@@ -1577,11 +1588,11 @@ public class ClueTangClan implements BotAPI {
 		if (store > Threshold) {
 			roomsLeft = 1;
 			confident = true;
-		} else if (store > Threshold - 10) {
+		} else if (store > (Threshold - 0.15)) {
 			roomsLeft = 2;
-		} else if (store > Threshold - 20) {
+		} else if (store > (Threshold - 0.30)) {
 			roomsLeft = 3;
-		} else if (store > Threshold - 30) {
+		} else if (store > (Threshold - 0.50)) {
 			roomsLeft = 4;
 		} else {
 			roomsLeft = 5;
@@ -1795,13 +1806,54 @@ public class ClueTangClan implements BotAPI {
 		base = 0;
 		iterate = 0;
 
-		for (int i = 0; i < 21; i++) {
-			if (probabilityMatrix[x][i] != 0 && probabilityMatrix[x][i] != 1) {
-				store[iterate++] = i;
-				base += probabilityMatrix[x][i];
+		if (probabilityMatrix[x][y] == 1) {
+			for (int i = 0; i < numPlayers + 1; i++) {
+				if (x != i) {
+					rippleY(i, y, 0);
+				}
 			}
 		}
 
+		if (x == 0) {
+			if (y < 6) {
+				for (int i = 0; i < 6; i++) {
+					if (probabilityMatrix[x][i] != 0) {
+						if (i != y) {
+							store[iterate++] = i;
+							base += probabilityMatrix[x][i];
+						}
+					}
+				}
+			} else if (y < 12) {
+				for (int i = 6; i < 12; i++) {
+					if (probabilityMatrix[x][i] != 0) {
+						if (i != y) {
+							store[iterate++] = i;
+							base += probabilityMatrix[x][i];
+						}
+					}
+				}
+			} else {
+				for (int i = 12; i < 21; i++) {
+					if (probabilityMatrix[x][i] != 0) {
+						if (i != y) {
+							store[iterate++] = i;
+							base += probabilityMatrix[x][i];
+						}
+					}
+				}
+			}
+		} else {
+			for (int i = 0; i < 21; i++) {
+				if (probabilityMatrix[x][i] != 0 && probabilityMatrix[x][i] != 1) {
+					if (i != y) {
+						store[iterate++] = i;
+						base += probabilityMatrix[x][i];
+					}
+				}
+			}
+		}
+		
 		if (iterate == 1) {
 			probabilityMatrix[x][store[0]] = 1;
 
@@ -1947,12 +1999,20 @@ public class ClueTangClan implements BotAPI {
 		return getCardName(num);
 	}
 
+
 	public void PrintMatrix() {
+		System.out.println("Characters");
 		for (int i = 0; i < 21; i++) {
 			for (int j = 0; j < numPlayers + 1; j++) {
 				System.out.print(probabilityMatrix[j][i] + ", ");
 			}
 			System.out.println();
+			if (i == 5) {
+				System.out.println("Weapons");
+			} else if (i == 11) {
+				System.out.println("Rooms");
+			}
 		}
+		System.out.println();
 	}
 }
