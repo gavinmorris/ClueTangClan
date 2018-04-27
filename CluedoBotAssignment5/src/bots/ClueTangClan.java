@@ -1131,8 +1131,8 @@ public class ClueTangClan implements BotAPI {
 					size = loungeToDiningRoom.length;
 				}
 			} else if (player.getToken().getRoom().toString().equalsIgnoreCase("Dining Room")) {
-				if (exitNum[exitNumIterator].equals("1")) {
-					if (route.endsWith("Dining")) {
+				if (exitNum[exitNumIterator].equals("1") ) {
+					if (route.endsWith("Dining") ||route.equalsIgnoreCase("Dining")) {
 						size = diningRoomToHall.length;
 					} else {
 						size = diningRoomToLounge.length;
@@ -1356,7 +1356,7 @@ public class ClueTangClan implements BotAPI {
 	String loungeDining[] = { "1", "1" };
 	String loungeConsBallKitStudy[] = { "1", "1" }; // passage
 	String loungeDiningKitStudy[] = { "2", "1" }; // passage
-	String lounge[] = { "1" };
+	String lounge[] = { "1", "1" };
 	String loungeConsBillLib[] = { "2", "1", "1" };
 
 	// study
@@ -1400,7 +1400,7 @@ public class ClueTangClan implements BotAPI {
 	String consBillLib[] = { "2", "1", "1" };
 	String consLoungeDining[] = { "1", "1" };// passage
 	String consBallDining[] = { "2", "1" };
-	String consLounge[] = { "1" }; // passage
+	String consLounge[] = { "1", "1" }; // passage
 
 	// Dining
 	String diningBallBillLib[] = { "2", "3", "2", "1", "1" };
@@ -1607,7 +1607,7 @@ public class ClueTangClan implements BotAPI {
 				roomsLeftChanged = true;
 			}
 
-			for (int i = 0; i < 10; i++) {
+			for (int i = 0; i < 8; i++) {
 				if (billiardRoomRoutes[i][1].equals(Integer.valueOf(roomsLeft))) {
 					selectedRoute = (String) billiardRoomRoutes[i][2];
 				}
@@ -1623,7 +1623,10 @@ public class ClueTangClan implements BotAPI {
 				}
 			}
 		} else if (player.getToken().getRoom().toString().equalsIgnoreCase("Kitchen")) {
-			for (int i = 0; i < 8; i++) {
+			if(roomsLeft == 5) {
+				roomsLeft--;
+			}
+			for (int i = 0; i < 7; i++) {
 				if (kitchenRoutes[i][1].equals(Integer.valueOf(roomsLeft))) {
 					selectedRoute = (String) kitchenRoutes[i][2];
 				}
