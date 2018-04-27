@@ -202,19 +202,23 @@ public class ClueTangClan implements BotAPI {
 		} else if (player.getToken().isInRoom() && question) {
 			question = false;
 			
-			if(player.getToken().getRoom().toString().equalsIgnoreCase("Hall")) {
+
+			if (player.getToken().getRoom().toString().equalsIgnoreCase("Hall")) {
 				routeKeepSafe++;
-			}
-			else {
-				if(!confident && roomsLeft >1 ) {
+			} else {
+				if (!confident && roomsLeft > 1) {
 					route = pickARoute();
 					System.out.println(route);
 					exitNumIterator = 0;
 					routeKeepSafe++;
 				}
 			}
-			
-			return "question";
+
+			if (player.getToken().getRoom().toString().equalsIgnoreCase("Cellar")) {
+				return "accuse";
+			} else {
+				return "question";
+			}
 		} else {
 			roll = true;
 			question = true;
@@ -1583,97 +1587,94 @@ public class ClueTangClan implements BotAPI {
 
 		String selectedRoute = null;
 		System.out.println("ROOMSLIFT: "+roomsLeft);
-if(player.getToken().getRoom().toString().equalsIgnoreCase("Ballroom")) {
-			
-			for(int i = 0; i <8;i++ ) {
-				if(ballRoomRoutes[i][1].equals(Integer.valueOf(roomsLeft))) {
+		if (player.getToken().getRoom().toString().equalsIgnoreCase("Ballroom")) {
+
+			for (int i = 0; i < 8; i++) {
+				if (ballRoomRoutes[i][1].equals(Integer.valueOf(roomsLeft))) {
 					selectedRoute = (String) ballRoomRoutes[i][2];
 				}
 			}
-		}
-		else if(player.getToken().getRoom().toString().equalsIgnoreCase("Billiard room")) {
-			
+		} else if (player.getToken().getRoom().toString().equalsIgnoreCase("Billiard room")) {
+
 			boolean roomsLeftChanged = false;
-			
-			if(roomsLeft == 2) {
+
+			if (roomsLeft == 2) {
 				roomsLeft++;
-				roomsLeftChanged =true;
+				roomsLeftChanged = true;
 			}
-			
-			for(int i = 0; i <10;i++ ) {
-				if(billiardRoomRoutes[i][1].equals(Integer.valueOf(roomsLeft))) {
+
+			for (int i = 0; i < 8; i++) {
+				if (billiardRoomRoutes[i][1].equals(Integer.valueOf(roomsLeft))) {
 					selectedRoute = (String) billiardRoomRoutes[i][2];
 				}
 			}
-			
-			if(roomsLeftChanged) {
+
+			if (roomsLeftChanged) {
 				roomsLeft--;
 			}
-		}
-		else if(player.getToken().getRoom().toString().equalsIgnoreCase("Conservatory")) {
-			for(int i = 0; i <9;i++ ) {
-				if(conservatoryRoutes[i][1].equals(Integer.valueOf(roomsLeft))) {
+		} else if (player.getToken().getRoom().toString().equalsIgnoreCase("Conservatory")) {
+			for (int i = 0; i < 9; i++) {
+				if (conservatoryRoutes[i][1].equals(Integer.valueOf(roomsLeft))) {
 					selectedRoute = (String) conservatoryRoutes[i][2];
 				}
 			}
-		}
-		else if(player.getToken().getRoom().toString().equalsIgnoreCase("Kitchen")) {
-			for(int i = 0; i <8;i++ ) {
-				if(kitchenRoutes[i][1].equals(Integer.valueOf(roomsLeft))) {
+		} else if (player.getToken().getRoom().toString().equalsIgnoreCase("Kitchen")) {
+			if(roomsLeft == 5) {
+				roomsLeft--;
+			}
+			for (int i = 0; i < 7; i++) {
+				if (kitchenRoutes[i][1].equals(Integer.valueOf(roomsLeft))) {
 					selectedRoute = (String) kitchenRoutes[i][2];
 				}
 			}
-		}
-		else if(player.getToken().getRoom().toString().equalsIgnoreCase("Library")) {
-			
+		} else if (player.getToken().getRoom().toString().equalsIgnoreCase("Library")) {
+
 			boolean roomsLeftChanged = false;
-			
-			if(roomsLeft == 3) {
+
+			if (roomsLeft == 3) {
 				roomsLeft--;
 				roomsLeftChanged = true;
 			}
-			
-			for(int i = 0; i <6;i++ ) {
-				if(libraryRoutes[i][1].equals(Integer.valueOf(roomsLeft))) {
+
+			for (int i = 0; i < 6; i++) {
+				if (libraryRoutes[i][1].equals(Integer.valueOf(roomsLeft))) {
 					selectedRoute = (String) libraryRoutes[i][2];
 				}
 			}
-			
-			if(roomsLeftChanged) {
+
+			if (roomsLeftChanged) {
 				roomsLeft++;
 			}
-		}
-		else if(player.getToken().getRoom().toString().equalsIgnoreCase("Lounge")) {
-			
+		} else if (player.getToken().getRoom().toString().equalsIgnoreCase("Lounge")) {
+
 			boolean roomsLeftChanged = false;
-			
-			if(roomsLeft == 3) {
+
+			if (roomsLeft == 3) {
 				roomsLeft--;
 				roomsLeftChanged = true;
 			}
-			
-			for(int i = 0; i <8;i++ ) {
-				if(loungeRoutes[i][1].equals(Integer.valueOf(roomsLeft))) {
+
+			for (int i = 0; i < 8; i++) {
+				if (loungeRoutes[i][1].equals(Integer.valueOf(roomsLeft))) {
 					selectedRoute = (String) loungeRoutes[i][2];
 				}
 			}
-			
-			if(roomsLeftChanged) {
+
+			if (roomsLeftChanged) {
 				roomsLeft++;
 			}
-			
-		}else if(player.getToken().getRoom().toString().equalsIgnoreCase("Dining Room")) {		
-			for(int i = 0; i < 8;i++ ) {
-				if(diningRoomRoutes[i][1].equals(Integer.valueOf(roomsLeft))) {
-					
+
+		} else if (player.getToken().getRoom().toString().equalsIgnoreCase("Dining Room")) {
+			for (int i = 0; i < 8; i++) {
+				if (diningRoomRoutes[i][1].equals(Integer.valueOf(roomsLeft))) {
+
 					selectedRoute = (String) diningRoomRoutes[i][2];
 				}
 			}
-		}
-		else if(player.getToken().getRoom().toString().equalsIgnoreCase("Study")) {		
-			for(int i = 0; i < 8;i++ ) {
-				if(studyRoutes[i][1].equals(Integer.valueOf(roomsLeft))) {
-					
+		} else if (player.getToken().getRoom().toString().equalsIgnoreCase("Study")) {
+			for (int i = 0; i < 8; i++) {
+				if (studyRoutes[i][1].equals(Integer.valueOf(roomsLeft))) {
+
 					selectedRoute = (String) studyRoutes[i][2];
 				}
 			}
