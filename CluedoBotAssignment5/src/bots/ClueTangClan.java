@@ -7,7 +7,6 @@ import java.util.Iterator;
 import gameengine.*;
 
 public class ClueTangClan implements BotAPI {
-	private int strategy = 0;
 	private int numPlayers;
 	private final int numCards = 21;
 	private final int numSuspects = 6;
@@ -21,8 +20,7 @@ public class ClueTangClan implements BotAPI {
 	public int[] holdingCards = new int[6];
 	public boolean gameStart = true;
 	public boolean question = true;
-	public int ClueTangNo;
-
+	
 	public String[] cardNames = { "Green", "Mustard", "Peacock", "Plum", "Scarlett", "White", "Candlestick", "Dagger",
 			"Lead Pipe", "Pistol", "Rope", "Wrench", "Ballroom", "Billiard Room", "Conservatory", "Dining Room", "Hall",
 			"Kitchen", "Library", "Lounge", "Study" };
@@ -46,7 +44,7 @@ public class ClueTangClan implements BotAPI {
 	int heldWeaponsCount = 0;
 	int heldRoomsCount = 0;
 
-	double Threshold = 0.7;
+	double Threshold = 0.6;
 
 	private boolean weKnowTheSuspect = false;
 	private boolean weKnowTheWeapon = false;
@@ -57,7 +55,7 @@ public class ClueTangClan implements BotAPI {
 	private String weapon = "";
 	private String room = "";
 	private int exitKeepSafe = 0;
-	private int routeKeepSafe = 0;
+	private int routeKeepSafe = 0; 
 	private int movesTaken = 0;
 	private int size = 0;
 	private boolean roll = true;
@@ -118,16 +116,6 @@ public class ClueTangClan implements BotAPI {
 			playerNames = playersInfo.getPlayersNames();
 
 			for (int i = 0; i < numPlayers; i++) {
-				if (playerNames[i].equals("ClueTangClan")) {
-					String temp;
-
-					temp = playerNames[0];
-					playerNames[0] = "ClueTangClan";
-					playerNames[i] = temp;
-				}
-			}
-
-			for (int i = 0; i < numPlayers; i++) {
 				notes.add(new ArrayList<ArrayList<Character>>());
 			}
 
@@ -148,14 +136,12 @@ public class ClueTangClan implements BotAPI {
 			// PrintMatrix();
 			gameStart = false;
 		}
-
+		
 		checkGeneralLogAndUpdateNotes();
 
 		checkIfWeKnowTheSuspect();
 		checkIfWeKnowTheWeapon();
 		checkIfWeKnowTheRoom();
-
-		// PrintMatrix();
 
 		int guessingTime = 0;
 		if (weKnowTheSuspect)
@@ -179,7 +165,7 @@ public class ClueTangClan implements BotAPI {
 				boolean conslounge = route.toLowerCase().indexOf("conslounge") != -1 ? true : false;
 				boolean kitstudy = route.toLowerCase().indexOf("kitstudy") != -1 ? true : false;
 				boolean studykit = route.toLowerCase().indexOf("studykit") != -1 ? true : false;
-
+			
 				if (player.getToken().isInRoom()) {
 					if (loungecons && player.getToken().getRoom().toString().equalsIgnoreCase("lounge")) {
 						return "passage";
@@ -214,6 +200,7 @@ public class ClueTangClan implements BotAPI {
 			return "roll";
 		} else if (player.getToken().isInRoom() && question) {
 			question = false;
+			
 
 			if (player.getToken().getRoom().toString().equalsIgnoreCase("Hall")) {
 				routeKeepSafe++;
@@ -241,7 +228,7 @@ public class ClueTangClan implements BotAPI {
 	public String getMove() {
 		String move = null;
 
-		if (routeKeepSafe > 0) {
+		if (routeKeepSafe >0) {
 			if (player.getToken().getRoom().toString().equalsIgnoreCase("Lounge")) {
 				if (route.toLowerCase().endsWith("lounge")) {
 					move = loungeToHall[movesTaken];
@@ -277,7 +264,8 @@ public class ClueTangClan implements BotAPI {
 					move = kitchenToDiningRoom[movesTaken];
 					movesTaken++;
 				} else {
-
+					
+					
 					move = kitchenToBallRoom[movesTaken];
 					movesTaken++;
 				}
@@ -360,7 +348,7 @@ public class ClueTangClan implements BotAPI {
 				}
 			}
 		} else {
-			if (routeKeepSafe == 0) {
+			if(routeKeepSafe == 0) {
 				if (player.getToken().getName() == "Green") {
 					move = twoToBallRoom[movesTaken];
 					movesTaken++;
@@ -382,57 +370,35 @@ public class ClueTangClan implements BotAPI {
 				}
 			}
 		}
-
+		
 		return move;
 	}
 
 	public String getSuspect() {
 		// if we are in basement return suspect
 		if (player.getToken().getRoom().toString().equalsIgnoreCase("Cellar")) {
-			return GetHighest(1);
+			if(weKnowTheSuspect) return suspect;
+			else return getHighest(1);
 		} else {
-			if (weKnowTheSuspect) {
-				if (heldCharactersCount > 0) {
-					for (int i = 0; i < 6; i++) {
-						if (probabilityMatrix[1][i] == 1) {
-							return getCardName(i);
-						}
-					}
-				} else {
-					return suspect;
-				}
-			} else {
-				return GetHighest(1);
-			}
+			Guess();
+			return guess[0];
 		}
-		return "Green";
 	}
 
 	public String getWeapon() {
 		// if we are in basement return suspect
 		if (player.getToken().getRoom().toString().equalsIgnoreCase("Cellar")) {
-			return GetHighest(2);
+			if(weKnowTheWeapon) return weapon;
+			else return getHighest(2);
 		} else {
-			if (weKnowTheWeapon) {
-				if (heldWeaponsCount > 0) {
-					for (int i = 6; i < 12; i++) {
-						if (probabilityMatrix[1][i] == 1) {
-							return getCardName(i);
-						}
-					}
-				} else {
-					return weapon;
-				}
-			} else {
-				return GetHighest(2);
-			}
+			return guess[1];
 		}
-		return "Dagger";
 	}
 
 	public String getRoom() {
 		// Only gets called when in cellar
-		return GetHighest(3);
+		if(weKnowTheRoom) return room;
+		else return getHighest(3);
 	}
 
 	public String getDoor() {
@@ -690,11 +656,8 @@ public class ClueTangClan implements BotAPI {
 				notes.get(j).get(cardNum).remove(k);
 			}
 			if (playerNames[j].equals(playerName)) {
-
 				notes.get(j).get(cardNum).add('y');
-
-				UpdateMatrix(j + 1, cardNum, 1);
-
+				UpdateMatrix(j, cardNum, 1);
 				if (cardNum < 6) {
 					knownCharactersCount++;
 					heldCharactersCount++;
@@ -707,6 +670,7 @@ public class ClueTangClan implements BotAPI {
 				}
 			} else {
 				notes.get(j).get(cardNum).add('x');
+				UpdateMatrix(j, cardNum, 0);
 			}
 		}
 	}
@@ -717,9 +681,8 @@ public class ClueTangClan implements BotAPI {
 				for (int k = 0; k < notes.get(j).get(cardNum).size(); k++) {
 					notes.get(j).get(cardNum).remove(k);
 				}
-				System.out.println("Mark");
-				UpdateMatrix(j + 1, cardNum, 0);
 				notes.get(j).get(cardNum).add('x');
+				UpdateMatrix(j, cardNum, 0);
 			}
 		}
 	}
@@ -729,8 +692,6 @@ public class ClueTangClan implements BotAPI {
 		int[] list = new int[3];
 		int iterate = 0;
 
-		System.out.println("test");
-		
 		for (int j = 0; j < numPlayers; j++) {
 			if (playerNames[j].equals(playerName)) {
 				if (notes.get(j).get(suspectNum).get(0) == '0') {
@@ -765,10 +726,10 @@ public class ClueTangClan implements BotAPI {
 				}
 
 				if (iterate == 1) {
-					UpdateMatrix(j + 1, list[0], 1);
+					UpdateMatrix(j, list[0], 1);
 				} else {
 					for (int i = 0; i < iterate; i++) {
-						UpdateMatrix(j + 1, list[i], (probabilityMatrix[j][list[i]]) * (4 / (iterate - 1)));
+						UpdateMatrix(j, list[i], (probabilityMatrix[j][list[i]]) * (4 / (iterate - 1)));
 					}
 				}
 			}
@@ -1131,8 +1092,8 @@ public class ClueTangClan implements BotAPI {
 					size = loungeToDiningRoom.length;
 				}
 			} else if (player.getToken().getRoom().toString().equalsIgnoreCase("Dining Room")) {
-				if (exitNum[exitNumIterator].equals("1") ) {
-					if (route.endsWith("Dining") ||route.equalsIgnoreCase("Dining")) {
+				if (exitNum[exitNumIterator].equals("1")) {
+					if (route.endsWith("Dining") || route.equalsIgnoreCase("dining")) {
 						size = diningRoomToHall.length;
 					} else {
 						size = diningRoomToLounge.length;
@@ -1259,7 +1220,7 @@ public class ClueTangClan implements BotAPI {
 	String hallToLibrary[] = { "u", "r", "r", "r", "u", "r", "r" };
 	String hallToDiningRoom[] = { "u", "l", "l", "l", "l", "l", "u", "u" };
 	String hallToLounge[] = { "u", "l", "l", "l", "l", "l", "d", "d" };
-	String hallToBasement[] = { "u", "r", "u" };
+	String hallToBasement[] = { "u", "r" ,"u" };
 
 	// exit 2
 	String hallToStudy[] = { "r", "r", "r", "d" };
@@ -1296,39 +1257,76 @@ public class ClueTangClan implements BotAPI {
 
 	// ------Exit patterns for getDoor()--------
 
-	Object[][] ballRoomRoutes = { { "Ballroom", 5, "ballConsBillLibStudy" }, { "Ballroom", 4, "ballBillLibStudy" },
-			{ "Ballroom", 4, "ballConsLoungeDining" }, { "Ballroom", 4, "ballBillLibStudy" },
-			{ "Ballroom", 3, "ballKitStudy" }, { "Ballroom", 3, "ballBillLib" }, { "Ballroom", 3, "ballDiningLounge" },
+	Object[][] ballRoomRoutes = {
+			{ "Ballroom", 5, "ballConsBillLibStudy" },
+			{ "Ballroom", 4, "ballBillLibStudy" },
+			{ "Ballroom", 4, "ballConsLoungeDining" },
+			{ "Ballroom", 4, "ballBillLibStudy" },
+			{ "Ballroom", 3, "ballKitStudy" },
+			{ "Ballroom", 3, "ballBillLib" },
+			{ "Ballroom", 3, "ballDiningLounge" },
 			{ "Ballroom", 2, "ballDining" }, };
-	Object[][] billiardRoomRoutes = { { "Billiard Room", 5, "billBallConsLoungeDining" },
-			{ "Billiard Room", 4, "billConsLoungeDining" }, { "Billiard Room", 5, "billBallKitStudyLib" },
-			{ "Billiard Room", 4, "billBallKitStudy" }, { "Billiard Room", 4, "billBallDiningLounge" },
-			{ "Billiard Room", 3, "billLibStudy" }, { "Billiard Room", 3, "billBallDining" },
+	Object[][] billiardRoomRoutes = {
+			{ "Billiard Room", 5, "billBallConsLoungeDining" },
+			{ "Billiard Room", 4, "billConsLoungeDining" },
+			{ "Billiard Room", 5, "billBallKitStudyLib" },
+			{ "Billiard Room", 4, "billBallKitStudy" },
+			{ "Billiard Room", 4, "billBallDiningLounge" },
+			{ "Billiard Room", 3, "billLibStudy" },
+			{ "Billiard Room", 3, "billBallDining" },
 			{ "Billiard Room", 5, "billLib" }, };
-	Object[][] conservatoryRoutes = { { "Conservatory", 5, "consBallBillLibStudy" },
-			{ "Conservatory", 5, "consBallKitStudyLib" }, { "Conservatory", 4, "consBallDiningLounge" },
-			{ "Conservatory", 4, "consBillLibStudy" }, { "Conservatory", 4, "consBallKitStudy" },
-			{ "Conservatory", 3, "consLoungeDining" }, { "Conservatory", 3, "consBallBillLibStudy" },
-			{ "Conservatory", 3, "consBallDining" }, { "Conservatory", 2, "consLounge" }, };
-	Object[][] diningRoomRoutes = { { "Dining Room", 4, "diningBallBillLib" },
-			{ "Dining Room", 4, "diningBallConsLounge" }, { "Dining Room", 4, "diningBallKitStudy" },
-			{ "Dining Room", 5, "diningBallBillLibStudy" }, { "Dining Room", 2, "dining" },
-			{ "Dining Room", 5, "diningBallBillConsLounge" }, { "Dining Room", 5, "diningBallKitStudyLib" },
-			{ "Dining Room", 3, "diningKitStudy" }, { "Dining Room", 5, "diningLoungeConsBillLib" }, };
-	Object[][] kitchenRoutes = { { "Kitchen", 4, "kitBallBillLib" }, { "Kitchen", 4, "kitBallDiningLounge" },
-			{ "Kitchen", 4, "kitBallConsLounge" }, { "Kitchen", 3, "kitStudyLib" }, { "Kitchen", 3, "kitBallDining" },
-			{ "Kitchen", 4, "kitDining" }, { "Kitchen", 3, "kitDiningLounge" }, };
-	Object[][] libraryRoutes = { { "Library", 5, "libBillBallDiningLounge" }, { "Library", 5, "libStudyKitBallDining" },
-			{ "Library", 5, "libBillConsLoungeDining" }, { "Library", 4, "libBillBallDining" },
-			{ "Library", 4, "libBillConsLounge" }, { "Library", 2, "lib" }, };
-	Object[][] loungeRoutes = { { "Lounge", 5, "loungeDiningBallBillLib" }, { "Lounge", 5, "loungeConsBillBallDining" },
-			{ "Lounge", 4, "loungeConsBallDining" }, { "Lounge", 2, "loungeDining" },
-			{ "Lounge", 5, "loungeConsBallKitStudy" }, { "Lounge", 4, "loungeDiningKitStudy" },
-			{ "Lounge", 1, "lounge" }, { "Lounge", 4, "loungeConsBillLib" }, };
-	Object[][] studyRoutes = { { "Study", 5, "studyLibBillConsLounge" }, { "Study", 5, "studyLibBillBallDining" },
-			{ "Study", 5, "studyKitBallDiningLounge" }, { "Study", 4, "studyKitBallBillLib" },
-			{ "Study", 5, "studyKitBallConsLounge" }, { "Study", 4, "studyKitBallDining" },
-			{ "Study", 3, "studyKitDining" }, { "Study", 2, "studyLib" }, };
+	Object[][] conservatoryRoutes = {
+			{ "Conservatory", 5, "consBallBillLibStudy" },
+			{ "Conservatory", 5, "consBallKitStudyLib" },
+			{ "Conservatory", 4, "consBallDiningLounge" },
+			{ "Conservatory", 4, "consBillLibStudy" },
+			{ "Conservatory", 4, "consBallKitStudy" },
+			{ "Conservatory", 3, "consLoungeDining" },
+			{ "Conservatory", 3, "consBallBillLibStudy" },
+			{ "Conservatory", 3, "consBallDining" },
+			{ "Conservatory", 2, "consLounge" }, };
+	Object[][] diningRoomRoutes = {
+			{ "Dining Room", 4, "diningBallBillLib" },
+			{ "Dining Room", 4, "diningBallConsLounge" },
+			{ "Dining Room", 4, "diningBallKitStudy" },
+			{ "Dining Room", 5, "diningBallBillLibStudy" },
+			{ "Dining Room", 2, "dining" },
+			{ "Dining Room", 5, "diningBallBillConsLounge" },
+			{ "Dining Room", 5, "diningBallKitStudyLib" },
+			{ "Dining Room", 3, "diningKitStudy" }, 
+			{ "Dining Room", 5, "diningLoungeConsBillLib" }, };
+	Object[][] kitchenRoutes = { { "Kitchen", 4, "kitBallBillLib" },
+			{ "Kitchen", 4, "kitBallDiningLounge" },
+			{ "Kitchen", 4, "kitBallConsLounge" },
+			{ "Kitchen", 3, "kitStudyLib" },
+			{ "Kitchen", 3, "kitBallDining" },
+			{ "Kitchen", 4, "kitDining" },
+			{ "Kitchen", 3, "kitDiningLounge" }, };
+	Object[][] libraryRoutes = {
+			{ "Library", 5, "libBillBallDiningLounge" },
+			{ "Library", 5, "libStudyKitBallDining" },
+			{ "Library", 5, "libBillConsLoungeDining" },
+			{ "Library", 4, "libBillBallDining" },
+			{ "Library", 4, "libBillConsLounge" },
+			{ "Library", 2, "lib" }, };
+	Object[][] loungeRoutes = {
+			{ "Lounge", 5, "loungeDiningBallBillLib" },
+			{ "Lounge", 5, "loungeConsBillBallDining" },
+			{ "Lounge", 4, "loungeConsBallDining" },
+			{ "Lounge", 2, "loungeDining" },
+			{ "Lounge", 5, "loungeConsBallKitStudy" },
+			{ "Lounge", 4, "loungeDiningKitStudy" },
+			{ "Lounge", 1, "lounge" },
+			{ "Lounge", 4, "loungeConsBillLib" }, };
+	Object[][] studyRoutes = {
+			{ "Study", 5, "studyLibBillConsLounge" },
+			{ "Study", 5, "studyLibBillBallDining" },
+			{ "Study", 5, "studyKitBallDiningLounge" },
+			{ "Study", 4, "studyKitBallBillLib" },
+			{ "Study", 5, "studyKitBallConsLounge" },
+			{ "Study", 4, "studyKitBallDining" },
+			{ "Study", 3, "studyKitDining" },
+			{ "Study", 2, "studyLib" }, };
 
 	// kitchen
 	String kitBallBillLib[] = { "3", "2", "1", "1" };
@@ -1356,7 +1354,7 @@ public class ClueTangClan implements BotAPI {
 	String loungeDining[] = { "1", "1" };
 	String loungeConsBallKitStudy[] = { "1", "1" }; // passage
 	String loungeDiningKitStudy[] = { "2", "1" }; // passage
-	String lounge[] = { "1", "1" };
+	String lounge[] = { "1" };
 	String loungeConsBillLib[] = { "2", "1", "1" };
 
 	// study
@@ -1400,7 +1398,7 @@ public class ClueTangClan implements BotAPI {
 	String consBillLib[] = { "2", "1", "1" };
 	String consLoungeDining[] = { "1", "1" };// passage
 	String consBallDining[] = { "2", "1" };
-	String consLounge[] = { "1", "1" }; // passage
+	String consLounge[] = { "1" }; // passage
 
 	// Dining
 	String diningBallBillLib[] = { "2", "3", "2", "1", "1" };
@@ -1413,9 +1411,9 @@ public class ClueTangClan implements BotAPI {
 	String diningBallKitStudyLib[] = { "2", "1", "1", "1" };// passage
 	String diningKitStudy[] = { "2", "1" };// passage
 	String diningLoungeConsBillLib[] = { "1", "2", "1", "1" };// passage
-
-	// hall
-	String hall[] = { "1" };
+	
+	//hall
+	String hall[] = {"1"};
 
 	private String[] setExitNum() {
 		String exitNumArray[] = null;
@@ -1564,9 +1562,9 @@ public class ClueTangClan implements BotAPI {
 	}
 
 	public String pickARoute() {
-		GetHighest(1);
-		GetHighest(2);
-		GetHighest(3);
+		getHighest(1);
+		getHighest(2);
+		getHighest(3);
 
 		double store = 1;
 
@@ -1575,22 +1573,22 @@ public class ClueTangClan implements BotAPI {
 				store = currentProbability[i];
 			}
 		}
-		
+
 		if (store > Threshold) {
 			roomsLeft = 1;
 			confident = true;
-		} else if (store > (Threshold - 0.15)) {
+		} else if (store > Threshold - 10) {
 			roomsLeft = 2;
-		} else if (store > (Threshold - 0.30)) {
+		} else if (store > Threshold - 20) {
 			roomsLeft = 3;
-		} else if (store > (Threshold - 0.50)) {
+		} else if (store > Threshold - 30) {
 			roomsLeft = 4;
 		} else {
 			roomsLeft = 5;
 		}
 
 		String selectedRoute = null;
-		System.out.println("ROOMSLIFT: " + roomsLeft);
+		System.out.println("ROOMSLIFT: "+roomsLeft);
 		if (player.getToken().getRoom().toString().equalsIgnoreCase("Ballroom")) {
 
 			for (int i = 0; i < 8; i++) {
@@ -1623,21 +1621,13 @@ public class ClueTangClan implements BotAPI {
 				}
 			}
 		} else if (player.getToken().getRoom().toString().equalsIgnoreCase("Kitchen")) {
-
-			boolean roomsLeftChanged = false;
-			
 			if(roomsLeft == 5) {
 				roomsLeft--;
-				roomsLeftChanged=true;
 			}
 			for (int i = 0; i < 7; i++) {
 				if (kitchenRoutes[i][1].equals(Integer.valueOf(roomsLeft))) {
 					selectedRoute = (String) kitchenRoutes[i][2];
 				}
-			}
-			
-			if(roomsLeftChanged) {
-				roomsLeft--;
 			}
 		} else if (player.getToken().getRoom().toString().equalsIgnoreCase("Library")) {
 
@@ -1692,9 +1682,9 @@ public class ClueTangClan implements BotAPI {
 			}
 		}
 
-		// else if(player.getToken().getRoom().toString().equalsIgnoreCase("Hall")) {
-		// selectedRoute = "hall";
-		// }
+		//else if(player.getToken().getRoom().toString().equalsIgnoreCase("Hall")) {		
+			//selectedRoute = "hall";
+		//}
 		return selectedRoute;
 	}
 
@@ -1753,10 +1743,9 @@ public class ClueTangClan implements BotAPI {
 		if (gameStart) {
 		} else if (oldElement == newElement) {
 		} else {
-			System.out.println(x + ", " + y + ", " + newElement);
 			rippleY(x, y, newElement);
 
-			for (int i = 0; i < numPlayers + 1; i++) {
+			for (int i = 0; i < numPlayers + 1;i++) {
 				if (probabilityMatrix[i][y] != 0) {
 					store[iterate++] = i;
 				}
@@ -1784,8 +1773,6 @@ public class ClueTangClan implements BotAPI {
 							+ probabilityMatrix[store[1]][y]);
 				}
 			}
-
-			PrintMatrix();
 		}
 	}
 
@@ -1803,56 +1790,15 @@ public class ClueTangClan implements BotAPI {
 
 		// Set the new element
 		probabilityMatrix[x][y] = (double) newElement;
-
+		
 		// Updating the y
 		base = 0;
 		iterate = 0;
 
-		if (probabilityMatrix[x][y] == 1) {
-			for (int i = 0; i < numPlayers + 1; i++) {
-				if (x != i) {
-					rippleY(i, y, 0);
-				}
-			}
-		}
-
-		if (x == 0) {
-			if (y < 6) {
-				for (int i = 0; i < 6; i++) {
-					if (probabilityMatrix[x][i] != 0) {
-						if (i != y) {
-							store[iterate++] = i;
-							base += probabilityMatrix[x][i];
-						}
-					}
-				}
-			} else if (y < 12) {
-				for (int i = 6; i < 12; i++) {
-					if (probabilityMatrix[x][i] != 0) {
-						if (i != y) {
-							store[iterate++] = i;
-							base += probabilityMatrix[x][i];
-						}
-					}
-				}
-			} else {
-				for (int i = 12; i < 21; i++) {
-					if (probabilityMatrix[x][i] != 0) {
-						if (i != y) {
-							store[iterate++] = i;
-							base += probabilityMatrix[x][i];
-						}
-					}
-				}
-			}
-		} else {
-			for (int i = 0; i < 21; i++) {
-				if (probabilityMatrix[x][i] != 0 && probabilityMatrix[x][i] != 1) {
-					if (i != y) {
-						store[iterate++] = i;
-						base += probabilityMatrix[x][i];
-					}
-				}
+		for (int i = 0; i < 21; i++) {
+			if (probabilityMatrix[x][i] != 0 && probabilityMatrix[x][i] != 1) {
+				store[iterate++] = i;
+				base += probabilityMatrix[x][i];
 			}
 		}
 
@@ -1890,16 +1836,15 @@ public class ClueTangClan implements BotAPI {
 	public void Guess() {
 		if (player.hasCard(player.getToken().getRoom().toString())) {
 			// We have the room card so guess
-
 			if (heldWeaponsCount != 0) {
-				guess[0] = GetHighest(1);
+				guess[0] = getHighest(1);
 				for (int i = 6; i < 12; i++) {
 					if (probabilityMatrix[1][i] == 1) {
 						guess[1] = getCardName(i);
 					}
 				}
 			} else if (heldCharactersCount != 0) {
-				guess[1] = GetHighest(2);
+				guess[1] = getHighest(2);
 				for (int i = 0; i < 6; i++) {
 					if (probabilityMatrix[1][i] == 1) {
 						guess[0] = getCardName(i);
@@ -1907,13 +1852,13 @@ public class ClueTangClan implements BotAPI {
 				}
 			} else if (weKnowTheWeapon) {
 				guess[1] = weapon;
-				guess[0] = GetHighest(1);
+				guess[0] = getHighest(1);
 			} else if (weKnowTheSuspect) {
 				guess[0] = suspect;
-				guess[1] = GetHighest(2);
+				guess[1] = getHighest(2);
 			} else {
-				guess[0] = GetHighest(1);
-				guess[1] = GetHighest(2);
+				guess[0] = getHighest(1);
+				guess[1] = getHighest(2);
 			}
 		} else {
 			if (heldCharactersCount != 0 && heldWeaponsCount != 0) {
@@ -1948,28 +1893,28 @@ public class ClueTangClan implements BotAPI {
 						guess[0] = getCardName(i);
 					}
 				}
-				guess[1] = GetHighest(2);
+				guess[1] = getHighest(2);
 			} else if (heldWeaponsCount != 0) {
 				for (int i = 6; i < 12; i++) {
 					if (probabilityMatrix[1][i] == 1) {
 						guess[1] = getCardName(i);
 					}
 				}
-				guess[0] = GetHighest(1);
+				guess[0] = getHighest(1);
 			} else if (weKnowTheWeapon) {
 				guess[1] = weapon;
-				guess[0] = GetHighest(1);
+				guess[0] = getHighest(1);
 			} else if (weKnowTheSuspect) {
 				guess[0] = suspect;
-				guess[1] = GetHighest(2);
+				guess[1] = getHighest(2);
 			} else {
-				guess[0] = GetHighest(1);
-				guess[1] = GetHighest(2);
+				guess[0] = getHighest(1);
+				guess[1] = getHighest(2);
 			}
 		}
 	}
 
-	public String GetHighest(int i) {
+	public String getHighest(int i) {
 		double store = 0;
 		int num = 0;
 
@@ -2003,18 +1948,11 @@ public class ClueTangClan implements BotAPI {
 	}
 
 	public void PrintMatrix() {
-		System.out.println("Characters");
 		for (int i = 0; i < 21; i++) {
 			for (int j = 0; j < numPlayers + 1; j++) {
 				System.out.print(probabilityMatrix[j][i] + ", ");
 			}
 			System.out.println();
-			if (i == 5) {
-				System.out.println("Weapons");
-			} else if (i == 11) {
-				System.out.println("Rooms");
-			}
 		}
-		System.out.println();
 	}
 }
